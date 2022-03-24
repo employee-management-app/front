@@ -20,7 +20,7 @@ v8.x.x
 1. Clone repo on your local machine:
 
 ```
-git clone https://github.com/wolkyura/employee-management-front
+git clone https://github.com/employee-management-app/front
 ```
 
 2. Open folder with project:
