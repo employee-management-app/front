@@ -26,19 +26,19 @@ git clone https://github.com/employee-management-app/front
 2. Open folder with project:
 
 ```
-cd employee-management-front
+cd front
 ```
 
 3. Run `npm i`:
 
 ```
-employee-management-front> npm i
+front> npm i
 ```
 
 4. Run `npm start`:
 
 ```
-employee-management-front> npm start
+front> npm start
 ```
 
 5. Open browser and navigate to `http://localhost:3000`
