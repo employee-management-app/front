@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { Container } from '../Container';
 import { UserWidget } from '../UserWidget';
 
+import logoImage from './assets/logo.png';
 import styles from './Header.module.scss';
 
 export const Header = () => {
@@ -14,16 +15,18 @@ export const Header = () => {
     <header className={styles.header}>
       <Container>
         <nav>
-          <Link to="/" className={styles.logo}>Logo</Link>
+          <Link to="/" className={styles.logo}>
+            <img src={logoImage} alt="Perfecta" />
+          </Link>
           <ul className={styles.menu}>
             <li className={styles.menuItem}>
-              <NavLink to='/' className={navLinkClassnames}>Inbox</NavLink>
+              <NavLink to="/" className={navLinkClassnames}>Inbox</NavLink>
             </li>
             <li className={styles.menuItem}>
-              <NavLink to='/schedular' className={navLinkClassnames}>Schedular</NavLink>
+              <NavLink to="/scheduler" className={navLinkClassnames}>Scheduler</NavLink>
             </li>
             <li className={styles.menuItem}>
-              <NavLink to='/completed' className={navLinkClassnames}>Completed</NavLink>
+              <NavLink to="/completed" className={navLinkClassnames}>Completed</NavLink>
             </li>
           </ul>
           <UserWidget />
