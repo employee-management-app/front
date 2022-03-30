@@ -11,27 +11,47 @@ export const Header = () => {
     isActive ? styles.activeLink : undefined
   );
 
+  const menu = [
+    {
+      to: '/',
+      label: 'Inbox'
+    },
+    {
+      to: '/scheduler',
+      label: 'Scheduler'
+    },
+    {
+      to: '/completed',
+      label: 'Completed'
+    },
+  ];
+
   return (
     <header className={styles.header}>
       <Container>
-        <nav>
+        <nav className={styles.nav}>
           <Link to="/" className={styles.logo}>
             <img src={logoImage} alt="Perfecta" />
           </Link>
           <ul className={styles.menu}>
-            <li className={styles.menuItem}>
-              <NavLink to="/" className={navLinkClassnames}>Inbox</NavLink>
-            </li>
-            <li className={styles.menuItem}>
-              <NavLink to="/scheduler" className={navLinkClassnames}>Scheduler</NavLink>
-            </li>
-            <li className={styles.menuItem}>
-              <NavLink to="/completed" className={navLinkClassnames}>Completed</NavLink>
-            </li>
+            {menu.map(({ to, label }) => (
+              <li key={to} className={styles.menuItem}>
+                <NavLink to={to} className={navLinkClassnames}>{label}</NavLink>
+              </li>
+            ))}
           </ul>
           <UserWidget />
         </nav>
       </Container>
+      <nav className={styles.mobileNav}>
+        <ul className={styles.mobileMenu}>
+          {menu.map(({ to, label }) => (
+            <li key={to} className={styles.mobileMenuItem}>
+              <NavLink to={to} className={navLinkClassnames}>{label}</NavLink>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 };
