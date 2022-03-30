@@ -4,8 +4,13 @@ $color-primary: #1352A1;
 
 $color-white: #FFFFFF;
 $color-black: #000000;
+$color-dark: #212121;
 
-$color-gray-lighten-1: #F5F5F5;
+$color-success: #16CB77;
+$color-danger: #FF0000;
+
+$color-gray-lighten-1: #C7C7C7;
+$color-gray-lighten-2: #F5F5F5;
 
 // Font sizes
 
@@ -15,11 +20,16 @@ $color-gray-lighten-1: #F5F5F5;
 }
 
 @mixin text-base {
+  font-size: 14px;
+  line-height: 18px;
+}
+
+@mixin text-medium {
   font-size: 16px;
   line-height: 20px;
 }
 
-@mixin text-medium {
+@mixin text-large {
   font-size: 18px;
   line-height: 22px;
 }
