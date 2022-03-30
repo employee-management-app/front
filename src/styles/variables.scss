@@ -1,0 +1,30 @@
+// Colors
+
+$color-primary: #1352A1;
+
+$color-white: #FFFFFF;
+$color-black: #000000;
+
+$color-gray-lighten-1: #F5F5F5;
+
+// Font sizes
+
+@mixin text-small {
+  font-size: 12px;
+  line-height: 14px;
+}
+
+@mixin text-base {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+@mixin text-medium {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+@mixin text-big {
+  font-size: 20px;
+  line-height: 24px;
+}
