@@ -42,3 +42,29 @@ front> npm start
 ```
 
 5. Open browser and navigate to `http://localhost:3000`
+
+## How can you test PWA locally?:
+
+1. Open folder with project:
+
+```
+cd front
+```
+
+2. Run `npm run build`:
+
+```
+front> npm run build
+```
+
+3. Install `serve` globally on your machine (if you don't have):
+
+```
+front> npm i -g serve
+```
+
+4. Run `serve -s build`:
+
+```
+front> serve -s build
+```
