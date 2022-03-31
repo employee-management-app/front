@@ -1,5 +1,8 @@
 import { Link, NavLink } from 'react-router-dom';
 
+import { ReactComponent as InboxIcon} from '../../assets/icons/inbox.svg';
+import { ReactComponent as SchedulerIcon} from '../../assets/icons/scheduler.svg';
+
 import { Container } from '../Container';
 import { UserWidget } from '../UserWidget';
 
@@ -14,15 +17,18 @@ export const Header = () => {
   const menu = [
     {
       to: '/',
-      label: 'Inbox'
+      label: 'Inbox',
+      Icon: InboxIcon,
     },
     {
       to: '/scheduler',
-      label: 'Scheduler'
+      label: 'Scheduler',
+      Icon: SchedulerIcon,
     },
     {
       to: '/completed',
-      label: 'Completed'
+      label: 'Completed',
+      Icon: InboxIcon,
     },
   ];
 
@@ -45,9 +51,12 @@ export const Header = () => {
       </Container>
       <nav className={styles.mobileNav}>
         <ul className={styles.mobileMenu}>
-          {menu.map(({ to, label }) => (
+          {menu.map(({ to, label, Icon }) => (
             <li key={to} className={styles.mobileMenuItem}>
-              <NavLink to={to} className={navLinkClassnames}>{label}</NavLink>
+              <NavLink to={to} className={navLinkClassnames}>
+                <Icon />
+                {label}
+              </NavLink>
             </li>
           ))}
         </ul>
