@@ -10,13 +10,13 @@ export const Checkbox = (props) => {
     setIsChecked(props.checked);
   }, [props.checked]);
 
-  const onChange = (e) => {
+  const onChange = React.useCallback((e) => {
     setIsChecked(e.target.checked);
 
     if (props.onChange) {
       props.onChange(e);
     }
-  };
+  }, [props.onChange]);
 
   const classNames = cx(styles.field, { 
     [styles.checked]: isChecked,

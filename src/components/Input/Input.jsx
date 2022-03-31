@@ -12,7 +12,11 @@ export const Input = (props) => {
 
   const onChange = React.useCallback((e) => {
     setValue(e.target.value);
-  }, []);
+
+    if (props.onChange) {
+      props.onChange(e);
+    }
+  }, [props.onChange]);
 
   const classNames = cx(styles.field, { 
     [styles[props.size]]: props.size,
