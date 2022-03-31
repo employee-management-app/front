@@ -1,0 +1,10 @@
+@use "../../styles/variables" as *;
+
+.label,
+.error {
+  @include text-small;
+}
+
+.error {
+  color: $color-danger;
+}

@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { ReactComponent as InboxIcon} from '../../assets/icons/inbox.svg';
 import { ReactComponent as SchedulerIcon} from '../../assets/icons/scheduler.svg';
+import { useAuth } from '../../hooks/useAuth';
 
 import { Container } from '../Container';
 import { UserWidget } from '../UserWidget';
@@ -10,11 +11,13 @@ import logoImage from './assets/logo.png';
 import styles from './Header.module.scss';
 
 export const Header = () => {
+  const { isLoggedIn } = useAuth();
+
   const navLinkClassnames = ({ isActive }) => (
     isActive ? styles.activeLink : undefined
   );
 
-  const menu = [
+  const menu = isLoggedIn ? [
     {
       to: '/',
       label: 'Inbox',
@@ -30,7 +33,7 @@ export const Header = () => {
       label: 'Completed',
       Icon: InboxIcon,
     },
-  ];
+  ] : [];
 
   return (
     <header className={styles.header}>
@@ -46,7 +49,7 @@ export const Header = () => {
               </li>
             ))}
           </ul>
-          <UserWidget />
+          {isLoggedIn && <UserWidget />}
         </nav>
       </Container>
       <nav className={styles.mobileNav}>
