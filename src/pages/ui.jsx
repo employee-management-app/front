@@ -1,5 +1,6 @@
 import { Container } from '../components/Container';
 import { Button } from '../components/Button';
+import { Input } from '../components/Input';
 import { ReactComponent as CommentIcon } from '../assets/icons/comment.svg';
 
 export const UI = () => {
@@ -35,6 +36,19 @@ export const UI = () => {
       <Button theme="danger">
         Danger button
       </Button>
+      <h2>Inputs</h2>
+      <Input placeholder="Default input" />
+      <br /><br />
+      <Input placeholder="Invalid input" invalid />
+      <br /><br />
+      <Input placeholder="Input with icon" icon={CommentIcon} />
+      <br /><br />
+      <Input placeholder="Input size medium" size="medium" />
+      <br /><br />
+      <Input placeholder="Invalid input size medium" size="medium" invalid />
+      <br /><br />
+      <Input placeholder="Input size medium with icon" size="medium" icon={CommentIcon} />
+      <br /><br />
     </Container>
   );
 };

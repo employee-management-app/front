@@ -15,6 +15,14 @@ npm -v
 v8.x.x
 ```
 
+## Deployments
+
+- `master` branch deploys automatically when new changes are committed on this url:
+   
+   https://employee-management-master.herokuapp.com
+
+- every pull request is automatically deployed with Heroku
+
 ## To run application locally:
 
 1. Clone repo on your local machine:

@@ -1,0 +1,93 @@
+@use "../../styles/variables" as *;
+
+.field {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  &:hover svg {
+    fill: $color-dark;
+  }
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    transition: 0.2s;
+    fill: $color-gray-lighten-1;
+  }
+}
+
+.input {
+  all: unset;
+  box-sizing: border-box;
+  @include text-base;
+  line-height: 24px;
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid $color-gray-lighten-1;
+  padding: 4px 10px;
+  transition: 0.2s;
+  cursor: text;
+
+  &:not(:only-child) {
+    padding-left: 38px;
+  }
+
+  &:hover {
+    border-color: $color-dark;
+
+    &:not(:focus)::placeholder {
+      color: $color-dark;
+    }
+  }
+
+  &:focus {
+    border-color: $color-primary;
+
+    & + svg {
+      fill: $color-primary;
+    }
+  }
+
+  &:not([value=""]):not(:focus) {
+    border-color: $color-dark;
+
+    & + svg {
+      fill: $color-dark;
+    }
+  }
+
+  &::placeholder {
+    transition: 0.2s;
+    color: $color-gray-lighten-1;
+  }
+}
+
+.field {
+  &.medium {
+    svg {
+      left: 16px;
+    }
+
+    .input {
+      padding: 8px 16px;
+  
+      &:not(:only-child) {
+        padding-left: 44px;
+      }
+    }
+  }
+
+  &.invalid .input {
+    border-color: $color-danger;
+    color: $color-danger;
+
+    &::placeholder {
+      color: $color-danger;
+    }
+  }
+}
