@@ -1,5 +1,6 @@
 import { Container } from '../components/Container';
 import { Button } from '../components/Button';
+import { Checkbox } from '../components/Checkbox';
 import { ReactComponent as CommentIcon } from '../assets/icons/comment.svg';
 
 export const UI = () => {
@@ -35,6 +36,15 @@ export const UI = () => {
       <Button theme="danger">
         Danger button
       </Button>
+      <h2>Checkbox</h2>
+      <Checkbox>
+        Default checkbox
+      </Checkbox>
+      <br /><br />
+      <Checkbox invalid>
+        Invalid checkbox
+      </Checkbox>
+      <br /><br />
     </Container>
   );
 };
