@@ -1,0 +1,44 @@
+@use "../../styles/variables" as *;
+
+.small {
+  @include text-small;
+}
+
+.base {
+  @include text-base;
+}
+
+.medium {
+  @include text-medium;
+}
+
+.large {
+  @include text-large;
+}
+
+.big {
+  @include text-big;
+}
+
+.h3 {
+  @include text-h3;
+  font-weight: bold;
+}
+
+.h2 {
+  @include text-h2;
+  font-weight: bold;
+}
+
+.h1 {
+  @include text-h1;
+  font-weight: bold;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
