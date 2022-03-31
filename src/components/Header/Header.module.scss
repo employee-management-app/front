@@ -41,7 +41,7 @@ $header-padding: 16px;
   }
 
   a {
-    @include text-base;
+    @include text-medium;
     display: inline-block;
     color: $color-black;
     text-decoration: none;

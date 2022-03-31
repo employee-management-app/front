@@ -1,8 +1,8 @@
-@use "../../styles/variables.scss" as *;
+@use "../../styles/variables" as *;
 
 .user {
   all: unset;
-  @include text-medium;
+  @include text-large;
   box-sizing: border-box;
   display: flex;
   align-items: center;

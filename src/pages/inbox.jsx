@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom';
+
 import { Container } from '../components/Container';
 
 export const Inbox = () => {
   return (
     <Container>
-      Inbox page
+      <Link to="/ui">UI</Link>
     </Container>
   );
 };

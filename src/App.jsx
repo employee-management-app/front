@@ -6,6 +6,7 @@ import { Inbox } from './pages/inbox';
 import { Scheduler } from './pages/scheduler';
 import { Completed } from './pages/completed';
 import { Error } from './pages/error';
+import { UI } from './pages/ui';
 
 const App = () => (
   <BrowserRouter>
@@ -15,6 +16,7 @@ const App = () => (
         <Route path='/' element={<Inbox />} />
         <Route path='/scheduler' element={<Scheduler />} />
         <Route path='/completed' element={<Completed />} />
+        <Route path='/ui' element={<UI />} />
         <Route path='*' element={<Error />} />
       </Routes>
     </main>
