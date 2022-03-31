@@ -1,17 +1,17 @@
-import cx from 'classnames';
 import React from 'react';
+import cx from 'classnames';
 
-import styles from './Input.module.scss';
+import styles from './Checkbox.module.scss';
 
-export const Input = (props) => {
-  const [value, setValue] = React.useState(props.value || '');
+export const Checkbox = (props) => {
+  const [isChecked, setIsChecked] = React.useState(props.checked || false);
 
   React.useEffect(() => {
-    setValue(props.value);
-  }, [props.value]);
+    setIsChecked(props.checked);
+  }, [props.checked]);
 
   const onChange = React.useCallback((e) => {
-    setValue(e.target.value);
+    setIsChecked(e.target.checked);
 
     if (props.onChange) {
       props.onChange(e);
@@ -19,20 +19,18 @@ export const Input = (props) => {
   }, [props.onChange]);
 
   const classNames = cx(styles.field, { 
-    [styles[props.size]]: props.size,
+    [styles.checked]: isChecked,
     [styles.invalid]: props.invalid,
   });
 
   return (
     <label className={classNames}>
       <input 
-        type={props.type || 'text'}
-        placeholder={props.placeholder}
-        value={value}
+        type="checkbox" 
         className={styles.input}
         onChange={onChange}
       />
-      {props.icon && <props.icon />}
+      {props.children}
     </label>
   );
 };

@@ -1,5 +1,6 @@
 import { Container } from '../components/Container';
 import { Button } from '../components/Button';
+import { Checkbox } from '../components/Checkbox';
 import { Input } from '../components/Input';
 import { ReactComponent as CommentIcon } from '../assets/icons/comment.svg';
 
@@ -36,6 +37,7 @@ export const UI = () => {
       <Button theme="danger">
         Danger button
       </Button>
+      <br /><br />
       <h2>Inputs</h2>
       <Input placeholder="Default input" />
       <br /><br />
@@ -48,6 +50,15 @@ export const UI = () => {
       <Input placeholder="Invalid input size medium" size="medium" invalid />
       <br /><br />
       <Input placeholder="Input size medium with icon" size="medium" icon={CommentIcon} />
+      <br /><br />
+      <h2>Checkbox</h2>
+      <Checkbox>
+        Default checkbox
+      </Checkbox>
+      <br /><br />
+      <Checkbox invalid>
+        Invalid checkbox
+      </Checkbox>
       <br /><br />
     </Container>
   );
