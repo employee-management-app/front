@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { Container } from '../components/Container';
+import { Grid, GridEl } from '../components/Grid';
+import { Text } from '../components/Text';
 import { Button } from '../components/Button';
 import { Checkbox } from '../components/Checkbox';
 import { Input } from '../components/Input';
@@ -20,63 +22,123 @@ export const UI = () => {
 
   return (
     <Container>
-      <h2>Buttons</h2>
-      <Button icon={CommentIcon} />
-      <br /><br />
-      <Button>
-        Default button
-      </Button>
-      <br /><br />
-      <Button icon={CommentIcon}>
-        Button with icon
-      </Button>
-      <br /><br />
-      <Button size="medium">
-        Button size medium
-      </Button>
-      <br /><br />
-      <Button width="full">
-        Button full width
-      </Button>
-      <br /><br />
-      <Button width="full" size="medium">
-        Button full width size medium
-      </Button>
-      <br /><br />
-      <Button theme="success">
-        Success button
-      </Button>
-      <br /><br />
-      <Button theme="danger">
-        Danger button
-      </Button>
-      <br /><br />
-      <h2>Inputs</h2>
-      <Input placeholder="Default input" />
-      <br /><br />
-      <Input placeholder="Invalid input" invalid />
-      <br /><br />
-      <Input placeholder="Input with icon" icon={CommentIcon} />
-      <br /><br />
-      <Input placeholder="Input size medium" size="medium" />
-      <br /><br />
-      <Input placeholder="Invalid input size medium" size="medium" invalid />
-      <br /><br />
-      <Input placeholder="Input size medium with icon" size="medium" icon={CommentIcon} />
-      <br /><br />
-      <h2>Checkbox</h2>
-      <Checkbox>
-        Default checkbox
-      </Checkbox>
-      <br /><br />
-      <Checkbox invalid>
-        Invalid checkbox
-      </Checkbox>
-      <br /><br />
-      <h2>Modal</h2>
-      <Button onClick={openModal}>
-        Open modal
-      </Button>
+      <Grid>
+        <GridEl size="12">
+          <Text size="h1">Title H1</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="h2">Title H2</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="h3">Title H3</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="big">Text big</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="large">Text large</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="medium">Text medium</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="base">Text base</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="small">Text small</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="h2">Buttons</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Grid>
+            <GridEl>
+              <Button icon={CommentIcon} />
+            </GridEl>
+            <GridEl>
+              <Button>
+                Default button
+              </Button>
+            </GridEl>
+            <GridEl>
+              <Button icon={CommentIcon}>
+                Button with icon
+              </Button>
+            </GridEl>
+            <GridEl size="fluid">
+              <Button width="full">
+                Button full width
+              </Button>
+            </GridEl>
+          </Grid>
+        </GridEl>
+        <GridEl size="12">
+          <Grid>
+            <GridEl>
+              <Button size="medium">
+                Button size medium
+              </Button>
+            </GridEl>
+            <GridEl size="fluid">
+              <Button width="full" size="medium">
+                Button full width size medium
+              </Button>
+            </GridEl>
+          </Grid>
+        </GridEl>
+        <GridEl>
+          <Button theme="success">
+            Success button
+          </Button>
+        </GridEl>
+        <GridEl>
+          <Button theme="danger">
+            Danger button
+          </Button>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="h2">Inputs</Text>
+        </GridEl>
+        <GridEl size="4">
+          <Input placeholder="Default input" />
+        </GridEl>
+        <GridEl size="4">
+          <Input placeholder="Invalid input" invalid />
+        </GridEl>
+        <GridEl size="4">
+          <Input placeholder="Input with icon" icon={CommentIcon} />
+        </GridEl>
+        <GridEl size="4">
+          <Input placeholder="Input size medium" size="medium" />
+        </GridEl>
+        <GridEl size="4">
+          <Input placeholder="Invalid input size medium" size="medium" invalid />
+        </GridEl>
+        <GridEl size="4">
+          <Input placeholder="Input size medium with icon" size="medium" icon={CommentIcon} />
+        </GridEl>
+        <GridEl size="12">
+          <Text size="h2">Checkbox</Text>
+        </GridEl>
+        <GridEl>
+          <Checkbox>
+            Default checkbox
+          </Checkbox>
+        </GridEl>
+        <GridEl>
+          <Checkbox invalid>
+            Invalid checkbox
+          </Checkbox>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="h2">Modal</Text>
+        </GridEl>
+        <GridEl>
+          <Button onClick={openModal}>
+            Open modal
+          </Button>
+        </GridEl>
+      </Grid>
       <Modal 
         title="Modal title"
         isOpen={isModalOpen} 
