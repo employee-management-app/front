@@ -3,9 +3,11 @@
 $header-padding: 16px;
 
 .header {
+  z-index: 10;
   box-shadow: 0 0 6px rgba($color-black, 0.2);
-  padding: $header-padding 0;
+  padding: 16px 0;
   background-color: $color-white;
+  height: 72px;
 }
 
 .nav {
@@ -30,7 +32,7 @@ $header-padding: 16px;
   flex: 1;
   display: flex;
   margin: 0;
-  margin-bottom: -$header-padding;
+  margin-bottom: -16px;
   padding: 0;
   list-style: none;
 }
@@ -43,10 +45,10 @@ $header-padding: 16px;
   a {
     @include text-medium;
     display: inline-block;
-    color: $color-black;
+    color: $color-dark;
     text-decoration: none;
     padding: 0 10px;
-    padding-bottom: $header-padding - 2px;
+    padding-bottom: 14px;
     border-bottom: 8px solid transparent;
 
     &:hover {
@@ -92,13 +94,13 @@ $header-padding: 16px;
     text-decoration: none;
     padding: 10px 4px 10px 4px;
     width: 100%;
-    color: $color-black;
+    color: $color-dark;
 
     svg {
       flex: 0 0 24px;
       width: 24px;
       height: 24px;
-      fill: $color-black;
+      fill: $color-dark;
       margin-bottom: 3px;
     }
     

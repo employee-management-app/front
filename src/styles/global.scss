@@ -5,12 +5,23 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   margin: 0;
   padding: 0;
   background-color: $color-gray-lighten-2;
+  color: $color-dark;
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: calc(100% - 72px); // 72px is height of header
   padding: 20px 0 85px;
 }

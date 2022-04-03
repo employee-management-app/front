@@ -2,6 +2,8 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { ReactComponent as InboxIcon} from '../../assets/icons/inbox.svg';
 import { ReactComponent as SchedulerIcon} from '../../assets/icons/scheduler.svg';
+import { ReactComponent as ArrowRightIcon } from '../../assets/icons/arrow-right.svg';
+import { useAuth } from '../../hooks/useAuth';
 
 import { Container } from '../Container';
 import { UserWidget } from '../UserWidget';
@@ -10,27 +12,42 @@ import logoImage from './assets/logo.png';
 import styles from './Header.module.scss';
 
 export const Header = () => {
+  const { isLoggedIn, isManager } = useAuth();
+
   const navLinkClassnames = ({ isActive }) => (
     isActive ? styles.activeLink : undefined
   );
 
-  const menu = [
+  const menu = isLoggedIn ? [
     {
       to: '/',
       label: 'Inbox',
       Icon: InboxIcon,
     },
-    {
-      to: '/scheduler',
-      label: 'Scheduler',
-      Icon: SchedulerIcon,
-    },
-    {
-      to: '/completed',
-      label: 'Completed',
-      Icon: InboxIcon,
-    },
-  ];
+    ...(isManager ? [
+      {
+        to: '/scheduler',
+        label: 'Scheduler',
+        Icon: SchedulerIcon,
+      },
+      {
+        to: '/completed',
+        label: 'Completed',
+        Icon: InboxIcon,
+      },
+    ] : [
+      {
+        to: '/anytime',
+        label: 'Anytime',
+        Icon: ArrowRightIcon,
+      },
+      {
+        to: '/scheduled',
+        label: 'Scheduled',
+        Icon: SchedulerIcon,
+      },
+    ]),
+  ] : [];
 
   return (
     <header className={styles.header}>
@@ -46,7 +63,7 @@ export const Header = () => {
               </li>
             ))}
           </ul>
-          <UserWidget />
+          {isLoggedIn && <UserWidget />}
         </nav>
       </Container>
       <nav className={styles.mobileNav}>

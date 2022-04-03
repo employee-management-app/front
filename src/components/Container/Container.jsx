@@ -1,9 +1,11 @@
+import cx from 'classnames';
+
 import styles from './Container.module.scss';
 
-export const Container = ({ children }) => {
+export const Container = ({ children, className }) => {
   return (
-    <div className={styles.container}>
+    <div className={cx(styles.container, className)}>
       {children}
     </div>
   )
-};  
+};

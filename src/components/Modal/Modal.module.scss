@@ -1,0 +1,76 @@
+@use "../../styles/variables" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+
+  &:global(.ReactModal__Overlay--after-open) {
+    opacity: 1;
+  }
+
+  &:global(.ReactModal__Overlay--before-close) {
+    opacity: 0;
+  }
+}
+
+.modal {
+  @include text-base;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  background-color: #fff;
+  padding: 26px 30px;
+  border-radius: 4px;
+  transform: translate(-50%, 0);
+  opacity: 0;
+  transition: 0.2s;
+
+  &:global(.ReactModal__Content--after-open) {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  &.center {
+    text-align: center;
+  }
+}
+
+.closeButton {
+  all: unset;
+  box-sizing: border-box;
+  display: inline-block;
+  position: absolute;
+  padding: 12px;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: $color-gray-lighten-2;
+  transition: 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: $color-dark;
+  }
+}
+
+.title {
+  @include text-big;
+  font-weight: bold;
+  margin-bottom: 20px;
+}

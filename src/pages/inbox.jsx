@@ -1,11 +1,30 @@
-import { Link } from 'react-router-dom';
+import { Button } from '../components/Button';
 
 import { Container } from '../components/Container';
+import { Text } from '../components/Text';
+import { Grid, GridEl } from '../components/Grid';
+import { useAuth } from '../hooks/useAuth';
 
 export const Inbox = () => {
+  const { onLogout, user, isManager } = useAuth();
+
   return (
     <Container>
-      <Link to="/ui">UI</Link>
+      <Grid>
+        <GridEl size="12">
+          <Text size="h2">Hi {user.name} {user.surname}! ({isManager ? 'manager' : 'worker'})</Text>
+        </GridEl>
+        <GridEl size="12">
+          <Button to="/ui">
+            UI components
+          </Button>
+        </GridEl>
+        <GridEl size="12">
+          <Button onClick={onLogout}>
+            Log out
+          </Button>
+        </GridEl>
+      </Grid>
     </Container>
   );
 };

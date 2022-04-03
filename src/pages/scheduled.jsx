@@ -1,9 +1,9 @@
 import { Container } from '../components/Container';
 
-export const Scheduler = () => {
+export const Scheduled = () => {
   return (
     <Container>
-      Scheduler page (manager view)
+      Scheduled page (worker view)
     </Container>
   );
 };
