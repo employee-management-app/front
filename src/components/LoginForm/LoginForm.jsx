@@ -69,10 +69,10 @@ export const LoginForm = () => {
       >
         <Grid space={SPACES.XL}>
           <GridEl size="12">
+            <Text size="h2" center>Log in to your account</Text>
+          </GridEl>
+          <GridEl size="12">
             <Grid>
-              <GridEl size="12">
-                <Text size="h2">Log in to your account</Text>
-              </GridEl>
               <GridEl size="12">
                 <Field error={errors.email}>
                   <Input 
