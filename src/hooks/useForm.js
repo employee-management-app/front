@@ -7,6 +7,7 @@ yup.setLocale({
     required: 'This field is required',
   },
   string: {
+    // eslint-disable-next-line no-template-curly-in-string
     min: 'This field should contain minimum ${min} characters',
     email: 'Email must be a valid email',
   },
