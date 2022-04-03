@@ -3,7 +3,7 @@ import { Container } from '../components/Container';
 export const Completed = () => {
   return (
     <Container>
-      Completed page
+      Completed page (manager view)
     </Container>
   );
 };

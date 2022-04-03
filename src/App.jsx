@@ -1,65 +1,96 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate }  from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+import { AuthProvider } from './AuthContext';
 import { Header } from './components/Header';
-import { Inbox } from './pages/inbox';
-import { Login } from './pages/login';
-import { Scheduler } from './pages/scheduler';
+import { useAuth } from './hooks/useAuth';
+import { Anytime } from './pages/anytime';
 import { Completed } from './pages/completed';
 import { Error } from './pages/error';
+import { Inbox } from './pages/inbox';
+import { Login } from './pages/login';
+import { Scheduled } from './pages/scheduled';
+import { Scheduler } from './pages/scheduler';
 import { UI } from './pages/ui';
-import { AuthProvider } from './AuthContext';
-import { useAuth } from './hooks/useAuth';
 
-const ProtectedRoute = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+const ProtectedRoute = ({ children, userType }) => {
+  const { isLoggedIn, isManager, isWorker, USER_TYPES } = useAuth();
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
 
+  if ((userType === USER_TYPES.MANAGER && !isManager) || (userType === USER_TYPES.WORKER && !isWorker)) {
+    return <Navigate to="/" replace />;
+  }
+
   return children;
 };
 
-const App = () => {
+const AppRoutes = () => {
+  const { USER_TYPES } = useAuth();
+
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Header />
-        <main>
-          <Routes>
-            <Route 
-              path='/' 
-              element={
-                <ProtectedRoute>
-                  <Inbox />
-                </ProtectedRoute>
-              } 
-            />
-            <Route path='/login' element={<Login />} />
-            <Route 
-              path='/scheduler' 
-              element={
-                <ProtectedRoute>
-                  <Scheduler />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path='/completed' 
-              element={
-                <ProtectedRoute>
-                  <Completed />
-                </ProtectedRoute>
-              } 
-            />
-            <Route path='/ui' element={<UI />} />
-            <Route path='*' element={<Error />} />
-          </Routes>
-        </main>
-      </AuthProvider>
-    </BrowserRouter>
+    <Routes>
+      {/* Mixed views */}
+      <Route path='/login' element={<Login />} />
+      <Route 
+        path='/' 
+        element={
+          <ProtectedRoute>
+            <Inbox />
+          </ProtectedRoute>
+        } 
+      />
+      <Route path='/ui' element={<UI />} />
+      <Route path='*' element={<Error />} />
+      {/* Manager views */}
+      <Route 
+        path='/scheduler' 
+        element={
+          <ProtectedRoute userType={USER_TYPES.MANAGER}>
+            <Scheduler />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path='/completed' 
+        element={
+          <ProtectedRoute userType={USER_TYPES.MANAGER}>
+            <Completed />
+          </ProtectedRoute>
+        } 
+      />
+      {/* Worker views */}
+      <Route 
+        path='/anytime' 
+        element={
+          <ProtectedRoute userType={USER_TYPES.WORKER}>
+            <Anytime />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path='/scheduled' 
+        element={
+          <ProtectedRoute userType={USER_TYPES.WORKER}>
+            <Scheduled />
+          </ProtectedRoute>
+        } 
+      />
+    </Routes>
   );
 };
+
+const App = () => (
+  <BrowserRouter>
+    <AuthProvider>
+      <Header />
+      <main>
+        <AppRoutes />
+      </main>
+    </AuthProvider>
+  </BrowserRouter>
+);
 
 export default App;

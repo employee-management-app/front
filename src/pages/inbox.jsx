@@ -1,15 +1,19 @@
 import { Button } from '../components/Button';
 
 import { Container } from '../components/Container';
+import { Text } from '../components/Text';
 import { Grid, GridEl } from '../components/Grid';
 import { useAuth } from '../hooks/useAuth';
 
 export const Inbox = () => {
-  const { onLogout } = useAuth();
+  const { onLogout, user, isManager } = useAuth();
 
   return (
     <Container>
       <Grid>
+        <GridEl size="12">
+          <Text size="h2">Hi {user.name} {user.surname}! ({isManager ? 'manager' : 'worker'})</Text>
+        </GridEl>
         <GridEl size="12">
           <Button to="/ui">
             UI components

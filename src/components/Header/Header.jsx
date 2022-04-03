@@ -2,6 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { ReactComponent as InboxIcon} from '../../assets/icons/inbox.svg';
 import { ReactComponent as SchedulerIcon} from '../../assets/icons/scheduler.svg';
+import { ReactComponent as ArrowRightIcon } from '../../assets/icons/arrow-right.svg';
 import { useAuth } from '../../hooks/useAuth';
 
 import { Container } from '../Container';
@@ -11,7 +12,7 @@ import logoImage from './assets/logo.png';
 import styles from './Header.module.scss';
 
 export const Header = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isManager } = useAuth();
 
   const navLinkClassnames = ({ isActive }) => (
     isActive ? styles.activeLink : undefined
@@ -23,16 +24,29 @@ export const Header = () => {
       label: 'Inbox',
       Icon: InboxIcon,
     },
-    {
-      to: '/scheduler',
-      label: 'Scheduler',
-      Icon: SchedulerIcon,
-    },
-    {
-      to: '/completed',
-      label: 'Completed',
-      Icon: InboxIcon,
-    },
+    ...(isManager ? [
+      {
+        to: '/scheduler',
+        label: 'Scheduler',
+        Icon: SchedulerIcon,
+      },
+      {
+        to: '/completed',
+        label: 'Completed',
+        Icon: InboxIcon,
+      },
+    ] : [
+      {
+        to: '/anytime',
+        label: 'Anytime',
+        Icon: ArrowRightIcon,
+      },
+      {
+        to: '/scheduled',
+        label: 'Scheduled',
+        Icon: SchedulerIcon,
+      },
+    ]),
   ] : [];
 
   return (
