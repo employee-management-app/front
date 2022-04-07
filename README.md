@@ -37,19 +37,27 @@ git clone https://github.com/employee-management-app/front
 cd front
 ```
 
-3. Run `npm i`:
+3. Copy `.env` file to `.env.local` file and set up needed variables:
+
+```
+# .env.local
+
+API_URL=http://127.0.0.1:8000/api
+```
+
+4. Run `npm i`:
 
 ```
 front> npm i
 ```
 
-4. Run `npm start`:
+5. Run `npm start`:
 
 ```
 front> npm start
 ```
 
-5. Open browser and navigate to `http://localhost:3000`
+6. Open browser and navigate to `http://localhost:3000`
 
 ## How can you test PWA locally?:
 
