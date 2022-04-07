@@ -56,6 +56,7 @@ export const useForm = (callback) => {
     errors, 
     isValid, 
     isLoading,
+    setFields,
     setErrors, 
     setIsLoading, 
     onFieldChange, 
