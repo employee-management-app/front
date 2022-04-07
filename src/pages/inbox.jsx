@@ -12,7 +12,7 @@ export const Inbox = () => {
     <Container>
       <Grid>
         <GridEl size="12">
-          <Text size="h2">Hi {user.name} {user.surname}! ({isManager ? 'manager' : 'worker'})</Text>
+          <Text size="h2">Hi {user.name} {user.surname}! ({isManager ? 'manager' : 'employee'})</Text>
         </GridEl>
         <GridEl size="12">
           <Button to="/ui">

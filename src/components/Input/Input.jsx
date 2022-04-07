@@ -7,7 +7,7 @@ export const Input = (props) => {
   const [value, setValue] = React.useState(props.value || '');
 
   React.useEffect(() => {
-    setValue(props.value);
+    setValue(props.value || '');
   }, [props.value]);
 
   const onChange = React.useCallback((e) => {

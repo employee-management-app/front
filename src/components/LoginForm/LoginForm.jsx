@@ -10,17 +10,16 @@ import { Field } from '../Field';
 import { Text } from '../Text';
 import { Input } from '../Input';
 import { Button } from '../Button';
-
-import styles from './LoginForm.module.scss';
+import { Link } from '../Link';
 
 const getConfig = (yup) => ({
   email: {
     value: '',
-    validation: yup.string().email().required(),
+    validation: yup.string().email().max(100).required(),
   },
   password: {
     value: '',
-    validation: yup.string().min(8),
+    validation: yup.string().min(8).max(100),
   },
 });
 
@@ -61,10 +60,10 @@ export const LoginForm = () => {
   };
 
   return (
-    <Container className={styles.container}>
+    <Container fullScreen>
       <form 
-        noValidate 
-        className={styles.form}
+        noValidate
+        style={{ maxWidth: '400px', textAlign: 'center' }}
         onSubmit={handleSubmit}
       >
         <Grid space={SPACES.XL}>
@@ -106,6 +105,11 @@ export const LoginForm = () => {
             >
               Log in
             </Button>
+          </GridEl>
+          <GridEl size="12">
+            <Link to="/signup">
+              Don't have an account yet? Register now
+            </Link>
           </GridEl>
         </Grid>
       </form>

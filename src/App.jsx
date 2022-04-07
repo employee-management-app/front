@@ -11,16 +11,17 @@ import { Inbox } from './pages/inbox';
 import { Login } from './pages/login';
 import { Scheduled } from './pages/scheduled';
 import { Scheduler } from './pages/scheduler';
+import { Signup } from './pages/signup';
 import { UI } from './pages/ui';
 
 const ProtectedRoute = ({ children, userType }) => {
-  const { isLoggedIn, isManager, isWorker, USER_TYPES } = useAuth();
+  const { isLoggedIn, isManager, isEmployee, USER_TYPES } = useAuth();
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
 
-  if ((userType === USER_TYPES.MANAGER && !isManager) || (userType === USER_TYPES.WORKER && !isWorker)) {
+  if ((userType === USER_TYPES.MANAGER && !isManager) || (userType === USER_TYPES.EMPLOYEE && !isEmployee)) {
     return <Navigate to="/" replace />;
   }
 
@@ -34,6 +35,7 @@ const AppRoutes = () => {
     <Routes>
       {/* Mixed views */}
       <Route path='/login' element={<Login />} />
+      <Route path='/signup' element={<Signup />} />
       <Route 
         path='/' 
         element={
@@ -61,11 +63,11 @@ const AppRoutes = () => {
           </ProtectedRoute>
         } 
       />
-      {/* Worker views */}
+      {/* Employee views */}
       <Route 
         path='/anytime' 
         element={
-          <ProtectedRoute userType={USER_TYPES.WORKER}>
+          <ProtectedRoute userType={USER_TYPES.EMPLOYEE}>
             <Anytime />
           </ProtectedRoute>
         } 
@@ -73,7 +75,7 @@ const AppRoutes = () => {
       <Route 
         path='/scheduled' 
         element={
-          <ProtectedRoute userType={USER_TYPES.WORKER}>
+          <ProtectedRoute userType={USER_TYPES.EMPLOYEE}>
             <Scheduled />
           </ProtectedRoute>
         } 

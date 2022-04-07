@@ -1,9 +1,22 @@
+@use "sass:math";
+@use "../../styles/variables" as *;
+
 .grid {
   display: inline-flex;
   flex-wrap: wrap;
   width: 100%;
-}
 
-.filled > * {
-  height: 100%;
+  @each $breakpoint, $_ in $breakpoints {
+    @include breakpoint-up($breakpoint) {
+      @for $i from 1 through 12 {
+        .#{$breakpoint}#{$i} {
+          width: math.percentage(math.div($i, 12));
+        }
+      }
+    }
+  }
+
+  .filled > * {
+    height: 100%;
+  }
 }

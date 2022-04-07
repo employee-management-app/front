@@ -3,18 +3,13 @@ import cx from 'classnames';
 import styles from './Grid.module.scss';
 
 export const GridEl = (props) => {
-  const style = {};
-
-  if (props.size) {
-    if (props.size === 'fluid') {
-      style.flex = 'auto';
-    } else {
-      style.width = `${props.size / 12 * 100}%`;
-    }
-  }
+  const sizes = typeof props.size === 'object' ? props.size : { xs: props.size };
+  const classNames = props.size 
+    ? Object.keys(sizes).map((key) => styles[`${key}${sizes[key]}`])
+    : [];
 
   return (
-    <div className={cx({ [styles.filled]: props.filled })} style={style}>
+    <div className={cx(classNames, { [styles.filled]: props.filled })}>
       {props.children}
     </div>
   );

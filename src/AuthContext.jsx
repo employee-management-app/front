@@ -23,18 +23,18 @@ export const AuthProvider = ({ children }) => {
       token: 'token',
       isLoggedIn: true,
       ...(userType === 'manager' && { isManager: true }),
-      ...(userType === 'worker' && { isWorker: true }),
+      ...(userType === 'employee' && { isEmployee: true }),
       user: {
-        email: userType === 'manager' ? 'manager@perfecta.com' : 'worker@gmail.com',
-        name: userType === 'manager' ? 'Manager' : 'Worker',
+        email: userType === 'manager' ? 'manager@perfecta.com' : 'employee@gmail.com',
+        name: userType === 'manager' ? 'Manager' : 'Employee',
         surname: userType === 'manager' ? 'Perfecta' : 'Kowalski',
       },
     });
 
     setTimeout(() => {
-      if (email === 'manager@perfecta.com' || email === 'worker@gmail.com') {
+      if (email === 'manager@perfecta.com' || email === 'employee@gmail.com') {
         if (password === 'nie mam pojecia') {
-          const userType = email === 'manager@perfecta.com' ? 'manager' : 'worker';
+          const userType = email === 'manager@perfecta.com' ? 'manager' : 'employee';
 
           setAuth(getFakeAuth(userType));
           resolve(getFakeAuth(userType));
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
     ...auth,
     USER_TYPES: {
       MANAGER: 'MANAGER',
-      WORKER: 'WORKER',
+      EMPLOYEE: 'EMPLOYEE',
     },
     onLogin: handleLogin,
     onLogout: handleLogout,
