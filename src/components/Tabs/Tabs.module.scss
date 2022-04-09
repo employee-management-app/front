@@ -1,0 +1,35 @@
+@use "../../styles/variables.scss" as *;
+
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tab {
+  all: unset;
+  box-sizing: border-box;
+  @include text-base;
+  line-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+
+  svg {
+    flex: 0 0 20px;
+    width: 20px;
+    margin-right: 4px;
+    fill: currentColor;
+  }
+
+  &.active {
+    border-color: $color-dark;
+  }
+}
