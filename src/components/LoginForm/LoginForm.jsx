@@ -60,7 +60,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <Container fullScreen>
+    <Container height="full">
       <form 
         noValidate
         style={{ maxWidth: '400px', textAlign: 'center' }}

@@ -83,7 +83,7 @@ export const SignupForm = () => {
   };
 
   return (
-    <Container fullScreen>
+    <Container height="full">
       <form 
         noValidate
         onSubmit={handleSubmit}
