@@ -1,0 +1,85 @@
+@use "../../styles/variables" as *;
+
+.wrapper {
+  position: relative;
+  margin: 0 $container-padding-mobile * -1 -85px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 10px rgba($color-black, 0.25);
+    pointer-events: none;
+  }
+
+  @include breakpoint-up('sm') {
+    margin: 0 $container-padding * -1 -85px;
+  }
+}
+
+.container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  pointer-events: none;
+}
+
+.cards {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  padding: $container-padding $container-padding-mobile 85px;
+  margin-left: $container-padding-mobile * -1;
+  overflow: auto;
+  pointer-events: auto;
+  width: calc(100% + $container-padding-mobile * 2);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include breakpoint-up('sm') {
+    padding: $container-padding $container-padding 85px;
+    margin-left: $container-padding * -1;
+    width: calc(100% + $container-padding * 2);
+  }
+
+  @include breakpoint-up('md') {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: $container-padding;
+    width: calc((100% / 12 * 5) - 15px + $container-padding * 2);
+  }
+
+  @include breakpoint-up('lg') {
+    width: calc(25% - 15px + $container-padding * 2);
+  }
+}
+
+.card {
+  width: 100%;
+
+  & + & {
+    margin-left: $container-padding-mobile;
+
+    @include breakpoint-up('sm') {
+      margin-left: $container-padding;
+    }
+
+    @include breakpoint-up('md') {
+      margin: 10px 0 0 ;
+    }
+  }
+
+  @include breakpoint-down('md') {
+    flex: 0 0 100%;
+  }
+}
