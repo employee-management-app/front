@@ -43,6 +43,7 @@ cd front
 # .env.local
 
 API_URL=http://127.0.0.1:8000/api
+REACT_APP_GOOGLE_MAPS_API_KEY=
 ```
 
 4. Run `npm i`:
