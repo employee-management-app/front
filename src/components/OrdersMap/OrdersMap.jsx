@@ -35,7 +35,7 @@ export const OrdersMap = ({ orders }) => {
         defaultZoom={15}
       />
       <div className={styles.container}>
-        <Container>
+        <Container className={styles.containerInner}>
           <div className={styles.cards}>
             {orders.map(({ id }) => (
               <div className={styles.card} key={id}>

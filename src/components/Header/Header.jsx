@@ -77,18 +77,20 @@ export const Header = () => {
           </Grid>
         </nav>
       </Container>
-      <nav className={styles.mobileNav}>
-        <ul className={styles.mobileMenu}>
-          {menu.map(({ to, label, Icon }) => (
-            <li key={to} className={styles.mobileMenuItem}>
-              <NavLink to={to} className={navLinkClassnames}>
-                <Icon />
-                {label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {!!menu.length && (
+        <nav className={styles.mobileNav}>
+          <ul className={styles.mobileMenu}>
+            {menu.map(({ to, label, Icon }) => (
+              <li key={to} className={styles.mobileMenuItem}>
+                <NavLink to={to} className={navLinkClassnames}>
+                  <Icon />
+                  {label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </header>
   );
 };

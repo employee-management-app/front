@@ -23,5 +23,5 @@ main {
   flex-direction: column;
   width: 100%;
   min-height: calc(100% - 72px); // 72px is height of header
-  padding: 20px 0 85px;
+  padding: 20px 0 $page-bottom-padding;
 }
