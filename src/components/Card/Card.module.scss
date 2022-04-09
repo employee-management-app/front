@@ -1,0 +1,16 @@
+@use "../../styles/variables" as *;
+
+.card {
+  box-shadow: 0 0 10px rgba($color-black, 0.25);
+  height: 300px;
+  border-radius: 4px;
+  background-color: $color-white;
+
+  &.horizontal {
+    box-shadow: 0 0 10px rgba($color-black, 0.1);
+  }
+
+  @include breakpoint-down('md') {
+    height: 200px;
+  }
+}
