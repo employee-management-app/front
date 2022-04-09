@@ -1,11 +1,12 @@
 import { Link, NavLink } from 'react-router-dom';
 
-import { ReactComponent as InboxIcon} from '../../assets/icons/inbox.svg';
-import { ReactComponent as SchedulerIcon} from '../../assets/icons/scheduler.svg';
+import { ReactComponent as InboxIcon } from '../../assets/icons/inbox.svg';
+import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
 import { ReactComponent as ArrowRightIcon } from '../../assets/icons/arrow-right.svg';
 import { useAuth } from '../../hooks/useAuth';
 
 import { Container } from '../Container';
+import { Grid, GridEl } from '../Grid';
 import { UserWidget } from '../UserWidget';
 
 import logoImage from './assets/logo.png';
@@ -28,7 +29,7 @@ export const Header = () => {
       {
         to: '/scheduler',
         label: 'Scheduler',
-        Icon: SchedulerIcon,
+        Icon: CalendarIcon,
       },
       {
         to: '/completed',
@@ -44,7 +45,7 @@ export const Header = () => {
       {
         to: '/scheduled',
         label: 'Scheduled',
-        Icon: SchedulerIcon,
+        Icon: CalendarIcon,
       },
     ]),
   ] : [];
@@ -52,18 +53,28 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <Container>
-        <nav className={styles.nav}>
-          <Link to="/" className={styles.logo}>
-            <img src={logoImage} alt="Perfecta" />
-          </Link>
-          <ul className={styles.menu}>
-            {menu.map(({ to, label }) => (
-              <li key={to} className={styles.menuItem}>
-                <NavLink to={to} className={navLinkClassnames}>{label}</NavLink>
-              </li>
-            ))}
-          </ul>
-          {isLoggedIn && <UserWidget />}
+        <nav>
+          <Grid alignItems="flex-end">
+            <GridEl size={{ xs: 'fluid', md: '3' }}>
+              <Link to="/" className={styles.logo}>
+                <img src={logoImage} alt="Perfecta" />
+              </Link>
+            </GridEl>
+            <GridEl size={{ xs: 'auto', md: 'fluid' }}>
+              <ul className={styles.menu}>
+                {menu.map(({ to, label }) => (
+                  <li key={to} className={styles.menuItem}>
+                    <NavLink to={to} className={navLinkClassnames}>{label}</NavLink>
+                  </li>
+                ))}
+              </ul>
+            </GridEl>
+            {isLoggedIn && (
+              <GridEl size="auto">
+                <UserWidget />
+              </GridEl>
+            )}
+          </Grid>
         </nav>
       </Container>
       <nav className={styles.mobileNav}>

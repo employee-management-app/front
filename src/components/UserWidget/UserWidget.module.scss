@@ -1,5 +1,10 @@
 @use "../../styles/variables" as *;
 
+.widget {
+  position: relative;
+  display: inline-block;
+}
+
 .user {
   all: unset;
   @include text-medium;
@@ -13,4 +18,41 @@
   border-radius: 50%;
   color: $color-primary;
   cursor: pointer;
+
+  &:hover + .dropdown {
+    display: block;
+  }
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% - 10px);
+  right: 0;
+  width: 150px;
+  padding-top: 20px;
+
+  &:hover {
+    display: block;
+  }
+}
+
+.dropdownInner {
+  padding: 6px 0;
+  background-color: $color-white;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba($color-black, 0.25);
+}
+
+.dropdownItem {
+  all: unset;
+  box-sizing: border-box;
+  @include text-base;
+  width: 100%;
+  padding: 6px 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-gray-lighten-2;
+  }
 }

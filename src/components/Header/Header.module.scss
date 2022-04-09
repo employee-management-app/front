@@ -10,15 +10,9 @@ $header-padding: 16px;
   height: 72px;
 }
 
-.nav {
-  display: flex;
-  align-items: flex-end;
-}
-
 .logo {
   display: inline-block;
   text-decoration: none;
-  margin-right: 10%;
   width: 150px;
   height: 35px;
 
@@ -29,7 +23,6 @@ $header-padding: 16px;
 }
 
 .menu {
-  flex: 1;
   display: flex;
   margin: 0;
   margin-bottom: -16px;

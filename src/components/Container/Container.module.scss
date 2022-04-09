@@ -1,14 +1,34 @@
+@use "../../styles/variables" as *;
+
 .container {
-  max-width: 1200px;
+  max-width: $container-width;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 $container-padding;
   width: 100%;
   height: 100%;
 
-  &.fullScreen {
+  &.fullHeight {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &.fullWidth {
+    max-width: none;
+  }
+
+  &.withoutPaddings {
+    max-width: calc($container-width - ($container-padding * 2));
+    padding: 0;
+
+    @include breakpoint-down('sm') {
+      max-width: calc($container-width - ($container-padding-mobile * 2));
+    }
+  }
+
+  @include breakpoint-down('sm') {
+    max-width: 100%;
+    padding: 0 $container-padding-mobile;
   }
 }
