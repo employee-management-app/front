@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
         setAuth(auth);
         resolve(auth);
-        window.localStorage.setItem('auth', auth);
+        window.localStorage.setItem('auth', JSON.stringify(auth));
       })
       .catch((err) => {
         const errorMessage = err.response.data.non_field_errors[0];
