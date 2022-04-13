@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,35 +18,26 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const handleLogin = ({ email, password }) => new Promise((resolve, reject) => {
-    // TODO: real axios request instead of checking and sending static data
-    // Set real error message from back
-    const getFakeAuth = (userType) => ({
-      token: 'token',
-      isLoggedIn: true,
-      ...(userType === 'manager' && { isManager: true }),
-      ...(userType === 'employee' && { isEmployee: true }),
-      user: {
-        email: userType === 'manager' ? 'manager@perfecta.com' : 'employee@gmail.com',
-        name: userType === 'manager' ? 'Manager' : 'Employee',
-        surname: userType === 'manager' ? 'Perfecta' : 'Kowalski',
-      },
-    });
+    axios.post(`${process.env.REACT_APP_API_URL}/login`, { username: email, password })
+      .then(({ data }) => {
+        const { isManager, ...userInfo } = data.userInfo;
 
-    setTimeout(() => {
-      if (email === 'manager@perfecta.com' || email === 'employee@gmail.com') {
-        if (password === 'nie mam pojecia') {
-          const userType = email === 'manager@perfecta.com' ? 'manager' : 'employee';
+        const auth = {
+          token: data.token,
+          isLoggedIn: true,
+          ...(isManager && { isManager: true }),
+          ...(!isManager && { isEmployee: true }),
+          user: userInfo,
+        };
 
-          setAuth(getFakeAuth(userType));
-          resolve(getFakeAuth(userType));
-          window.localStorage.setItem('auth', JSON.stringify(getFakeAuth(userType)));
-        } else {
-          reject({ password: 'Password is incorrect' });
-        }
-      } else {
-        reject({ email: 'This account is not registrated' });
-      }
-    }, 1000);
+        setAuth(auth);
+        resolve(auth);
+        window.localStorage.setItem('auth', auth);
+      })
+      .catch((err) => {
+        const errorMessage = err.response.data.non_field_errors[0];
+        reject({ email: errorMessage, password: errorMessage });
+      });
   });
 
   const handleLogout = () => {

@@ -17,6 +17,7 @@
   border: 1px solid $color-primary;
   border-radius: 50%;
   color: $color-primary;
+  text-transform: uppercase;
   cursor: pointer;
 
   &:hover + .dropdown {

@@ -1,5 +1,6 @@
+import axios from 'axios';
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../hooks/useForm';
 
@@ -46,10 +47,13 @@ export const SignupForm = () => {
     isValid,
     isLoading,
     setFields,
+    setErrors,
     setIsLoading,
     onFieldChange,
     onSubmit,
   } = useForm(getConfig);
+
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const userType = searchParams.get('userType');
@@ -76,10 +80,28 @@ export const SignupForm = () => {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-      setFields({});
-    }, 2000);
+    axios.post(`${process.env.REACT_APP_API_URL}/register`, {
+      first_name: fields.name,
+      last_name: fields.surname,
+      email: fields.email,
+      password: fields.password,
+      phone: fields.phone,
+      is_manager: fields.userType === 'manager',
+    })
+      .then(() => {
+        setFields({});
+        navigate('/login');
+      })
+      .catch((err) => {
+        const { email, password } = err.response.data;
+
+        if (email || password) {
+          setErrors({ email, password })
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
