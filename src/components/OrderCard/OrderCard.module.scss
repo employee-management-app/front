@@ -1,0 +1,53 @@
+@use "../../styles/variables" as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.priority {
+  @include text-small;
+  display: inline-flex;
+  align-items: center;
+
+  svg {
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  &.low,
+  &.very-low {
+    color: $color-primary;
+  }
+
+  &.normal {
+    color: $color-warning;
+  }
+
+  &.high,
+  &.very-high {
+    color: $color-danger;
+  }
+}
+
+.date {
+  @include text-small;
+
+  color: $color-primary;
+}
+
+.type {
+  @include text-large;
+
+  font-weight: 600;
+}
+
+.hr {
+  border: none;
+  height: 1px;
+  background-color: $color-gray-lighten-2;
+  margin: 10px 0;
+}

@@ -9,14 +9,16 @@ $color-black: #000000;
 $color-dark: #212121;
 
 $color-success: #16CB77;
+$color-warning: #FF9900;
 $color-danger: #FF0000;
 
 $color-gray-lighten-1: #C7C7C7;
-$color-gray-lighten-2: #F5F5F5;
+$color-gray-lighten-2: #E1E1E1;
+$color-gray-lighten-3: #F5F5F5;
 
 // Container
 
-$container-width: 1200px;
+$container-width: 1250px;
 $container-padding: 20px;
 $container-padding-mobile: 20px;
 $page-bottom-padding: calc(85px + env(safe-area-inset-bottom));
