@@ -5,6 +5,8 @@ import { Container } from '../Container';
 import { GoogleMap } from '../GoogleMap';
 import { OrderCard } from '../OrderCard';
 
+import { useWindowSize } from '../../hooks/useWindowSize';
+
 import styles from './OrdersMap.module.scss';
 
 export const OrdersMap = ({ orders }) => {
@@ -12,6 +14,7 @@ export const OrdersMap = ({ orders }) => {
   const [height, setHeight] = React.useState(0);
   const wrapperRef = React.useRef(null);
   const cardsRef = React.useRef(null);
+  const windowSize = useWindowSize();
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -20,9 +23,13 @@ export const OrdersMap = ({ orders }) => {
 
     handleResize();
 
-    window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+    resizeObserver.observe(document.body);
+
+    return () => {
+      resizeObserver.unobserve(document.body);
+    };
   }, [wrapperRef]);
 
   const selectOrder = React.useCallback((id) => {
@@ -36,11 +43,32 @@ export const OrdersMap = ({ orders }) => {
     setSelectedOrder(id);
   }, [orders]);
 
+  const offset = React.useMemo(() => {
+    const windowWidth = windowSize.width;
+    const windowHeight = windowSize.height;
+    const _offset = { top: 50, bottom: 50, left: 50, right: 50 };
+
+    if (windowWidth <= 768) {
+      if (windowHeight < 700) {
+        _offset.bottom += 200;
+      } else if (windowWidth < 576) {
+        _offset.bottom += 250;
+      } else {
+        _offset.bottom += 400;
+      }
+    } else {
+      _offset.left += Math.max(0, (windowWidth - 1250) / 2) + 250;
+    }
+
+    return _offset;
+  }, [windowSize]);
+
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>
       <GoogleMap 
         markers={orders.map(({ id, address }) => ({ id, lng: address.lng, lat: address.lat }))}
         selected={selectedOrder}
+        offset={offset}
         onSelect={selectOrder}
       />
       <div className={styles.container}>

@@ -24,21 +24,37 @@ const MapCluster = ({ children, onClick }) => (
   <div className={styles.marker} onClick={onClick}>{children}</div>
 );
 
-export const GoogleMap = ({ markers, selected, onSelect }) => {
+export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
   const [map, setMap] = React.useState(null);
+  const [maps, setMaps] = React.useState(null);
   const [zoom, setZoom] = React.useState(11);
   const [bounds, setBounds] = React.useState([]);
-
   const [selectedMarker, setSelectedMarker] = React.useState(selected);
 
   React.useEffect(() => {
-    setSelectedMarker(selected);
-    setZoom(13);
+    if (map) {
+      selectMarker(selected);
+    }
   }, [selected]);
+
+  React.useEffect(() => {
+    if (map && maps) {
+      fitBounds();
+    }
+  }, [offset]);
+
+  const fitBounds = React.useCallback((_map = map, _maps = maps) => {
+    const bounds = new _maps.LatLngBounds();
+    markers.forEach(({ lng, lat }) => bounds.extend({ lng, lat }));
+
+    _map.fitBounds(bounds, offset);
+  }, [map, maps, markers, offset]);
 
   const onGoogleApiLoaded = React.useCallback((api) => {
     setMap(api.map);
-  }, []);
+    setMaps(api.maps);
+    fitBounds(api.map, api.maps);
+  }, [fitBounds]);
 
   const onChange = React.useCallback((e) => {
     setZoom(e.zoom);
@@ -50,23 +66,17 @@ export const GoogleMap = ({ markers, selected, onSelect }) => {
     ]);
   }, []);
 
-  const onMarkerClick = React.useCallback((marker) => {
+  const selectMarker = React.useCallback((marker) => {
     setSelectedMarker(marker);
     onSelect(marker);
-  }, [onSelect]);
 
-  const center = React.useMemo(() => {
-    if (selectedMarker) {
-      const { lng, lat } = markers.find((marker) => marker.id === selectedMarker);
+    const { lng, lat } = markers.find(({ id }) => id === marker);
+    const x = (offset.right - offset.left) / 2;
+    const y = (offset.bottom - offset.top) / 2;
 
-      return {
-        lng: lng,
-        lat: lat,
-      };
-    }
-
-    return DEFAULT_CENTER;
-  }, [markers, selectedMarker]);
+    map.panTo({ lat, lng });
+    map.panBy(x, y);
+  }, [map, offset, markers, onSelect]);
 
   const { clusters, supercluster } = useSupercluster({
     points: markers.map(({ id, lat, lng }) => ({
@@ -85,7 +95,7 @@ export const GoogleMap = ({ markers, selected, onSelect }) => {
   return (
     <GoogleMapReact 
       bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-      center={center}
+      defaultCenter={DEFAULT_CENTER}
       zoom={zoom}
       yesIWantToUseGoogleMapApiInternals
       onGoogleApiLoaded={onGoogleApiLoaded}
@@ -96,8 +106,12 @@ export const GoogleMap = ({ markers, selected, onSelect }) => {
         const { cluster: isCluster, point_count: pointCount, id } = cluster.properties;
 
         const onClusterClick = () => {
+          const x = (offset.right - offset.left) / 2;
+          const y = (offset.bottom - offset.top) / 2;
+
           map.setZoom(Math.min(supercluster.getClusterExpansionZoom(cluster.id), 20));
           map.panTo({ lat, lng });
+          map.panBy(x, y);
         };
 
         if (isCluster) {
@@ -119,7 +133,7 @@ export const GoogleMap = ({ markers, selected, onSelect }) => {
             lat={lat}
             lng={lng}
             className={cx({ [styles.selected]: id === selectedMarker })}
-            onClick={() => onMarkerClick(id)}
+            onClick={() => selectMarker(id)}
           />
         );
       })}

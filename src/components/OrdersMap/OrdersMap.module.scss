@@ -29,13 +29,13 @@
   width: 100%;
   pointer-events: none;
 
-  @include breakpoint-down('sm') {
+  @include breakpoint-down('md') {
     display: flex;
   }
 }
 
 .containerInner {
-  @include breakpoint-down('sm') {
+  @include breakpoint-down('md') {
     margin-top: auto;
     height: auto;
   }
@@ -80,6 +80,16 @@
 
   > div {
     box-shadow: 0 0 8px rgba($color-black, 0.3);
+
+    @include breakpoint-down('sm') {
+      max-height: 150px;
+      overflow: hidden;
+    }
+
+    @media screen and (max-height: 700px) {
+      max-height: 106px;
+      overflow: hidden;
+    }
   }
 
   & + & {
