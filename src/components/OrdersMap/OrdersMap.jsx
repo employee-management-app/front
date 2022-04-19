@@ -1,45 +1,86 @@
+import cx from 'classnames';
 import React from 'react';
-import GoogleMapReact from 'google-map-react';
 
 import { Container } from '../Container';
-import { Card } from '../Card';
+import { GoogleMap } from '../GoogleMap';
+import { OrderCard } from '../OrderCard';
+
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 import styles from './OrdersMap.module.scss';
 
 export const OrdersMap = ({ orders }) => {
+  const [selectedOrder, setSelectedOrder] = React.useState(null);
   const [height, setHeight] = React.useState(0);
-  const ref = React.useRef(null);
+  const wrapperRef = React.useRef(null);
+  const cardsRef = React.useRef(null);
+  const windowSize = useWindowSize();
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const handleResize = () => {
-      setHeight(document.body.clientHeight - ref.current.offsetTop);
+      setHeight(document.body.clientHeight - wrapperRef.current.offsetTop);
     }
 
     handleResize();
 
-    window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, [ref]);
+    resizeObserver.observe(document.body);
 
-  const style = height ? { height } : undefined;
+    return () => {
+      resizeObserver.unobserve(document.body);
+    };
+  }, [wrapperRef]);
+
+  const selectOrder = React.useCallback((id) => {
+    const index = orders.findIndex((order) => order.id === id);
+    const card = cardsRef.current.children[index];
+
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    setSelectedOrder(id);
+  }, [orders]);
+
+  const offset = React.useMemo(() => {
+    const windowWidth = windowSize.width;
+    const windowHeight = windowSize.height;
+    const _offset = { top: 50, bottom: 50, left: 50, right: 50 };
+
+    if (windowWidth <= 768) {
+      if (windowHeight < 700) {
+        _offset.bottom += 200;
+      } else if (windowWidth < 576) {
+        _offset.bottom += 250;
+      } else {
+        _offset.bottom += 400;
+      }
+    } else {
+      _offset.left += Math.max(0, (windowWidth - 1250) / 2) + 250;
+    }
+
+    return _offset;
+  }, [windowSize]);
 
   return (
-    <div className={styles.wrapper} ref={ref} style={style}>
-      <GoogleMapReact 
-        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-        defaultCenter={{
-          lat: 51.10768387181116, 
-          lng: 17.062368712823876,
-        }}
-        defaultZoom={15}
+    <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>
+      <GoogleMap 
+        markers={orders.map(({ id, address }) => ({ id, lng: address.lng, lat: address.lat }))}
+        selected={selectedOrder}
+        offset={offset}
+        onSelect={selectOrder}
       />
       <div className={styles.container}>
         <Container className={styles.containerInner}>
-          <div className={styles.cards}>
-            {orders.map(({ id }) => (
-              <div className={styles.card} key={id}>
-                <Card />
+          <div ref={cardsRef} className={styles.cards}>
+            {orders.map((order) => (
+              <div 
+                className={cx(styles.card, { [styles.selected]: order.id === selectedOrder })} 
+                key={order.id}
+                onClick={() => selectOrder(order.id)}
+              >
+                <OrderCard {...order} />
               </div>
             ))}
           </div>

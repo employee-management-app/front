@@ -11,6 +11,7 @@ export const Button = (props) => {
     [styles[props.theme]]: props.theme,
     [styles[props.size]]: props.size,
     [styles.loading]: props.loading,
+    [styles.disabled]: props.disabled,
   });
 
   const content = () => (
@@ -19,6 +20,14 @@ export const Button = (props) => {
       {props.children && <span className={styles.text}>{props.children}</span>}
     </>
   );
+
+  if (props.href) {
+    return (
+      <a href={props.href} target={props.target} className={classNames}>
+        {content()}
+      </a>
+    );
+  }
 
   if (props.to) {
     return (
@@ -31,7 +40,7 @@ export const Button = (props) => {
   return (
     <button
       type={props.type || 'button'}
-      disabled={props.loading}
+      disabled={props.loading || props.disabled}
       className={classNames}
       onClick={props.onClick}
     >

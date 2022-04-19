@@ -31,6 +31,7 @@
   }
 
   svg {
+    flex: 0 0 24px;
     width: 24px;
     height: 24px;
     fill: $color-dark;
@@ -75,6 +76,14 @@
     padding: 8px 16px;
   }
 
+  &.disabled {
+    cursor: not-allowed;
+
+    * {
+      pointer-events: none;
+    }
+  }
+
   &.loading {
     cursor: progress;
 
@@ -86,6 +95,12 @@
       animation: spinner 1s infinite;
     }
   }
+}
+
+.text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 @keyframes spinner {

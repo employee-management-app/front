@@ -1,11 +1,11 @@
 import { Grid, GridEl } from '../Grid';
-import { Card } from '../Card';
+import { OrderCard } from '../OrderCard';
 
 export const OrdersList = ({ orders }) => (
   <Grid>
-    {orders.map(({ id }) => (
-      <GridEl size={{ xs: 12, md: 6 }} key={id}>
-        <Card horizontal />
+    {orders.map((order) => (
+      <GridEl size={{ xs: 12, md: 6, xl: 4 }} key={order.id}>
+        <OrderCard {...order} />
       </GridEl>
     ))}
   </Grid>
