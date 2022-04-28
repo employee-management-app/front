@@ -1,0 +1,99 @@
+@use "../../styles/variables" as *;
+
+.field {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    border: solid $color-gray-lighten-1;
+    border-width: 0 1.5px 1.5px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: translateY(-50%) rotate(45deg);
+    transition: 0.2s;
+  }
+
+  &:hover::after {
+    border-color: $color-dark;
+  }
+}
+
+.select {
+  all: unset;
+  box-sizing: border-box;
+  @include text-base;
+  line-height: 24px;
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid $color-gray-lighten-1;
+  color: $color-dark;
+  padding: 4px 10px;
+  transition: 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $color-dark;
+  }
+
+  &:focus {
+    border-color: $color-primary;
+  }
+
+  &.active:not(:focus) {
+    border-color: $color-dark;
+  }
+}
+
+.placeholder {
+  @include text-base;
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  color: $color-gray-lighten-1;
+  pointer-events: none;
+  transition: 0.2s;
+}
+
+.select:hover:not(:focus) + .placeholder {
+  color: $color-dark;
+}
+
+.select.active + .placeholder {
+  opacity: 0;
+}
+
+.field {
+  &.medium {
+    .select {
+      padding: 8px 16px;
+    }
+
+    .placeholder {
+      top: 10px;
+      left: 16px;
+    }
+  }
+
+  &.invalid,
+  &.invalid:hover {
+    .select {
+      border-color: $color-danger;
+      color: $color-danger;
+    }
+
+    .placeholder {
+      color: $color-danger;
+    }
+  }
+
+  &.invalid::after,
+  &.invalid:hover::after {
+    border-color: $color-danger;
+  }
+}

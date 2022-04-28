@@ -13,10 +13,10 @@ export const OrdersList = ({ orders }) => orders.length ? (
   </Grid>
 ) : (
   <EmptyState 
-    title="Na razie nic tu nie ma"
-    text="Tu będą wyświetlane nadchodzące pomiary. Jeśli myślisz że to jest błąd - skontaktuj się z administratorem."
+    title="Nothing here yet"
+    text="Upcoming measurements will be displayed here. If you think this is an error - contact the administrator."
     action={
-      <Button>Skontaktuj się z administratorem</Button>
+      <Button>Contact the administrator</Button>
     }
   />
 );

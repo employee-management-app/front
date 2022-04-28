@@ -5,6 +5,7 @@ import { Card } from '../Card';
 import { Text } from '../Text';
 import { Grid, GridEl, SPACES } from '../Grid';
 import { Button } from '../Button';
+import { Modal } from '../Modal';
 
 import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
@@ -14,10 +15,31 @@ import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg'
 
 import { OrderCardPriority } from './OrderCardPriority';
 import styles from './OrderCard.module.scss';
+import { AssignForm } from './AssignForm';
+import { ScheduleForm } from './ScheduleForm';
 
 export const OrderCard = (props) => {
-  const { name, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
+  const { id, name, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
   const { code, city, street, house } = address;
+
+  const [isAssignModalOpen, setIsAssignModalOpen] = React.useState(false);
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
+  
+  const openAssignModal = React.useCallback(() => {
+    setIsAssignModalOpen(true);
+  }, []);
+
+  const openScheduleModal = React.useCallback(() => {
+    setIsScheduleModalOpen(true);
+  }, []);
+
+  const onAssignModalClose = React.useCallback(() => {
+    setIsAssignModalOpen(false);
+  }, []);
+
+  const onScheduleModalClose = React.useCallback(() => {
+    setIsScheduleModalOpen(false);
+  }, []);
 
   return (
     <Card>
@@ -48,16 +70,40 @@ export const OrderCard = (props) => {
           <Text>{description}</Text>
         </GridEl>
         <GridEl size="6">
-          <Button icon={assigned ? undefined : UserIcon} width="full" disabled={assigned}>
+          <Button 
+            icon={assigned ? undefined : UserIcon} 
+            width="full" 
+            disabled={assigned}
+            onClick={openAssignModal}
+          >
             {assigned ? assigned : 'Assignee'}
           </Button>
         </GridEl>
         <GridEl size="6">
-          <Button icon={orderDate ? undefined : CalendarIcon} width="full" disabled={orderDate}>
+          <Button 
+            icon={orderDate ? undefined : CalendarIcon} 
+            width="full" 
+            disabled={orderDate}
+            onClick={openScheduleModal}
+          >
             {orderDate ? format(orderDate, 'dd.MM.yy HH:mm') : 'Schedule'}
           </Button>
         </GridEl>
       </Grid>
+      <Modal 
+        title={`Assign employee to measurement #${id}`}
+        isOpen={isAssignModalOpen} 
+        onClose={onAssignModalClose}
+      >
+        <AssignForm orderId={id} />
+      </Modal>
+      <Modal 
+        title={`Schedule an appointment for measurement #${id}`}
+        isOpen={isScheduleModalOpen} 
+        onClose={onScheduleModalClose}
+      >
+        <ScheduleForm orderId={id} />
+      </Modal>
     </Card>
   );
 };
