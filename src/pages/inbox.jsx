@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import { Button } from '../components/Button';
 import { Container } from '../components/Container';
@@ -15,112 +16,44 @@ import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg'
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
 
-const orders = [
-  {
-    id: '001',
-    name: 'Magorzata Walernrowicz',
-    type: 'Pomiar rolety',
-    date: new Date(),
-    address: {
-      code: '50-370',
-      city: 'Wrocław',
-      street: 'Wyb. Wyspiańskiego',
-      house: '27',
-      lat: 51.08764387181116, 
-      lng: 17.062563712823876,
-    },
-    phone: '+48 607 210 922',
-    mail: 'mail@mail.com',
-    description: 'Potrzebne 7 moskiter do 2-skrzydłowych okien + jedna do drzwi balkonowych',
-    priority: 'high',
-    assigned: null,
-    orderDate: null,
-  },
-  {
-    id: '002',
-    name: 'Magorzata Walernrowicz',
-    type: 'Pomiar rolety',
-    date: new Date(),
-    address: {
-      code: '50-370',
-      city: 'Wrocław',
-      street: 'Wyb. Wyspiańskiego',
-      house: '27',
-      lat: 51.10158387181116, 
-      lng: 17.052368712823876,
-    },
-    phone: '+48 607 210 922',
-    mail: 'mail@mail.com',
-    description: 'Potrzebne 7 moskiter do 2-skrzydłowych okien + jedna do drzwi balkonowych',
-    priority: 'very-low',
-    assigned: 'Michał Wożnicki',
-    orderDate: null,
-  },
-  {
-    id: '003',
-    name: 'Magorzata Walernrowicz',
-    type: 'Pomiar rolety',
-    date: new Date(),
-    address: {
-      code: '50-370',
-      city: 'Wrocław',
-      street: 'Wyb. Wyspiańskiego',
-      house: '27',
-      lat: 51.12768387181116, 
-      lng: 17.042668712823876,
-    },
-    phone: '+48 607 210 922',
-    mail: 'mail@mail.com',
-    description: 'Potrzebne 7 moskiter do 2-skrzydłowych okien + jedna do drzwi balkonowych',
-    priority: 'normal',
-    assigned: null,
-    orderDate: new Date(),
-  },
-  {
-    id: '004',
-    name: 'Magorzata Walernrowicz',
-    type: 'Pomiar rolety',
-    date: new Date(),
-    address: {
-      code: '50-370',
-      city: 'Wrocław',
-      street: 'Wyb. Wyspiańskiego',
-      house: '27',
-      lat: 51.12168387181116, 
-      lng: 17.022168712823876,
-    },
-    phone: '+48 607 210 922',
-    mail: 'mail@mail.com',
-    description: 'Potrzebne 7 moskiter do 2-skrzydłowych okien + jedna do drzwi balkonowych',
-    priority: 'very-high',
-    assigned: null,
-    orderDate: null,
-  },
-  {
-    id: '005',
-    name: 'Magorzata Walernrowicz',
-    type: 'Pomiar rolety',
-    date: new Date(),
-    address: {
-      code: '50-370',
-      city: 'Wrocław',
-      street: 'Wyb. Wyspiańskiego',
-      house: '27',
-      lat: 51.10788387181116, 
-      lng: 17.062868712823876,
-    },
-    phone: '+48 607 210 922',
-    mail: 'mail@mail.com',
-    description: 'Potrzebne 7 moskiter do 2-skrzydłowych okien + jedna do drzwi balkonowych',
-    priority: 'very-low',
-    assigned: null,
-    orderDate: null,
-  },
-];
-
 export const Inbox = () => {
   const [activeTab, setActiveTab] = React.useState(1);
+  const [orders, setOrders] = React.useState([]);
   const { user, isManager } = useAuth();
+
+  React.useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/orders`)
+      .then(({ data }) => {
+        const fetchedOrders = data.reduce((acc, { id, measurement_date, assign, order, start_date, status }) => [
+          ...acc,
+          {
+            id,
+            name: order.name,
+            surname: order.surname,
+            type: order.productType,
+            date: new Date(start_date),
+            address: {
+              code: order.code,
+              city: order.city,
+              street: order.street,
+              house: order.house,
+              lat: 51.13768387181116 - Math.random() / 20, 
+              lng: 17.052668712823876 - Math.random() / 20,
+            },
+            phone: order.phone,
+            mail: order.email,
+            description: order.message,
+            priority: status,
+            assigned: assign,
+            orderDate: measurement_date ? new Date(measurement_date) : measurement_date,
+          },  
+        ], []);
+        setOrders(fetchedOrders);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   if (isManager) {
     return (

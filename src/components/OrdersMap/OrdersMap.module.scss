@@ -84,11 +84,11 @@
     @include breakpoint-down('sm') {
       max-height: 150px;
       overflow: hidden;
-    }
 
-    @media screen and (max-height: 700px) {
-      max-height: 106px;
-      overflow: hidden;
+      @media screen and (max-height: 700px) {
+        max-height: 106px;
+        overflow: hidden;
+      }
     }
   }
 

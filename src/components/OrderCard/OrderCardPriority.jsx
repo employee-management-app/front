@@ -25,8 +25,9 @@ const labels = {
   'very-high': 'Very high',
 };
 
-export const OrderCardPriority = ({ priority }) => {
-  const Icon = icons[priority];
+export const OrderCardPriority = (props) => {
+  const priority = Object.keys(labels).includes(props.priority) ? props.priority : 'normal';
+  const Icon = icons[priority || 'normal'];
 
   return (
     <div className={cx(styles.priority, styles[priority])}>
