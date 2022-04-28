@@ -81,8 +81,8 @@ export const SignupForm = () => {
     setIsLoading(true);
 
     axios.post(`${process.env.REACT_APP_API_URL}/register`, {
-      first_name: fields.name,
-      last_name: fields.surname,
+      name: fields.name,
+      surname: fields.surname,
       email: fields.email,
       password: fields.password,
       phone: fields.phone,

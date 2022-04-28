@@ -32,18 +32,22 @@ export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
   const [selectedMarker, setSelectedMarker] = React.useState(selected);
 
   React.useEffect(() => {
-    if (map) {
+    if (map && selected) {
       selectMarker(selected);
     }
   }, [selected]);
 
   React.useEffect(() => {
-    if (map && maps) {
+    if (map && maps && markers.length) {
       fitBounds();
     }
   }, [offset]);
 
   const fitBounds = React.useCallback((_map = map, _maps = maps) => {
+    if (!markers.length) {
+      return;
+    }
+
     const bounds = new _maps.LatLngBounds();
     markers.forEach(({ lng, lat }) => bounds.extend({ lng, lat }));
 

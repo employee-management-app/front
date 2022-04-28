@@ -71,21 +71,23 @@ export const OrdersMap = ({ orders }) => {
         offset={offset}
         onSelect={selectOrder}
       />
-      <div className={styles.container}>
-        <Container className={styles.containerInner}>
-          <div ref={cardsRef} className={styles.cards}>
-            {orders.map((order) => (
-              <div 
-                className={cx(styles.card, { [styles.selected]: order.id === selectedOrder })} 
-                key={order.id}
-                onClick={() => selectOrder(order.id)}
-              >
-                <OrderCard {...order} />
-              </div>
-            ))}
-          </div>
-        </Container>
-      </div>
+      {orders.length && (
+        <div className={styles.container}>
+          <Container className={styles.containerInner}>
+            <div ref={cardsRef} className={styles.cards}>
+              {orders.map((order) => (
+                <div 
+                  className={cx(styles.card, { [styles.selected]: order.id === selectedOrder })} 
+                  key={order.id}
+                  onClick={() => selectOrder(order.id)}
+                >
+                  <OrderCard {...order} />
+                </div>
+              ))}
+            </div>
+          </Container>
+        </div>
+      )}
     </div>
   );
 };
