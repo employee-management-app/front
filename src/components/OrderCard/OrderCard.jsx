@@ -76,7 +76,7 @@ export const OrderCard = (props) => {
             disabled={assigned}
             onClick={openAssignModal}
           >
-            {assigned ? assigned : 'Assignee'}
+            {assigned ? JSON.stringify(assigned) : 'Assignee'}
           </Button>
         </GridEl>
         <GridEl size="6">
