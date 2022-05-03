@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 import { Button } from '../components/Button';
 import { Container } from '../components/Container';
@@ -10,6 +10,9 @@ import { OrdersMap } from '../components/OrdersMap';
 import { OrdersList } from '../components/OrdersList';
 import { Input } from '../components/Input';
 import { useAuth } from '../hooks/useAuth';
+import { fetchOrders } from '../services/fetchOrders';
+import { setOrders } from '../store';
+
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
 import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg';
@@ -17,38 +20,15 @@ import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
 
 export const Inbox = () => {
+  const dispatch = useDispatch();
+
   const [activeTab, setActiveTab] = React.useState(1);
-  const [orders, setOrders] = React.useState([]);
   const { user, isManager } = useAuth();
 
   React.useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/orders`)
-      .then(({ data }) => {
-        const fetchedOrders = data.reduce((acc, { id, measurement_date, assign, order, start_date, status }) => [
-          ...acc,
-          {
-            id,
-            name: order.name,
-            surname: order.surname,
-            type: order.productType,
-            date: new Date(start_date),
-            address: {
-              code: order.code,
-              city: order.city,
-              street: order.street,
-              house: order.house,
-              lat: 51.13768387181116 - Math.random() / 20, 
-              lng: 17.052668712823876 - Math.random() / 20,
-            },
-            phone: order.phone,
-            mail: order.email,
-            description: order.message,
-            priority: status,
-            assigned: assign,
-            orderDate: measurement_date ? new Date(measurement_date) : measurement_date,
-          },  
-        ], []);
-        setOrders(fetchedOrders);
+    fetchOrders()
+      .then((data) => {
+        dispatch(setOrders(data));
       })
       .catch((err) => {
         console.log(err);
@@ -83,10 +63,10 @@ export const Inbox = () => {
         </Grid>
         <TabsItems active={activeTab}>
           <TabsItem for={0}>
-            <OrdersList orders={orders} />
+            <OrdersList />
           </TabsItem>
           <TabsItem for={1}>
-            <OrdersMap orders={orders} />
+            <OrdersMap />
           </TabsItem>
           <TabsItem for={2}>
             Calendar

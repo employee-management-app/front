@@ -1,11 +1,13 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
+import { updateOrder } from '../../services/updateOrder';
+import { updateOrder as updateOrderInStore } from '../../store';
 import { Field } from '../Field';
 import { Input } from '../Input';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
-import axios from 'axios';
 
 const getConfig = (yup) => ({
   schedule: {
@@ -14,7 +16,9 @@ const getConfig = (yup) => ({
   },
 });
 
-export const ScheduleForm = ({ orderId }) => {
+export const ScheduleForm = ({ order, onSuccess }) => {
+  const dispatch = useDispatch();
+
   const { 
     fields,
     errors,
@@ -35,9 +39,10 @@ export const ScheduleForm = ({ orderId }) => {
 
     setIsLoading(true);
 
-    axios.post(`${process.env.REACT_APP_API_URL}/order-status-update/${orderId}`, { ...fields })
-      .then(({ data }) => {
-        console.log(data);
+    updateOrder({ ...order, schedule: fields.schedule })
+      .then((data) => {
+        dispatch(updateOrderInStore(data));
+        onSuccess();
       })
       .catch((err) => {
         setErrors(err);

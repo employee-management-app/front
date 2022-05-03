@@ -95,14 +95,14 @@ export const OrderCard = (props) => {
         isOpen={isAssignModalOpen} 
         onClose={onAssignModalClose}
       >
-        <AssignForm orderId={id} />
+        <AssignForm order={props} />
       </Modal>
       <Modal 
         title={`Schedule an appointment for measurement #${id}`}
         isOpen={isScheduleModalOpen} 
         onClose={onScheduleModalClose}
       >
-        <ScheduleForm orderId={id} />
+        <ScheduleForm order={props} onSuccess={onScheduleModalClose} />
       </Modal>
     </Card>
   );

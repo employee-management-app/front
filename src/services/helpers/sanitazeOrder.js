@@ -1,0 +1,21 @@
+export const sanitazeOrder = ({ measurement_date, assign, order, start_date, status }) => ({
+  id: order.id,
+  name: order.name,
+  surname: order.surname,
+  type: order.productType,
+  date: new Date(start_date),
+  address: {
+    code: order.code,
+    city: order.city,
+    street: order.street,
+    house: order.house,
+    lat: 51.13768387181116 - Math.random() / 20, 
+    lng: 17.052668712823876 - Math.random() / 20,
+  },
+  phone: order.phone,
+  mail: order.email,
+  description: order.message,
+  priority: status,
+  assigned: assign,
+  orderDate: measurement_date ? new Date(measurement_date) : measurement_date,
+});

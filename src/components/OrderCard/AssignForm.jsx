@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { useForm } from '../../hooks/useForm';
+import { fetchEmployees } from '../../services/fetchEmployees';
+import { updateOrder } from '../../services/updateOrder';
 import { Field } from '../Field';
 import { Select } from '../Select';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
-import axios from 'axios';
 
 const getConfig = (yup) => ({
   employee: {
@@ -14,7 +15,7 @@ const getConfig = (yup) => ({
   },
 });
 
-export const AssignForm = ({ orderId }) => {
+export const AssignForm = ({ order }) => {  
   const { 
     fields,
     errors,
@@ -27,8 +28,8 @@ export const AssignForm = ({ orderId }) => {
   } = useForm(getConfig);
 
   React.useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/employees`)
-      .then(({ data }) => {
+    fetchEmployees()
+      .then((data) => {
         console.log(data);
       })
       .catch((err) => {
@@ -45,10 +46,8 @@ export const AssignForm = ({ orderId }) => {
 
     setIsLoading(true);
 
-    axios.post(`${process.env.REACT_APP_API_URL}/order-status-update/${orderId}`, {
-      assign: fields.employee,
-    })
-      .then(({ data }) => {
+    updateOrder({ ...order, assigned: fields.employee })
+      .then((data) => {
         console.log(data);
       })
       .catch((err) => {
