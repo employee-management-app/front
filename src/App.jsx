@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { AuthProvider } from './AuthContext';
 import { Header } from './components/Header';
+import { Notifications } from './components/Notifications';
 import { useAuth } from './hooks/useAuth';
 import { Anytime } from './pages/anytime';
 import { Completed } from './pages/completed';
@@ -91,6 +92,7 @@ const App = () => (
       <main>
         <AppRoutes />
       </main>
+      <Notifications />
     </AuthProvider>
   </BrowserRouter>
 );

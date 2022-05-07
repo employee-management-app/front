@@ -10,6 +10,7 @@ import { OrdersMap } from '../components/OrdersMap';
 import { OrdersList } from '../components/OrdersList';
 import { Input } from '../components/Input';
 import { useAuth } from '../hooks/useAuth';
+import { useNotification } from '../hooks/useNotification';
 import { fetchOrders } from '../services/fetchOrders';
 import { setOrders } from '../store';
 
@@ -22,6 +23,8 @@ import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
 export const Inbox = () => {
   const dispatch = useDispatch();
 
+  const { pushNotification } = useNotification();
+
   const [activeTab, setActiveTab] = React.useState(1);
   const { user, isManager } = useAuth();
 
@@ -30,8 +33,8 @@ export const Inbox = () => {
       .then((data) => {
         dispatch(setOrders(data));
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
       });
   }, []);
 

@@ -8,9 +8,12 @@ import { Checkbox } from '../components/Checkbox';
 import { Input } from '../components/Input';
 import { Modal } from '../components/Modal';
 import { ReactComponent as CommentIcon } from '../assets/icons/comment.svg';
+import { useNotification } from '../hooks/useNotification';
 
 export const UI = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const { pushNotification } = useNotification();
   
   const openModal = React.useCallback(() => {
     setIsModalOpen(true);
@@ -136,6 +139,29 @@ export const UI = () => {
         <GridEl>
           <Button onClick={openModal}>
             Open modal
+          </Button>
+        </GridEl>
+        <GridEl size="12">
+          <Text size="h2">Notifications</Text>
+        </GridEl>
+        <GridEl>
+          <Button onClick={() => pushNotification({ theme: 'info', content: 'Infooooooo' })}>
+            Push info notification
+          </Button>
+        </GridEl>
+        <GridEl>
+          <Button onClick={() => pushNotification({ theme: 'success', content: 'Successssssss' })}>
+            Push success notification
+          </Button>
+        </GridEl>
+        <GridEl>
+          <Button onClick={() => pushNotification({ theme: 'error', content: 'Errorrrrrr' })}>
+            Push error notification
+          </Button>
+        </GridEl>
+        <GridEl>
+          <Button onClick={() => pushNotification({ theme: 'warning', content: 'Warninggggggg' })}>
+            Push warning notification
           </Button>
         </GridEl>
       </Grid>

@@ -3,6 +3,7 @@ import React from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../hooks/useForm';
+import { useNotification } from '../../hooks/useNotification';
 
 import { Container } from '../Container';
 import { Grid, GridEl, SPACES } from '../Grid';
@@ -53,6 +54,8 @@ export const SignupForm = () => {
     onSubmit,
   } = useForm(getConfig);
 
+  const { pushNotification } = useNotification();
+
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -74,7 +77,10 @@ export const SignupForm = () => {
   const handleSubmit = (e) => {
     onSubmit(e);
 
+
     if (!isValid) {
+      pushNotification({ theme: 'warning', content: 'Please fill in all required fields!' });
+      
       return;
     }
 
@@ -91,6 +97,7 @@ export const SignupForm = () => {
       .then(() => {
         setFields({});
         navigate('/login');
+        pushNotification({ theme: 'success', content: 'The account has been registered! Now you can log into the system.' });
       })
       .catch((err) => {
         const { email, password } = err.response.data;
@@ -98,6 +105,8 @@ export const SignupForm = () => {
         if (email || password) {
           setErrors({ email, password })
         }
+
+        pushNotification({ theme: 'error', content: 'Check the entered data again!' });
       })
       .finally(() => {
         setIsLoading(false);

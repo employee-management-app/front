@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../hooks/useForm';
 import { useAuth } from '../../hooks/useAuth';
+import { useNotification } from '../../hooks/useNotification';
 
 import { Container } from '../Container';
 import { Grid, GridEl, SPACES } from '../Grid';
@@ -37,6 +38,7 @@ export const LoginForm = () => {
   } = useForm(getConfig);
 
   const { onLogin } = useAuth(fields);
+  const { pushNotification } = useNotification();
 
   const handleSubmit = (e) => {
     onSubmit(e);
@@ -53,6 +55,7 @@ export const LoginForm = () => {
       })
       .catch((err) => {
         setErrors(err);
+        pushNotification({ theme: 'error', content: 'Check the entered data again!' });
       })
       .finally(() => {
         setIsLoading(false);
