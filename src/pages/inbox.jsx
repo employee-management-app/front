@@ -1,7 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Button } from '../components/Button';
 import { Container } from '../components/Container';
 import { Text } from '../components/Text';
 import { Grid, GridEl } from '../components/Grid';
@@ -12,7 +11,7 @@ import { Input } from '../components/Input';
 import { useAuth } from '../hooks/useAuth';
 import { useNotification } from '../hooks/useNotification';
 import { fetchOrders } from '../services/fetchOrders';
-import { setOrders } from '../store';
+import { setOrders, getOrders } from '../store';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
@@ -23,19 +22,23 @@ import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
 export const Inbox = () => {
   const dispatch = useDispatch();
 
+  const orders = useSelector(getOrders);
+
+  const { isManager } = useAuth();
   const { pushNotification } = useNotification();
 
   const [activeTab, setActiveTab] = React.useState(1);
-  const { user, isManager } = useAuth();
 
   React.useEffect(() => {
-    fetchOrders()
-      .then((data) => {
-        dispatch(setOrders(data));
-      })
-      .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
-      });
+    if (isManager) {
+      fetchOrders()
+        .then((data) => {
+          dispatch(setOrders(data));
+        })
+        .catch(() => {
+          pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
+        });
+    }
   }, []);
 
   if (isManager) {
@@ -66,10 +69,10 @@ export const Inbox = () => {
         </Grid>
         <TabsItems active={activeTab}>
           <TabsItem for={0}>
-            <OrdersList />
+            <OrdersList orders={orders} />
           </TabsItem>
           <TabsItem for={1}>
-            <OrdersMap />
+            <OrdersMap orders={orders} />
           </TabsItem>
           <TabsItem for={2}>
             Calendar
@@ -86,12 +89,10 @@ export const Inbox = () => {
     <Container>
       <Grid>
         <GridEl size="12">
-          <Text size="h2">Hi {user.name} {user.surname}! (employee)</Text>
+          <Text size="h3">Here you can assign yourself to the measurements</Text>
         </GridEl>
         <GridEl size="12">
-          <Button to="/ui">
-            UI components
-          </Button>
+          <OrdersList orders={[]} />
         </GridEl>
       </Grid>
     </Container>

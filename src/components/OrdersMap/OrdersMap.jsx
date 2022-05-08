@@ -1,9 +1,7 @@
 import cx from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
-import { getOrders } from '../../store';
 
 import { Container } from '../Container';
 import { GoogleMap } from '../GoogleMap';
@@ -11,9 +9,7 @@ import { OrderCard } from '../OrderCard';
 
 import styles from './OrdersMap.module.scss';
 
-export const OrdersMap = () => {
-  const orders = useSelector(getOrders);
-
+export const OrdersMap = ({ orders }) => {
   const [selectedOrder, setSelectedOrder] = React.useState(null);
   const [height, setHeight] = React.useState(0);
   const wrapperRef = React.useRef(null);

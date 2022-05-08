@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../hooks/useForm';
 import { useAuth } from '../../hooks/useAuth';
@@ -25,7 +24,6 @@ const getConfig = (yup) => ({
 });
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
   const { 
     fields,
     errors,
@@ -50,9 +48,6 @@ export const LoginForm = () => {
     setIsLoading(true);
 
     onLogin(fields)
-      .then(() => {
-        navigate('/');
-      })
       .catch((err) => {
         setErrors(err);
         pushNotification({ theme: 'error', content: 'Check the entered data again!' });

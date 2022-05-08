@@ -1,22 +1,22 @@
 import React from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
 
-import { Card } from '../Card';
-import { Text } from '../Text';
-import { Grid, GridEl, SPACES } from '../Grid';
-import { Button } from '../Button';
-import { Modal } from '../Modal';
-
 import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 import { ReactComponent as UserIcon } from '../../assets/icons/user.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
 
+import { Card } from '../Card';
+import { Text } from '../Text';
+import { Grid, GridEl, SPACES } from '../Grid';
+import { Button } from '../Button';
+import { Modal } from '../Modal';
+
 import { OrderCardPriority } from './OrderCardPriority';
-import styles from './OrderCard.module.scss';
 import { AssignForm } from './AssignForm';
 import { ScheduleForm } from './ScheduleForm';
+import styles from './OrderCard.module.scss';
 
 export const OrderCard = (props) => {
   const { id, name, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
@@ -24,7 +24,7 @@ export const OrderCard = (props) => {
 
   const [isAssignModalOpen, setIsAssignModalOpen] = React.useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
-  
+
   const openAssignModal = React.useCallback(() => {
     setIsAssignModalOpen(true);
   }, []);

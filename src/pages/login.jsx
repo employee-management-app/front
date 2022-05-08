@@ -4,9 +4,13 @@ import { LoginForm } from '../components/LoginForm';
 import { useAuth } from '../hooks/useAuth';
 
 export const Login = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isEmployee } = useAuth();
 
   if (isLoggedIn) {
+    if (isEmployee) {
+      return <Navigate to="/anytime" />
+    }
+
     return <Navigate to="/" />;
   }
 

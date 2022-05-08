@@ -1,9 +1,28 @@
+import React from 'react';
+
 import { Container } from '../components/Container';
+import { Text } from '../components/Text';
+import { Grid, GridEl } from '../components/Grid';
+import { OrdersList } from '../components/OrdersList';
+// import { useNotification } from '../hooks/useNotification';
 
 export const Anytime = () => {
+  // const { pushNotification } = useNotification();
+
+  React.useEffect(() => {
+    // fetch employee orders (not scheduled)
+  }, []);
+
   return (
     <Container>
-      Anytime page (employee view)
+      <Grid>
+        <GridEl size="12">
+          <Text size="h3">Measurements assigned to you</Text>
+        </GridEl>
+        <GridEl size="12">
+          <OrdersList orders={[]} />
+        </GridEl>
+      </Grid>
     </Container>
   );
 };
