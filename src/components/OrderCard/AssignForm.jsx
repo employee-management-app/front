@@ -1,8 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
+import { useNotification } from '../../hooks/useNotification';
 import { fetchEmployees } from '../../services/fetchEmployees';
 import { updateOrder } from '../../services/updateOrder';
+import { updateOrder as updateOrderInStore } from '../../store';
+
 import { Field } from '../Field';
 import { Select } from '../Select';
 import { Button } from '../Button';
@@ -10,12 +14,16 @@ import { Grid, GridEl, SPACES } from '../Grid';
 
 const getConfig = (yup) => ({
   employee: {
-    value: '',
-    validation: yup.string().required(),
+    value: null,
+    validation: yup.number().nullable().required(),
   },
 });
 
-export const AssignForm = ({ order }) => {  
+export const AssignForm = ({ order, onSuccess }) => {  
+  const dispatch = useDispatch();
+
+  const [employees, setEmployees] = React.useState([]);
+  const { pushNotification } = useNotification();
   const { 
     fields,
     errors,
@@ -30,7 +38,10 @@ export const AssignForm = ({ order }) => {
   React.useEffect(() => {
     fetchEmployees()
       .then((data) => {
-        console.log(data);
+        setEmployees(data.map(({ id, name, surname }) => ({
+          label: `${name} ${surname}`,
+          value: id,
+        })));
       })
       .catch((err) => {
         console.log(err);
@@ -48,9 +59,12 @@ export const AssignForm = ({ order }) => {
 
     updateOrder({ ...order, assigned: fields.employee })
       .then((data) => {
-        console.log(data);
+        dispatch(updateOrderInStore(data));
+        pushNotification({ theme: 'success', content: `${data.assigned.name} ${data.assigned.surname} was successfully assigned to this measurement!` });
+        onSuccess();
       })
       .catch((err) => {
+        pushNotification({ theme: 'error', content: 'Something went wrong! Try again..' });
         setErrors(err);
       })
       .finally(() => {
@@ -70,16 +84,7 @@ export const AssignForm = ({ order }) => {
               value={fields.employee}
               size="medium"
               placeholder="Select employee" 
-              options={[
-                {
-                  label: 'Employee 1',
-                  value: 'employee-1',
-                },
-                {
-                  label: 'Employee 2',
-                  value: 'employee-2',
-                },
-              ]}
+              options={employees}
               onChange={(e) => onFieldChange(e, 'employee')}
             />
           </Field>

@@ -5,6 +5,7 @@ import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { updateOrder } from '../../services/updateOrder';
 import { updateOrder as updateOrderInStore } from '../../store';
+
 import { Field } from '../Field';
 import { Input } from '../Input';
 import { Button } from '../Button';
@@ -44,6 +45,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
     updateOrder({ ...order, schedule: fields.schedule })
       .then((data) => {
+        console.log(data);
         dispatch(updateOrderInStore(data));
         pushNotification({ theme: 'success', content: 'Scheduled time successfully set!' });
         onSuccess();

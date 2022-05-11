@@ -81,7 +81,7 @@ export const OrderCard = (props) => {
               disabled={assigned}
               onClick={openAssignModal}
             >
-              {assigned ? JSON.stringify(assigned) : 'Assignee'}
+              {assigned ? `${assigned.name} ${assigned.surname}` : 'Assignee'}
             </Button>
           </GridEl>
           <GridEl size="6">
@@ -101,7 +101,7 @@ export const OrderCard = (props) => {
         isOpen={isAssignModalOpen} 
         onClose={onAssignModalClose}
       >
-        <AssignForm order={props} />
+        <AssignForm order={props} onSuccess={onAssignModalClose} />
       </Modal>
       <Modal 
         title={`Schedule an appointment for measurement #${id}`}
