@@ -66,30 +66,36 @@ export const OrderCard = (props) => {
         <GridEl size={{ md: 6, xl: 2 }}>
           <Button href={`mailto:${mail}`} icon={MailIcon} width="full"></Button>
         </GridEl>
-        <GridEl size="12">
-          <Text>{description}</Text>
-        </GridEl>
-        <GridEl size="6">
-          <Button 
-            icon={assigned ? undefined : UserIcon} 
-            width="full" 
-            disabled={assigned}
-            onClick={openAssignModal}
-          >
-            {assigned ? JSON.stringify(assigned) : 'Assignee'}
-          </Button>
-        </GridEl>
-        <GridEl size="6">
-          <Button 
-            icon={orderDate ? undefined : CalendarIcon} 
-            width="full" 
-            disabled={orderDate}
-            onClick={openScheduleModal}
-          >
-            {orderDate ? format(orderDate, 'dd.MM.yy HH:mm') : 'Schedule'}
-          </Button>
-        </GridEl>
+        {description && (
+          <GridEl size="12">
+            <Text>{description}</Text>
+          </GridEl>
+        )}
       </Grid>
+      <div className={styles.footer}>
+        <Grid space={SPACES.S}>
+          <GridEl size="6">
+            <Button 
+              icon={assigned ? undefined : UserIcon} 
+              width="full" 
+              disabled={assigned}
+              onClick={openAssignModal}
+            >
+              {assigned ? JSON.stringify(assigned) : 'Assignee'}
+            </Button>
+          </GridEl>
+          <GridEl size="6">
+            <Button 
+              icon={orderDate ? undefined : CalendarIcon} 
+              width="full" 
+              disabled={orderDate}
+              onClick={openScheduleModal}
+            >
+              {orderDate ? format(orderDate, 'dd.MM.yy HH:mm') : 'Schedule'}
+            </Button>
+          </GridEl>
+        </Grid>
+      </div>
       <Modal 
         title={`Assign employee to measurement #${id}`}
         isOpen={isAssignModalOpen} 
