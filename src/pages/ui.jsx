@@ -145,22 +145,22 @@ export const UI = () => {
           <Text size="h2">Notifications</Text>
         </GridEl>
         <GridEl>
-          <Button onClick={() => pushNotification({ theme: 'info', content: 'Infooooooo' })}>
+          <Button onClick={() => pushNotification({ theme: 'info', content: 'Info notification' })}>
             Push info notification
           </Button>
         </GridEl>
         <GridEl>
-          <Button onClick={() => pushNotification({ theme: 'success', content: 'Successssssss' })}>
+          <Button onClick={() => pushNotification({ theme: 'success', content: 'Success notification' })}>
             Push success notification
           </Button>
         </GridEl>
         <GridEl>
-          <Button onClick={() => pushNotification({ theme: 'error', content: 'Errorrrrrr' })}>
+          <Button onClick={() => pushNotification({ theme: 'error', content: 'Error notification' })}>
             Push error notification
           </Button>
         </GridEl>
         <GridEl>
-          <Button onClick={() => pushNotification({ theme: 'warning', content: 'Warninggggggg' })}>
+          <Button onClick={() => pushNotification({ theme: 'warning', content: 'Warning notification' })}>
             Push warning notification
           </Button>
         </GridEl>
