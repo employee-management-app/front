@@ -1,6 +1,8 @@
 import React from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
 
+import { useAuth } from '../../hooks/useAuth';
+
 import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
@@ -21,6 +23,8 @@ import styles from './OrderCard.module.scss';
 export const OrderCard = (props) => {
   const { id, name, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
   const { code, city, street, house } = address;
+
+  const { isManager } = useAuth();
 
   const [isAssignModalOpen, setIsAssignModalOpen] = React.useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
@@ -96,13 +100,15 @@ export const OrderCard = (props) => {
           </GridEl>
         </Grid>
       </div>
-      <Modal 
-        title={`Assign employee to measurement #${id}`}
-        isOpen={isAssignModalOpen} 
-        onClose={onAssignModalClose}
-      >
-        <AssignForm order={props} onSuccess={onAssignModalClose} />
-      </Modal>
+      {isManager && (
+        <Modal 
+          title={`Assign employee to measurement #${id}`}
+          isOpen={isAssignModalOpen} 
+          onClose={onAssignModalClose}
+        >
+          <AssignForm order={props} onSuccess={onAssignModalClose} />
+        </Modal>
+      )}
       <Modal 
         title={`Schedule an appointment for measurement #${id}`}
         isOpen={isScheduleModalOpen} 

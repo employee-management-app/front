@@ -1,8 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
+import { useAuth } from '../../hooks/useAuth';
 import { updateOrder } from '../../services/updateOrder';
 import { updateOrder as updateOrderInStore } from '../../store';
 
@@ -20,7 +22,9 @@ const getConfig = (yup) => ({
 
 export const ScheduleForm = ({ order, onSuccess }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const { isManager } = useAuth();
   const { pushNotification } = useNotification();
 
   const { 
@@ -45,8 +49,12 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
     updateOrder({ ...order, schedule: fields.schedule })
       .then((data) => {
-        console.log(data);
-        dispatch(updateOrderInStore(data));
+        if (isManager) {
+          dispatch(updateOrderInStore(data));
+        } else {
+          navigate('/scheduled');
+        }
+
         pushNotification({ theme: 'success', content: 'Scheduled time successfully set!' });
         onSuccess();
       })

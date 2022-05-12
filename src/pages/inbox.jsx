@@ -2,6 +2,8 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Container } from '../components/Container';
+import { EmptyState } from '../components/EmptyState';
+import { Button } from '../components/Button';
 import { Text } from '../components/Text';
 import { Grid, GridEl } from '../components/Grid';
 import { Tabs, Tab, TabsItems, TabsItem } from '../components/Tabs';
@@ -75,10 +77,22 @@ export const Inbox = () => {
             <OrdersMap orders={orders} />
           </TabsItem>
           <TabsItem for={2}>
-            Calendar
+            <EmptyState 
+              title="Nothing here yet"
+              text="Calenar will be displayed here. If you think this is an error - contact the administrator."
+              action={
+                <Button>Contact the administrator</Button>
+              }
+            />
           </TabsItem>
           <TabsItem for={3}>
-            Timeline
+            <EmptyState 
+              title="Nothing here yet"
+              text="Timeline will be displayed here. If you think this is an error - contact the administrator."
+              action={
+                <Button>Contact the administrator</Button>
+              }
+            />
           </TabsItem>
         </TabsItems>
       </Container>
