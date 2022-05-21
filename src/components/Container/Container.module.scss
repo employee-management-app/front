@@ -22,12 +22,12 @@
     max-width: calc($container-width - ($container-padding * 2));
     padding: 0;
 
-    @include breakpoint-down('sm') {
+    @include breakpoint-down("sm") {
       max-width: calc($container-width - ($container-padding-mobile * 2));
     }
   }
 
-  @include breakpoint-down('sm') {
+  @include breakpoint-down("sm") {
     max-width: 100%;
     padding: 0 $container-padding-mobile;
   }
