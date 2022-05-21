@@ -29,7 +29,7 @@
   pointer-events: all;
   z-index: 100;
 
-  svg {
+  > svg {
     height: 24px;
     flex: 0 0 24px;
     margin-right: 14px;
