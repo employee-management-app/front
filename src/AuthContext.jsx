@@ -35,8 +35,12 @@ export const AuthProvider = ({ children }) => {
         window.localStorage.setItem('auth', JSON.stringify(auth));
       })
       .catch((err) => {
-        const errorMessage = err.response.data.non_field_errors[0];
-        reject({ email: errorMessage, password: errorMessage });
+        if (err.response && err.response.data.non_field_errors.length) {
+          const errorMessage = err.response.data.non_field_errors[0];
+          reject({ email: errorMessage, password: errorMessage });
+        } else {
+          reject(err);
+        }
       });
   });
 
