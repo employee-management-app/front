@@ -21,7 +21,7 @@ v8.x.x
    
    https://employee-management-master.herokuapp.com
 
-- every pull request is automatically deployed with Heroku
+- every pull request is automatically deployed with Heroku.
 
 ## To run application locally:
 
