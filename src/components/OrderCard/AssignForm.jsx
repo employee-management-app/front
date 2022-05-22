@@ -1,11 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
-import { fetchEmployees } from '../../services/fetchEmployees';
 import { updateOrder } from '../../services/updateOrder';
-import { updateOrder as updateOrderInStore } from '../../store';
+import { getEmployees, updateOrder as updateOrderInStore } from '../../store';
 
 import { Field } from '../Field';
 import { Select } from '../Select';
@@ -21,8 +20,8 @@ const getConfig = (yup) => ({
 
 export const AssignForm = ({ order, onSuccess }) => {  
   const dispatch = useDispatch();
+  const employees = useSelector(getEmployees);
 
-  const [employees, setEmployees] = React.useState([]);
   const { pushNotification } = useNotification();
   const { 
     fields,
@@ -35,18 +34,12 @@ export const AssignForm = ({ order, onSuccess }) => {
     onSubmit,
   } = useForm(getConfig);
 
-  React.useEffect(() => {
-    fetchEmployees()
-      .then((data) => {
-        setEmployees(data.map(({ id, name, surname }) => ({
-          label: `${name} ${surname}`,
-          value: id,
-        })));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const employeesOptions = React.useMemo(() => (
+    employees.map(({ id, name, surname }) => ({
+      label: `${name} ${surname}`,
+      value: id,
+    }))
+  ), [employees]);
 
   const handleSubmit = (e) => {
     onSubmit(e);
@@ -84,7 +77,7 @@ export const AssignForm = ({ order, onSuccess }) => {
               value={fields.employee}
               size="medium"
               placeholder="Select employee" 
-              options={employees}
+              options={employeesOptions}
               onChange={(e) => onFieldChange(e, 'employee')}
             />
           </Field>

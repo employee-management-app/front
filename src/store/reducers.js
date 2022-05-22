@@ -5,6 +5,11 @@ const setOrders = (state, action) => ({
   orders: action.payload,
 });
 
+const setEmployees = (state, action) => ({
+  ...state,
+  employees: action.payload,
+});
+
 const updateOrder = (state, action) => {
   const index = state.orders.findIndex(({ id }) => id === action.payload.id);
 
@@ -30,6 +35,7 @@ const removeFirstNotification = (state, action) => {
 
 export const reducers = {
   [actions.SET_ORDERS]: setOrders,
+  [actions.SET_EMPLOYEES]: setEmployees,
   [actions.UPDATE_ORDER]: updateOrder,
   [actions.PUSH_NOTIFICATION]: pushNotification,
   [actions.REMOVE_NOTIFICATION_BY_ID]: removeFirstNotification,

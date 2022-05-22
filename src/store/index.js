@@ -5,6 +5,7 @@ import { reducers } from './reducers';
 const initialStore = {
   orders: [],
   notifications: [],
+  employees: [],
 };
 
 const reducer = (state = initialStore, action) => {

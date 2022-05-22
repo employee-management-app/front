@@ -13,7 +13,8 @@ import { Input } from '../components/Input';
 import { useAuth } from '../hooks/useAuth';
 import { useNotification } from '../hooks/useNotification';
 import { fetchOrders } from '../services/fetchOrders';
-import { setOrders, getOrders } from '../store';
+import { fetchEmployees } from '../services/fetchEmployees';
+import { setEmployees, setOrders, getOrders } from '../store';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
@@ -33,6 +34,11 @@ export const Inbox = () => {
 
   React.useEffect(() => {
     if (isManager) {
+      fetchEmployees()
+        .then((data) => {
+          dispatch(setEmployees(data));
+        });
+
       fetchOrders()
         .then((data) => {
           dispatch(setOrders(data));
