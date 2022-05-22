@@ -4,7 +4,7 @@ import { EmptyState } from '../EmptyState';
 import { Button } from '../Button';
 
 export const OrdersList = ({ orders }) => {
-  return (orders && orders.length) ? (
+  return orders.length ? (
     <Grid>
       {orders.map((order) => (
         <GridEl key={order.id} size={{ xs: 12, md: 6, xl: 4 }} filled>
