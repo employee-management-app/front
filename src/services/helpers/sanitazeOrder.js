@@ -9,6 +9,7 @@ export const sanitazeOrder = ({ measurement_date, assign, order, start_date, sta
     city: order.city,
     street: order.street,
     house: order.house,
+    flat: order.flat,
     lat: order.latitude,
     lng: order.longitude,
   },

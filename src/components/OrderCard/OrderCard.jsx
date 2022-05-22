@@ -22,7 +22,7 @@ import styles from './OrderCard.module.scss';
 
 export const OrderCard = (props) => {
   const { id, name, surname, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
-  const { code, city, street, house } = address;
+  const { code, city, street, house, flat } = address;
 
   const { isManager } = useAuth();
 
@@ -53,7 +53,7 @@ export const OrderCard = (props) => {
       </div>
       <div className={styles.type}>{type}</div>
       <Text className={styles.address}>
-        {street} {house}<br />
+        {street} {house}{flat ? `, lokal ${flat}` : ''}<br />
         {code} {city}
       </Text>
       <hr className={styles.hr} />
