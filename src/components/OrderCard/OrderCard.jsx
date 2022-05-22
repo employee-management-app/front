@@ -21,7 +21,7 @@ import { ScheduleForm } from './ScheduleForm';
 import styles from './OrderCard.module.scss';
 
 export const OrderCard = (props) => {
-  const { id, name, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
+  const { id, name, surname, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
   const { code, city, street, house } = address;
 
   const { isManager } = useAuth();
@@ -59,7 +59,7 @@ export const OrderCard = (props) => {
       <hr className={styles.hr} />
       <Grid space={SPACES.S}>
         <GridEl size="12">
-          <Text>{name}</Text>
+          <Text>{name} {surname}</Text>
         </GridEl>
         <GridEl size={{ md: 12, xl: 8 }}>
           <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
