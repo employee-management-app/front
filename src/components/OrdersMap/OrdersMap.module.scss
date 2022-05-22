@@ -116,7 +116,7 @@
     right: 0;
     bottom: 0;
     border-radius: 4px;
-    outline: 3px solid currentColor;
+    box-shadow: 0 0 0 3px currentColor;
     opacity: 0.35;
     pointer-events: none;
   }

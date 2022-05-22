@@ -36,7 +36,7 @@
   }
 
   &.selected::after {
-    outline: 3px solid currentColor;
+    box-shadow: 0 0 0 3px currentColor;
     opacity: 0.35;
   }
 }
