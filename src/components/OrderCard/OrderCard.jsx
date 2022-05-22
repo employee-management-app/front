@@ -95,7 +95,7 @@ export const OrderCard = (props) => {
               disabled={orderDate}
               onClick={openScheduleModal}
             >
-              {orderDate ? format(orderDate, 'dd.MM.yy HH:mm') : 'Schedule'}
+              {orderDate ? format(orderDate, 'dd.MM.yy  HH:mm') : 'Schedule'}
             </Button>
           </GridEl>
         </Grid>
