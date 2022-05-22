@@ -28,14 +28,15 @@
     right: 0;
     bottom: 0;
     border-radius: 50%;
-    opacity: 0.35;
   }
 
   &::before {
     box-shadow: 0 0 6px currentColor;
+    opacity: 0.7;
   }
 
   &.selected::after {
     outline: 3px solid currentColor;
+    opacity: 0.35;
   }
 }
