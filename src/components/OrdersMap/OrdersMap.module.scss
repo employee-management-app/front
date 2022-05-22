@@ -76,6 +76,7 @@
 }
 
 .card {
+  position: relative;
   width: 100%;
 
   > div {
@@ -108,7 +109,15 @@
     flex: 0 0 100%;
   }
 
-  &.selected > div {
-    outline: 3px solid rgba($color-primary, 0.3);
+  &.selected .cardOutline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 4px;
+    outline: 3px solid currentColor;
+    opacity: 0.35;
+    pointer-events: none;
   }
 }

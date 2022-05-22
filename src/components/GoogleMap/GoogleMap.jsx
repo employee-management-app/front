@@ -4,6 +4,7 @@ import GoogleMapReact from 'google-map-react';
 import useSupercluster from 'use-supercluster';
 
 import { ReactComponent as MeasurementIcon } from '../../assets/icons/measurement.svg';
+import { groupColors } from '../../utils/groupColors';
 
 import styles from './GoogleMap.module.scss';
 
@@ -12,9 +13,9 @@ const DEFAULT_CENTER = {
   lng: 17.038538,
 };
 
-const MapMarker = ({ className, onClick }) => {
+const MapMarker = ({ groupId, className, onClick }) => {
   return (
-    <div className={cx(styles.marker, className)} onClick={onClick}>
+    <div className={cx(styles.marker, className)} style={{ color: groupColors[groupId] }} onClick={onClick}>
       <MeasurementIcon />
     </div>
   );
@@ -83,9 +84,9 @@ export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
   }, [map, offset, markers, onSelect]);
 
   const { clusters, supercluster } = useSupercluster({
-    points: markers.map(({ id, lat, lng }) => ({
+    points: markers.map(({ id, groupId, lat, lng }) => ({
       type: 'Feature',
-      properties: { id },
+      properties: { id, groupId },
       geometry: {
         type: 'Point',
         coordinates: [lng, lat],
@@ -107,7 +108,7 @@ export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
     >
       {clusters.map((cluster) => {
         const [lng, lat] = cluster.geometry.coordinates;
-        const { cluster: isCluster, point_count: pointCount, id } = cluster.properties;
+        const { cluster: isCluster, point_count: pointCount, id, groupId } = cluster.properties;
 
         const onClusterClick = () => {
           const x = (offset.right - offset.left) / 2;
@@ -136,6 +137,7 @@ export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
             key={id}
             lat={lat}
             lng={lng}
+            groupId={groupId}
             className={cx({ [styles.selected]: id === selectedMarker })}
             onClick={() => selectMarker(id)}
           />

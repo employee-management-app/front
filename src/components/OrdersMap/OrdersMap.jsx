@@ -2,6 +2,7 @@ import cx from 'classnames';
 import React from 'react';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
+import { groupColors } from '../../utils/groupColors';
 
 import { Container } from '../Container';
 import { GoogleMap } from '../GoogleMap';
@@ -63,10 +64,17 @@ export const OrdersMap = ({ orders }) => {
     return _offset;
   }, [windowSize]);
 
+  const markers = React.useMemo(() => orders.map(({ id, groupId, address }) => ({ 
+    id, 
+    groupId,
+    lng: address.lng, 
+    lat: address.lat, 
+  })), [orders]);
+
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>
       <GoogleMap 
-        markers={orders.map(({ id, address }) => ({ id, lng: address.lng, lat: address.lat }))}
+        markers={markers}
         selected={selectedOrder}
         offset={offset}
         onSelect={selectOrder}
@@ -81,6 +89,7 @@ export const OrdersMap = ({ orders }) => {
                   key={order.id}
                   onClick={() => selectOrder(order.id)}
                 >
+                  <div className={styles.cardOutline} style={{ color: groupColors[order.groupId] }} />
                   <OrderCard {...order} />
                 </div>
               ))}
