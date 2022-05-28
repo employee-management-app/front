@@ -2,6 +2,7 @@ import cx from 'classnames';
 import React from 'react';
 
 import { useClickOutside } from '../../hooks/useClickOutside';
+import { useAuth } from '../../hooks/useAuth';
 
 import { ReactComponent as VeryLowPriorityIcon } from '../../assets/icons/priorities/very-low.svg';
 import { ReactComponent as LowPriorityIcon } from '../../assets/icons/priorities/low.svg';
@@ -33,6 +34,8 @@ export const OrderCardPriority = React.forwardRef((props, ref) => {
   const [priority, setPriority] = React.useState(defaultPriority);
   const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
 
+  const { isManager } = useAuth();
+
   const handleClick = React.useCallback(() => {
     setIsDropdownVisible(!isDropdownVisible);
   }, [isDropdownVisible]);
@@ -59,7 +62,8 @@ export const OrderCardPriority = React.forwardRef((props, ref) => {
     <span ref={ref} style={{ position: 'relative' }}>
       <button 
         type="button" 
-        className={cx(styles.priority, styles[priority])} 
+        className={cx(styles.priority, styles[priority])}
+        disabled={!isManager} 
         onClick={handleClick}
       >
         {labels[priority]}

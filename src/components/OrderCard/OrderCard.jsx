@@ -33,9 +33,9 @@ export const OrderCard = (props) => {
   const { isManager } = useAuth();
   const { pushNotification } = useNotification();
   
+  const priorityRef = React.createRef(null);
   const [isAssignModalOpen, setIsAssignModalOpen] = React.useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
-  const priorityRef = React.createRef(null);
 
   const updatePriority = React.useCallback((key) => {
     updateOrder({ ...props, priority: key })

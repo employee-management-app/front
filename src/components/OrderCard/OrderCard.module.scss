@@ -24,6 +24,10 @@
     transform: scale(0.98);
   }
 
+  &[disabled] {
+    pointer-events: none;
+  }
+
   svg {
     flex: 0 0 24px;
     width: 24px;
