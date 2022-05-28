@@ -83,7 +83,7 @@
     box-shadow: 0 0 8px rgba($color-black, 0.3);
 
     @include breakpoint-down("sm") {
-      max-height: 150px;
+      max-height: 148px;
       overflow: hidden;
 
       @media screen and (max-height: 700px) {
