@@ -9,6 +9,7 @@ export const updateOrder = (order) => new Promise((resolve, reject) => {
     status: order.priority,
     start_date: order.date.toISOString(),
     measurement_date: order.schedule ? new Date(order.schedule).toISOString() : order.schedule,
+    groupId: order.groupId,
   })
     .then(({ data }) => {
       resolve(sanitazeOrder(data));
