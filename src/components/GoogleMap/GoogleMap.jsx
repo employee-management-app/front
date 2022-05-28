@@ -94,7 +94,7 @@ export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
     })),
     bounds,
     zoom,
-    options: { radius: 75, maxZoom: 20 },
+    options: { radius: 75, maxZoom: 17 },
   });
 
   return (
@@ -102,6 +102,7 @@ export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
       bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
       defaultCenter={DEFAULT_CENTER}
       zoom={zoom}
+      options={{ maxZoom: 18 }}
       yesIWantToUseGoogleMapApiInternals
       onGoogleApiLoaded={onGoogleApiLoaded}
       onChange={onChange}
