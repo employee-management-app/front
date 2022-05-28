@@ -15,6 +15,7 @@ import { useNotification } from '../hooks/useNotification';
 import { fetchOrders } from '../services/fetchOrders';
 import { fetchEmployees } from '../services/fetchEmployees';
 import { setEmployees, setOrders, getOrders } from '../store';
+import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
@@ -31,6 +32,7 @@ export const Inbox = () => {
   const { pushNotification } = useNotification();
 
   const [activeTab, setActiveTab] = React.useState(1);
+  const [search, setSearch] = React.useState('');
 
   React.useEffect(() => {
     if (isManager) {
@@ -49,6 +51,14 @@ export const Inbox = () => {
     }
   }, []);
 
+  const handleSearchChange = React.useCallback((e) => {
+    setSearch(e.target.value);
+  }, []);
+
+  const filteredOrders = React.useMemo(() => (
+    filterOrdersByQuery(orders, search)
+  ), [orders, search]);
+
   if (isManager) {
     return (
       <Container {...(activeTab === 1 && { width: 'full' })}>
@@ -57,9 +67,11 @@ export const Inbox = () => {
             <Container withoutPaddings>
               <Grid alignItems="flex-end" justifyContent="space-between">
                 <GridEl size={{ xs: 12, md: 5, lg: 3 }}>
-                  <Input 
+                  <Input
+                    value={search}
                     icon={SearchIcon}
                     placeholder="Search"
+                    onChange={handleSearchChange}
                   />
                 </GridEl>
                 <GridEl size={{ xs: 12, md: 'auto', lg: 9 }}>
@@ -77,10 +89,10 @@ export const Inbox = () => {
         </Grid>
         <TabsItems active={activeTab}>
           <TabsItem for={0}>
-            <OrdersList orders={orders} />
+            <OrdersList orders={filteredOrders} />
           </TabsItem>
           <TabsItem for={1}>
-            <OrdersMap orders={orders} />
+            <OrdersMap orders={filteredOrders} />
           </TabsItem>
           <TabsItem for={2}>
             <EmptyState 

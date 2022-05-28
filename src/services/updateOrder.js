@@ -3,7 +3,6 @@ import axios from 'axios';
 import { sanitazeOrder } from './helpers/sanitazeOrder';
 
 export const updateOrder = (order) => new Promise((resolve, reject) => {
-  console.log(order);
   axios.post(`${process.env.REACT_APP_API_URL}/order-update/${order.id}`, {
     order: order.id,
     assign: (order.assigned && typeof order.assigned === 'object') ? order.assigned.id : order.assigned,
