@@ -1,6 +1,10 @@
 import React from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
+import { useDispatch } from 'react-redux';
 
+import { updateOrder } from '../../services/updateOrder';
+import { updateOrder as updateOrderInStore } from '../../store';
+import { useNotification } from '../../hooks/useNotification';
 import { useAuth } from '../../hooks/useAuth';
 
 import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
@@ -21,13 +25,33 @@ import { ScheduleForm } from './ScheduleForm';
 import styles from './OrderCard.module.scss';
 
 export const OrderCard = (props) => {
+  const dispatch = useDispatch();
+
   const { id, name, surname, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
   const { code, city, street, house, flat } = address;
 
   const { isManager } = useAuth();
-
+  const { pushNotification } = useNotification();
+  
   const [isAssignModalOpen, setIsAssignModalOpen] = React.useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
+  const priorityRef = React.createRef(null);
+
+  const updatePriority = React.useCallback((key) => {
+    updateOrder({ ...props, priority: key })
+      .then((data) => {
+        dispatch(updateOrderInStore(data));
+      })
+      .catch(() => {
+        pushNotification({ theme: 'error', content: 'Something went wrong! Try again..' });
+      });
+  }, [dispatch, props, pushNotification]);
+
+  const handleClick = React.useCallback((e) => {
+    if (!priorityRef.current.contains(e.target)) {
+      props.onClick();
+    }
+  }, [props, priorityRef]);
 
   const openAssignModal = React.useCallback(() => {
     setIsAssignModalOpen(true);
@@ -46,9 +70,9 @@ export const OrderCard = (props) => {
   }, []);
 
   return (
-    <Card>
+    <Card onClick={handleClick}>
       <div className={styles.header}>
-        <OrderCardPriority priority={priority} />
+        <OrderCardPriority ref={priorityRef} priority={priority} onChange={updatePriority} />
         <div className={styles.date}>{formatDistanceToNow(date)} ago</div>
       </div>
       <div className={styles.type}>{type}</div>

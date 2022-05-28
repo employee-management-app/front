@@ -87,10 +87,9 @@ export const OrdersMap = ({ orders }) => {
                 <div 
                   className={cx(styles.card, { [styles.selected]: order.id === selectedOrder })} 
                   key={order.id}
-                  onClick={() => selectOrder(order.id)}
                 >
                   <div className={styles.cardOutline} style={{ color: groupColors[order.groupId] }} />
-                  <OrderCard {...order} />
+                  <OrderCard onClick={() => selectOrder(order.id)} {...order} />
                 </div>
               ))}
             </div>
