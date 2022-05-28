@@ -1,8 +1,9 @@
 import cx from 'classnames';
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
-import { groupColors } from '../../utils/groupColors';
+import { getEmployees } from '../../store';
 
 import { Container } from '../Container';
 import { GoogleMap } from '../GoogleMap';
@@ -11,6 +12,7 @@ import { OrderCard } from '../OrderCard';
 import styles from './OrdersMap.module.scss';
 
 export const OrdersMap = ({ orders }) => {
+  const employees = useSelector(getEmployees);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
   const [height, setHeight] = React.useState(0);
   const wrapperRef = React.useRef(null);
@@ -64,12 +66,20 @@ export const OrdersMap = ({ orders }) => {
     return _offset;
   }, [windowSize]);
 
-  const markers = React.useMemo(() => orders.map(({ id, groupId, address }) => ({ 
-    id, 
-    groupId,
+  const getEmployeeColor = React.useCallback((assigned) => {
+    if (!assigned) {
+      return undefined;
+    }
+
+    return employees.find(({ id }) => id === assigned.id).color;
+  }, [employees]);
+
+  const markers = React.useMemo(() => orders.map(({ id, assigned, address }) => ({
+    id,
+    color: getEmployeeColor(assigned),
     lng: address.lng, 
-    lat: address.lat, 
-  })), [orders]);
+    lat: address.lat,
+  })), [getEmployeeColor, orders]);
 
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>
@@ -88,7 +98,7 @@ export const OrdersMap = ({ orders }) => {
                   className={cx(styles.card, { [styles.selected]: order.id === selectedOrder })} 
                   key={order.id}
                 >
-                  <div className={styles.cardOutline} style={{ color: groupColors[order.groupId] }} />
+                  <div className={styles.cardOutline} style={{ color: getEmployeeColor(order.assigned) }} />
                   <OrderCard onClick={() => selectOrder(order.id)} {...order} />
                 </div>
               ))}
