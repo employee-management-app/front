@@ -10,16 +10,23 @@
     @include breakpoint-up($breakpoint) {
       @for $i from 1 through 12 {
         .#{$breakpoint}#{$i} {
+          display: block;
           flex: 0 1 auto;
           width: math.percentage(math.div($i, 12));
         }
       }
 
+      .#{$breakpoint}0 {
+        display: none;
+      }
+
       .#{$breakpoint}auto {
+        display: block;
         width: auto;
       }
 
       .#{$breakpoint}fluid {
+        display: block;
         flex: 1;
       }
     }

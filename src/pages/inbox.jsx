@@ -10,6 +10,7 @@ import { Tabs, Tab, TabsItems, TabsItem } from '../components/Tabs';
 import { OrdersMap } from '../components/OrdersMap';
 import { OrdersList } from '../components/OrdersList';
 import { Input } from '../components/Input';
+import { Checkbox } from '../components/Checkbox';
 import { useAuth } from '../hooks/useAuth';
 import { useNotification } from '../hooks/useNotification';
 import { fetchOrders } from '../services/fetchOrders';
@@ -33,6 +34,8 @@ export const Inbox = () => {
 
   const [activeTab, setActiveTab] = React.useState(1);
   const [search, setSearch] = React.useState('');
+  const [showAssigned, setShowAssigned] = React.useState(false);
+  const [showScheduled, setShowScheduled] = React.useState(false);
 
   React.useEffect(() => {
     if (isManager) {
@@ -55,9 +58,24 @@ export const Inbox = () => {
     setSearch(e.target.value);
   }, []);
 
+  const handleAssignCheckbox = React.useCallback((e) => {
+    setShowAssigned(e.target.checked)
+  }, []);
+
+  const handleScheduleCheckbox = React.useCallback((e) => {
+    setShowScheduled(e.target.checked)
+  }, []);
+
+  // TODO: GET /orders?scheduled=true/false&?assigned=true/false
+  // TODO: GET /orders?order_date_start=date&order_date_end=date
+  // TODO: GET /orders?assigned=id
+  // Temporary solution on front part
   const filteredOrders = React.useMemo(() => (
     filterOrdersByQuery(orders, search)
-  ), [orders, search]);
+      .filter(({ assigned, orderDate }) => (
+        (showAssigned ? assigned : true) && (showScheduled ? orderDate : true)
+      ))
+  ), [orders, search, showAssigned, showScheduled]);
 
   if (isManager) {
     return (
@@ -74,13 +92,23 @@ export const Inbox = () => {
                     onChange={handleSearchChange}
                   />
                 </GridEl>
-                <GridEl size={{ xs: 12, md: 'auto', lg: 9 }}>
+                <GridEl size={{ xs: 12, md: 'auto', lg: 'fluid' }}>
                   <Tabs active={activeTab} onChange={setActiveTab}>
                     <Tab id={0} icon={ListIcon}>List</Tab>
                     <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
                     <Tab id={2} icon={CalendarIcon}>Calendar</Tab>
                     <Tab id={3} icon={TimelineIcon}>Timeline</Tab>
                   </Tabs>
+                </GridEl>
+                <GridEl size={{ xs: 0, lg: 'auto' }}>
+                  <Checkbox value={showAssigned} onChange={handleAssignCheckbox}>
+                    Show assigned
+                  </Checkbox>
+                </GridEl>
+                <GridEl size={{ xs: 0, lg: 'auto' }}>
+                  <Checkbox value={showScheduled} onChange={handleScheduleCheckbox}>
+                    Show scheduled
+                  </Checkbox>
                 </GridEl>
               </Grid>
             </Container>
