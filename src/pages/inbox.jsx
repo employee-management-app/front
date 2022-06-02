@@ -9,6 +9,7 @@ import { Grid, GridEl } from '../components/Grid';
 import { Tabs, Tab, TabsItems, TabsItem } from '../components/Tabs';
 import { OrdersMap } from '../components/OrdersMap';
 import { OrdersList } from '../components/OrdersList';
+import { CreateOrderButton } from '../components/CreateOrderButton';
 import { Input } from '../components/Input';
 import { Checkbox } from '../components/Checkbox';
 import { useAuth } from '../hooks/useAuth';
@@ -141,6 +142,7 @@ export const Inbox = () => {
             />
           </TabsItem>
         </TabsItems>
+        <CreateOrderButton />
       </Container>
     );
   }

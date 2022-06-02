@@ -92,8 +92,8 @@ const App = () => (
       <main>
         <AppRoutes />
       </main>
-      <Notifications />
     </AuthProvider>
+    <Notifications />
   </BrowserRouter>
 );
 

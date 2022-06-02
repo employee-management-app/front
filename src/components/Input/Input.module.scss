@@ -68,7 +68,14 @@
 
   &::placeholder {
     transition: 0.2s;
-    color: $color-gray-lighten-1;
+    color: $color-gray;
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
   }
 }
 

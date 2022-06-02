@@ -2,7 +2,7 @@ export const sanitazeOrder = ({ measurement_date, assign, order, start_date, sta
   id: order.id,
   name: order.name,
   surname: order.surname,
-  type: order.productType,
+  productType: order.productType,
   date: new Date(start_date),
   address: {
     code: order.code,
@@ -14,7 +14,7 @@ export const sanitazeOrder = ({ measurement_date, assign, order, start_date, sta
     lng: order.longitude,
   },
   phone: order.phone,
-  mail: order.email,
+  email: order.email,
   description: order.message,
   priority: status,
   assigned: assign,

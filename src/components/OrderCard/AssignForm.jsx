@@ -11,21 +11,22 @@ import { Select } from '../Select';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
 
-const getConfig = (yup) => ({
-  employee: {
-    value: null,
-    validation: yup.number().nullable().required(),
-  },
-});
-
 export const AssignForm = ({ order, onSuccess }) => {  
   const dispatch = useDispatch();
   const employees = useSelector(getEmployees);
+
+  const getConfig = (yup) => ({
+    employee: {
+      value: order.assigned ? order.assigned.id : null,
+      validation: yup.number().nullable().required(),
+    },
+  });
 
   const { pushNotification } = useNotification();
   const { 
     fields,
     errors,
+    isTouched,
     isValid,
     isLoading,
     setErrors,
@@ -45,6 +46,12 @@ export const AssignForm = ({ order, onSuccess }) => {
     onSubmit(e);
 
     if (!isValid) {
+      return;
+    }
+
+    if (isValid && !isTouched) {
+      onSuccess();
+
       return;
     }
 

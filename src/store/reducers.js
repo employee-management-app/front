@@ -5,6 +5,11 @@ const setOrders = (state, action) => ({
   orders: action.payload,
 });
 
+const addOrder = (state, action) => ({
+  ...state,
+  orders: [action.payload, ...state.orders],
+});
+
 const setEmployees = (state, action) => ({
   ...state,
   employees: action.payload,
@@ -18,6 +23,11 @@ const updateOrder = (state, action) => {
     orders: Object.assign([], state.orders, { [index]: action.payload }),
   };
 };
+
+const deleteOrderById = (state, action) => ({
+  ...state,
+  orders: state.orders.filter(({ id }) => id !== action.payload),
+});
 
 const pushNotification = (state, action) => ({
   ...state,
@@ -35,8 +45,10 @@ const removeFirstNotification = (state, action) => {
 
 export const reducers = {
   [actions.SET_ORDERS]: setOrders,
+  [actions.ADD_ORDER]: addOrder,
   [actions.SET_EMPLOYEES]: setEmployees,
   [actions.UPDATE_ORDER]: updateOrder,
+  [actions.DELETE_ORDER_BY_ID]: deleteOrderById,
   [actions.PUSH_NOTIFICATION]: pushNotification,
   [actions.REMOVE_NOTIFICATION_BY_ID]: removeFirstNotification,
 };

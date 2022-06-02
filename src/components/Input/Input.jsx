@@ -10,13 +10,13 @@ export const Input = (props) => {
     setValue(props.value || '');
   }, [props.value]);
 
-  const onChange = React.useCallback((e) => {
+  const handleChange = React.useCallback((e) => {
     setValue(e.target.value);
 
     if (props.onChange) {
       props.onChange(e);
     }
-  }, [props.onChange]);
+  }, [props]);
 
   const classNames = cx(styles.field, { 
     [styles[props.size]]: props.size,
@@ -30,7 +30,7 @@ export const Input = (props) => {
         placeholder={props.placeholder}
         value={value}
         className={styles.input}
-        onChange={onChange}
+        onChange={handleChange}
       />
       {props.icon && <props.icon />}
     </label>

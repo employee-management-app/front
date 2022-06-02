@@ -20,6 +20,7 @@ import { Button } from '../Button';
 import { Modal } from '../Modal';
 
 import { OrderCardPriority } from './OrderCardPriority';
+import { OrderCardActions } from './OrderCardActions';
 import { AssignForm } from './AssignForm';
 import { ScheduleForm } from './ScheduleForm';
 import styles from './OrderCard.module.scss';
@@ -27,13 +28,14 @@ import styles from './OrderCard.module.scss';
 export const OrderCard = (props) => {
   const dispatch = useDispatch();
 
-  const { id, name, surname, type, date, address, phone, mail, description, priority, assigned, orderDate } = props;
+  const { id, name, surname, productType, date, address, phone, email, description, priority, assigned, orderDate } = props;
   const { code, city, street, house, flat } = address;
 
   const { isManager } = useAuth();
   const { pushNotification } = useNotification();
   
   const priorityRef = React.createRef(null);
+  const actionsRef = React.createRef(null);
   const [isAssignModalOpen, setIsAssignModalOpen] = React.useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
 
@@ -48,10 +50,10 @@ export const OrderCard = (props) => {
   }, [dispatch, props, pushNotification]);
 
   const handleClick = React.useCallback((e) => {
-    if (!priorityRef.current.contains(e.target)) {
+    if (!priorityRef.current.contains(e.target) && !actionsRef.current.contains(e.target)) {
       props.onClick();
     }
-  }, [props, priorityRef]);
+  }, [priorityRef, actionsRef, props]);
 
   const openAssignModal = React.useCallback(() => {
     setIsAssignModalOpen(true);
@@ -70,12 +72,13 @@ export const OrderCard = (props) => {
   }, []);
 
   return (
-    <Card onClick={handleClick}>
+    <Card className={styles.card} onClick={handleClick}>
       <div className={styles.header}>
         <OrderCardPriority ref={priorityRef} priority={priority} onChange={updatePriority} />
+        {isManager && <OrderCardActions order={{ ...props, ...address }} ref={actionsRef} />}
         <div className={styles.date}>{formatDistanceToNow(date)} ago</div>
       </div>
-      <div className={styles.type}>{type}</div>
+      <div className={styles.type}>{productType}</div>
       <Text className={styles.address}>
         {street} {house}{flat ? `, lokal ${flat}` : ''}<br />
         {code} {city}
@@ -92,7 +95,7 @@ export const OrderCard = (props) => {
           <Button href={`sms:${phone}`} icon={CommentIcon} width="full"></Button>
         </GridEl>
         <GridEl size={{ md: 6, xl: 2 }}>
-          <Button href={`mailto:${mail}`} icon={MailIcon} width="full"></Button>
+          <Button href={`mailto:${email}`} icon={MailIcon} width="full"></Button>
         </GridEl>
         {description && (
           <GridEl size="12">
@@ -106,7 +109,7 @@ export const OrderCard = (props) => {
             <Button 
               icon={assigned ? undefined : UserIcon} 
               width="full" 
-              disabled={assigned}
+              disabled={assigned && !isManager}
               onClick={openAssignModal}
             >
               {assigned ? `${assigned.name} ${assigned.surname}` : 'Assignee'}
@@ -115,8 +118,7 @@ export const OrderCard = (props) => {
           <GridEl size="6">
             <Button 
               icon={orderDate ? undefined : CalendarIcon} 
-              width="full" 
-              disabled={orderDate}
+              width="full"
               onClick={openScheduleModal}
             >
               {orderDate ? format(orderDate, 'dd.MM.yy  HH:mm') : 'Schedule'}

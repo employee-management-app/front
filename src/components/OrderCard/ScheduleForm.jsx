@@ -1,4 +1,5 @@
 import React from 'react';
+import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,13 +14,6 @@ import { Input } from '../Input';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
 
-const getConfig = (yup) => ({
-  schedule: {
-    value: null,
-    validation: yup.date().nullable().required(),
-  },
-});
-
 export const ScheduleForm = ({ order, onSuccess }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,9 +21,17 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   const { isManager } = useAuth();
   const { pushNotification } = useNotification();
 
+  const getConfig = (yup) => ({
+    schedule: {
+      value: order.orderDate ? format(order.orderDate, `yyyy-MM-dd'T'HH:mm:ss`) : null,
+      validation: yup.date().nullable().required(),
+    },
+  });
+
   const { 
     fields,
     errors,
+    isTouched,
     isValid,
     isLoading,
     setErrors,
@@ -42,6 +44,12 @@ export const ScheduleForm = ({ order, onSuccess }) => {
     onSubmit(e);
 
     if (!isValid) {
+      return;
+    }
+
+    if (isValid && !isTouched) {
+      onSuccess();
+      
       return;
     }
 

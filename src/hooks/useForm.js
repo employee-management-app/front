@@ -26,6 +26,10 @@ export const useForm = (callback) => {
   const [errors, setErrors] = React.useState({});
   const [fields, setFields] = React.useState(defaultFields);
 
+  React.useEffect(() => {
+    schema.isValid(defaultFields).then(valid => setIsValid(valid));
+  }, []);
+
   const onSubmit = React.useCallback((e) => {
     e.preventDefault();
 
@@ -51,9 +55,14 @@ export const useForm = (callback) => {
     }
   }, [schema, fields, isShowErrors]);
 
+  const isTouched = React.useMemo(() => (
+    JSON.stringify(defaultFields) !== JSON.stringify(fields)
+  ), [defaultFields, fields]);
+
   return { 
     fields, 
     errors, 
+    isTouched,
     isValid, 
     isLoading,
     setFields,
