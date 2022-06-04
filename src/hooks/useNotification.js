@@ -11,9 +11,11 @@ export const useNotification = () => {
 
     dispatch(pushNotificationToStore({ id, ...notification }));
 
-    setTimeout(() => {
-      dispatch(removeNotificationById(id));
-    }, 7000);
+    if (!notification.manualClose) {
+      setTimeout(() => {
+        dispatch(removeNotificationById(id));
+      }, 7000);
+    }
   }, [dispatch]);
 
   return {

@@ -85,9 +85,14 @@
   right: 14px;
   width: 16px;
   height: 16px;
+  cursor: pointer;
 
   svg {
     width: 100%;
     fill: currentColor;
   }
+}
+
+.action {
+  margin-top: 10px;
 }

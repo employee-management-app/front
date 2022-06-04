@@ -9,6 +9,7 @@ import { ReactComponent as SuccessIcon } from '../../assets/icons/statuses/succe
 import { ReactComponent as WarningIcon } from '../../assets/icons/statuses/warning.svg';
 import { ReactComponent as ErrorIcon } from '../../assets/icons/statuses/error.svg';
 import { removeNotificationById, getNotifications } from '../../store';
+import { Button } from '../Button';
 
 import styles from './Notifications.module.scss';
 
@@ -41,7 +42,16 @@ export const Notifications = () => {
             >
               <div className={cx(styles.notification, styles[notification.theme])}>
                 <ThemeIcon />
-                {notification.content}
+                <div>
+                  {notification.content}
+                  {notification.action && (
+                    <div className={styles.action}>
+                      <Button onClick={notification.action.onClick}>
+                        {notification.action.label}
+                      </Button>
+                    </div>
+                  )}
+                </div>
                 <button 
                   type="button" 
                   className={styles.closeButton} 
