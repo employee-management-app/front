@@ -44,7 +44,7 @@
 .cards {
   display: flex;
   align-items: flex-end;
-  height: 100%;
+  max-height: 100%;
   padding: $container-padding $container-padding-mobile $page-bottom-padding;
   margin-left: $container-padding-mobile * -1;
   overflow: auto;

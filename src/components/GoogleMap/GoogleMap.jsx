@@ -41,7 +41,7 @@ export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
     if (map && maps && markers.length) {
       fitBounds();
     }
-  }, [markers.length, offset]);
+  }, [markers, offset]);
 
   const fitBounds = React.useCallback((_map = map, _maps = maps) => {
     if (!markers.length) {
