@@ -59,7 +59,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
         if (isManager) {
           dispatch(updateOrderInStore(data));
         } else {
-          navigate('/scheduled');
+          navigate(data.completionDate ? '/scheduled' : '/anytime');
         }
 
         pushNotification({ theme: 'success', content: `Scheduled time successfully ${data.completionDate ? 'set' : 'removed'}!` });
