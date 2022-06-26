@@ -40,8 +40,8 @@ export const useForm = (callback) => {
     });
   }, [fields, schema]);
 
-  const onFieldChange = React.useCallback(async (e, field) => {
-    const updatedFields = { ...fields, [field]: e.target.value };
+  const onValueChange = React.useCallback(async (value, field) => {
+    const updatedFields = { ...fields, [field]: value };
 
     setFields(updatedFields);
     setErrors(errs => ({ ...errs, [field]: '' }));
@@ -54,6 +54,10 @@ export const useForm = (callback) => {
       });
     }
   }, [schema, fields, isShowErrors]);
+
+  const onFieldChange = React.useCallback(async (e, field) => {
+    onValueChange(e.target.value, field);
+  }, [onValueChange]);
 
   const isTouched = React.useMemo(() => (
     JSON.stringify(defaultFields) !== JSON.stringify(fields)
@@ -68,6 +72,7 @@ export const useForm = (callback) => {
     setFields,
     setErrors, 
     setIsLoading, 
+    onValueChange,
     onFieldChange, 
     onSubmit, 
   };

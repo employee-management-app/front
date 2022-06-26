@@ -10,7 +10,7 @@ import { DatePicker } from '../DatePicker';
 import { Select } from '../Select';
 import { Button } from '../Button';
 
-export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmit, onFieldChange }) => {
+export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmit, onValueChange, onFieldChange }) => {
   const employees = useSelector(getEmployees);
 
   const employeesOptions = React.useMemo(() => (
@@ -96,6 +96,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                   options={serviceTypeOptions}
                   placeholder="Service type"
                   size="medium"
+                  required
                   onChange={(e) => onFieldChange(e, 'type')}
                 />
               </Field>
@@ -157,6 +158,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                   options={employeesOptions}
                   placeholder="Select employee"
                   size="medium"
+                  onClear={(val) => onValueChange(val, 'assignedEmployee')}
                   onChange={(e) => onFieldChange(e, 'assignedEmployee')}
                 />
               </Field>

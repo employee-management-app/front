@@ -31,6 +31,7 @@ export const AssignForm = ({ order, onSuccess }) => {
     isLoading,
     setErrors,
     setIsLoading,
+    onValueChange,
     onFieldChange,
     onSubmit,
   } = useForm(getConfig);
@@ -59,13 +60,18 @@ export const AssignForm = ({ order, onSuccess }) => {
 
     updateOrder(order._id, fields)
       .then((data) => {
+        pushNotification({ 
+          theme: 'success', 
+          content: data.assignedEmployee 
+            ? `${data.assignedEmployee.name} ${data.assignedEmployee.surname} was successfully assigned to this measurement!`
+            : `${order.assignedEmployee.name} ${order.assignedEmployee.surname} was successfully removed from this measurement!`
+        });
+
         dispatch(updateOrderInStore(data));
-        pushNotification({ theme: 'success', content: `${data.assignedEmployee.name} ${data.assignedEmployee.surname} was successfully assigned to this measurement!` });
         onSuccess();
       })
-      .catch((err) => {
+      .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong! Try again..' });
-        setErrors(err);
       })
       .finally(() => {
         setIsLoading(false);
@@ -85,12 +91,13 @@ export const AssignForm = ({ order, onSuccess }) => {
               size="medium"
               placeholder="Select employee" 
               options={employeesOptions}
+              onClear={(val) => onValueChange(val, 'assignedEmployee')}
               onChange={(e) => onFieldChange(e, 'assignedEmployee')}
             />
           </Field>
         </GridEl>
         <GridEl size="12">
-          <Button type="submit" loading={isLoading}>Assign</Button>
+          <Button type="submit" loading={isLoading}>Confirm</Button>
         </GridEl>
       </Grid>
     </form>

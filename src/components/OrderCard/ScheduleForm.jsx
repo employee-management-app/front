@@ -62,7 +62,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
           navigate('/scheduled');
         }
 
-        pushNotification({ theme: 'success', content: 'Scheduled time successfully set!' });
+        pushNotification({ theme: 'success', content: `Scheduled time successfully ${data.completionDate ? 'set' : 'removed'}!` });
         onSuccess();
       })
       .catch((err) => {

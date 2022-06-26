@@ -19,6 +19,7 @@ export const CreateOrderForm = (props) => {
     isValid,
     isLoading,
     setIsLoading,
+    onValueChange,
     onFieldChange,
     onSubmit,
   } = useForm(getOrderFormConfig);
@@ -69,6 +70,7 @@ export const CreateOrderForm = (props) => {
       fields={fields}
       errors={errors}
       onFieldChange={onFieldChange}
+      onValueChange={onValueChange}
       onSubmit={handleSubmit}
     />
   );

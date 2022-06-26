@@ -20,6 +20,7 @@ export const EditOrderForm = (props) => {
     isValid,
     isLoading,
     setIsLoading,
+    onValueChange,
     onFieldChange,
     onSubmit,
   } = useForm((yup) => getOrderFormConfig(yup, props.values));
@@ -78,6 +79,7 @@ export const EditOrderForm = (props) => {
       fields={fields}
       errors={errors}
       onFieldChange={onFieldChange}
+      onValueChange={onValueChange}
       onSubmit={handleSubmit}
     />
   );
