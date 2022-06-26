@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 export const getOrderFormConfig = (yup, values = {}) => ({
   email: {
     value: values.email || '',
@@ -43,7 +45,7 @@ export const getOrderFormConfig = (yup, values = {}) => ({
     value: values.assignedEmployee ? values.assignedEmployee._id : null,
   },
   completionDate: {
-    value: values.completionDate || null,
+    value: values.completionDate ? format(new Date(values.completionDate), `yyyy-MM-dd'T'HH:mm:ss`) : null,
   },
   message: {
     value: values.message || '',

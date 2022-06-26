@@ -10,7 +10,7 @@ import { updateOrder } from '../../services/updateOrder';
 import { updateOrder as updateOrderInStore } from '../../store';
 
 import { Field } from '../Field';
-import { Input } from '../Input';
+import { DatePicker } from '../DatePicker';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
 
@@ -82,9 +82,9 @@ export const ScheduleForm = ({ order, onSuccess }) => {
       <Grid space={SPACES.XL}>
         <GridEl size="12">
           <Field error={errors.completionDate}>
-            <Input 
+            <DatePicker 
               value={fields.completionDate}
-              type="datetime-local"
+              placeholder="Schedule time"
               size="medium"
               onChange={(e) => onFieldChange(e, 'completionDate')}
             />

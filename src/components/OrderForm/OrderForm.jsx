@@ -6,6 +6,7 @@ import { Grid, GridEl, SPACES } from '../Grid';
 import { Field } from '../Field';
 import { Textarea } from '../Textarea';
 import { Input } from '../Input';
+import { DatePicker } from '../DatePicker';
 import { Select } from '../Select';
 import { Button } from '../Button';
 
@@ -162,9 +163,9 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'Schedule time'} error={errors.completionDate}>
-                <Input 
+                <DatePicker 
                   value={fields.completionDate}
-                  type="datetime-local"
+                  placeholder="Schedule time"
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'completionDate')}
                 />
