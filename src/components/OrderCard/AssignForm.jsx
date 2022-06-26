@@ -16,9 +16,9 @@ export const AssignForm = ({ order, onSuccess }) => {
   const employees = useSelector(getEmployees);
 
   const getConfig = (yup) => ({
-    employee: {
-      value: order.assigned ? order.assigned.id : null,
-      validation: yup.number().nullable().required(),
+    assignedEmployee: {
+      value: order.assignedEmployee ? order.assignedEmployee._id : null,
+      validation: yup.string().nullable(),
     },
   });
 
@@ -36,9 +36,9 @@ export const AssignForm = ({ order, onSuccess }) => {
   } = useForm(getConfig);
 
   const employeesOptions = React.useMemo(() => (
-    employees.map(({ id, name, surname }) => ({
+    employees.map(({ _id, name, surname }) => ({
       label: `${name} ${surname}`,
-      value: id,
+      value: _id,
     }))
   ), [employees]);
 
@@ -57,10 +57,10 @@ export const AssignForm = ({ order, onSuccess }) => {
 
     setIsLoading(true);
 
-    updateOrder({ ...order, assigned: fields.employee })
+    updateOrder(order._id, fields)
       .then((data) => {
         dispatch(updateOrderInStore(data));
-        pushNotification({ theme: 'success', content: `${data.assigned.name} ${data.assigned.surname} was successfully assigned to this measurement!` });
+        pushNotification({ theme: 'success', content: `${data.assignedEmployee.name} ${data.assignedEmployee.surname} was successfully assigned to this measurement!` });
         onSuccess();
       })
       .catch((err) => {
@@ -79,13 +79,13 @@ export const AssignForm = ({ order, onSuccess }) => {
     >
       <Grid space={SPACES.XL}>
         <GridEl size="12">
-          <Field error={errors.employee}>
+          <Field error={errors.assignedEmployee}>
             <Select 
-              value={fields.employee}
+              value={fields.assignedEmployee}
               size="medium"
               placeholder="Select employee" 
               options={employeesOptions}
-              onChange={(e) => onFieldChange(e, 'employee')}
+              onChange={(e) => onFieldChange(e, 'assignedEmployee')}
             />
           </Field>
         </GridEl>

@@ -15,14 +15,14 @@ import { Scheduler } from './pages/scheduler';
 import { Signup } from './pages/signup';
 import { UI } from './pages/ui';
 
-const ProtectedRoute = ({ children, userType }) => {
+const ProtectedRoute = ({ children, role }) => {
   const { isLoggedIn, isManager, isEmployee, USER_TYPES } = useAuth();
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
 
-  if ((userType === USER_TYPES.MANAGER && !isManager) || (userType === USER_TYPES.EMPLOYEE && !isEmployee)) {
+  if ((role === USER_TYPES.MANAGER && !isManager) || (role === USER_TYPES.EMPLOYEE && !isEmployee)) {
     return <Navigate to="/" replace />;
   }
 
@@ -51,7 +51,7 @@ const AppRoutes = () => {
       <Route 
         path='/scheduler' 
         element={
-          <ProtectedRoute userType={USER_TYPES.MANAGER}>
+          <ProtectedRoute role={USER_TYPES.MANAGER}>
             <Scheduler />
           </ProtectedRoute>
         } 
@@ -59,7 +59,7 @@ const AppRoutes = () => {
       <Route 
         path='/completed' 
         element={
-          <ProtectedRoute userType={USER_TYPES.MANAGER}>
+          <ProtectedRoute role={USER_TYPES.MANAGER}>
             <Completed />
           </ProtectedRoute>
         } 
@@ -68,7 +68,7 @@ const AppRoutes = () => {
       <Route 
         path='/anytime' 
         element={
-          <ProtectedRoute userType={USER_TYPES.EMPLOYEE}>
+          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
             <Anytime />
           </ProtectedRoute>
         } 
@@ -76,7 +76,7 @@ const AppRoutes = () => {
       <Route 
         path='/scheduled' 
         element={
-          <ProtectedRoute userType={USER_TYPES.EMPLOYEE}>
+          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
             <Scheduled />
           </ProtectedRoute>
         } 

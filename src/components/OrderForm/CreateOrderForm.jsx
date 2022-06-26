@@ -35,7 +35,18 @@ export const CreateOrderForm = (props) => {
 
     setIsLoading(true);
 
-    createOrder(fields)
+    const payload = {
+      ...fields,
+      address: {
+        code: fields.code,
+        city: fields.city,
+        street: fields.street,
+        house: fields.house,
+        flat: fields.flat,
+      },
+    };
+
+    createOrder(payload)
       .then((data) => {
         if (props.onSuccess) {
           props.onSuccess();

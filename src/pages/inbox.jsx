@@ -30,133 +30,135 @@ export const Inbox = () => {
 
   const orders = useSelector(getOrders);
 
-  const { isManager } = useAuth();
+  const { isEmployee } = useAuth();
   const { pushNotification } = useNotification();
 
   const [activeTab, setActiveTab] = React.useState(1);
   const [search, setSearch] = React.useState('');
-  const [showAssigned, setShowAssigned] = React.useState(false);
-  const [showScheduled, setShowScheduled] = React.useState(false);
+  const [showAssigned, setShowAssigned] = React.useState(undefined);
+  const [showScheduled, setShowScheduled] = React.useState(undefined);
 
   React.useEffect(() => {
-    if (isManager) {
-      fetchEmployees()
-        .then((data) => {
-          dispatch(setEmployees(data));
-        });
-
-      fetchOrders()
-        .then((data) => {
-          dispatch(setOrders(data));
-        })
-        .catch(() => {
-          pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
-        });
+    if (isEmployee) {
+      return;
     }
+
+    fetchEmployees()
+      .then((data) => {
+        dispatch(setEmployees(data));
+      });
   }, []);
+
+  React.useEffect(() => {
+    if (isEmployee) {
+      return;
+    }
+
+    fetchOrders({ assignedEmployee: showAssigned, completionDate: showScheduled })
+      .then((data) => {
+        dispatch(setOrders(data));
+      })
+      .catch(() => {
+        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
+      });
+  }, [showAssigned, showScheduled]);
 
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
   }, []);
 
   const handleAssignCheckbox = React.useCallback((e) => {
-    setShowAssigned(e.target.checked)
+    setShowAssigned(e.target.checked || undefined)
   }, []);
 
   const handleScheduleCheckbox = React.useCallback((e) => {
-    setShowScheduled(e.target.checked)
+    setShowScheduled(e.target.checked || undefined)
   }, []);
 
-  // TODO: GET /orders?scheduled=true/false&?assigned=true/false
-  // TODO: GET /orders?order_date_start=date&order_date_end=date
-  // TODO: GET /orders?assigned=id
-  // Temporary solution on front part
+  // Temporary solution on front part for the search
   const filteredOrders = React.useMemo(() => (
     filterOrdersByQuery(orders, search)
-      .filter(({ assigned, orderDate }) => (
-        (showAssigned ? assigned : true) && (showScheduled ? orderDate : true)
-      ))
-  ), [orders, search, showAssigned, showScheduled]);
+  ), [orders, search]);
 
-  if (isManager) {
+  if (isEmployee) {
     return (
-      <Container {...(activeTab === 1 && { width: 'full' })}>
+      <Container>
         <Grid>
           <GridEl size="12">
-            <Container withoutPaddings>
-              <Grid alignItems="flex-end" justifyContent="space-between">
-                <GridEl size={{ xs: 12, md: 5, lg: 3 }}>
-                  <Input
-                    value={search}
-                    icon={SearchIcon}
-                    placeholder="Search"
-                    onChange={handleSearchChange}
-                  />
-                </GridEl>
-                <GridEl size={{ xs: 12, md: 'auto', lg: 'fluid' }}>
-                  <Tabs active={activeTab} onChange={setActiveTab}>
-                    <Tab id={0} icon={ListIcon}>List</Tab>
-                    <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
-                    <Tab id={2} icon={CalendarIcon}>Calendar</Tab>
-                    <Tab id={3} icon={TimelineIcon}>Timeline</Tab>
-                  </Tabs>
-                </GridEl>
-                <GridEl size={{ xs: 0, lg: 'auto' }}>
-                  <Checkbox value={showAssigned} onChange={handleAssignCheckbox}>
-                    Show assigned
-                  </Checkbox>
-                </GridEl>
-                <GridEl size={{ xs: 0, lg: 'auto' }}>
-                  <Checkbox value={showScheduled} onChange={handleScheduleCheckbox}>
-                    Show scheduled
-                  </Checkbox>
-                </GridEl>
-              </Grid>
-            </Container>
+            <Text size="h3">Here you can assign yourself to the measurements</Text>
           </GridEl>
-          <GridEl />
+          <GridEl size="12">
+            <OrdersList orders={[]} />
+          </GridEl>
         </Grid>
-        <TabsItems active={activeTab}>
-          <TabsItem for={0}>
-            <OrdersList orders={filteredOrders} />
-          </TabsItem>
-          <TabsItem for={1}>
-            <OrdersMap orders={filteredOrders} />
-          </TabsItem>
-          <TabsItem for={2}>
-            <EmptyState 
-              title="Nothing here yet"
-              text="Calenar will be displayed here. If you think this is an error - contact the administrator."
-              action={
-                <Button>Contact the administrator</Button>
-              }
-            />
-          </TabsItem>
-          <TabsItem for={3}>
-            <EmptyState 
-              title="Nothing here yet"
-              text="Timeline will be displayed here. If you think this is an error - contact the administrator."
-              action={
-                <Button>Contact the administrator</Button>
-              }
-            />
-          </TabsItem>
-        </TabsItems>
-        <CreateOrderButton />
       </Container>
-    );
+    )
   }
 
   return (
-    <Container>
+    <Container {...(activeTab === 1 && { width: 'full' })}>
       <Grid>
         <GridEl size="12">
-          <Text size="h3">Here you can assign yourself to the measurements</Text>
+          <Container withoutPaddings>
+            <Grid alignItems="flex-end" justifyContent="space-between">
+              <GridEl size={{ xs: 12, md: 5, lg: 3 }}>
+                <Input
+                  value={search}
+                  icon={SearchIcon}
+                  placeholder="Search"
+                  onChange={handleSearchChange}
+                />
+              </GridEl>
+              <GridEl size={{ xs: 12, md: 'auto', lg: 'fluid' }}>
+                <Tabs active={activeTab} onChange={setActiveTab}>
+                  <Tab id={0} icon={ListIcon}>List</Tab>
+                  <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
+                  <Tab id={2} icon={CalendarIcon}>Calendar</Tab>
+                  <Tab id={3} icon={TimelineIcon}>Timeline</Tab>
+                </Tabs>
+              </GridEl>
+              <GridEl size={{ xs: 0, lg: 'auto' }}>
+                <Checkbox value={showAssigned} onChange={handleAssignCheckbox}>
+                  Show assigned
+                </Checkbox>
+              </GridEl>
+              <GridEl size={{ xs: 0, lg: 'auto' }}>
+                <Checkbox value={showScheduled} onChange={handleScheduleCheckbox}>
+                  Show scheduled
+                </Checkbox>
+              </GridEl>
+            </Grid>
+          </Container>
         </GridEl>
-        <GridEl size="12">
-          <OrdersList orders={[]} />
-        </GridEl>
+        <GridEl />
       </Grid>
+      <TabsItems active={activeTab}>
+        <TabsItem for={0}>
+          <OrdersList orders={filteredOrders} />
+        </TabsItem>
+        <TabsItem for={1}>
+          <OrdersMap orders={filteredOrders} />
+        </TabsItem>
+        <TabsItem for={2}>
+          <EmptyState 
+            title="Nothing here yet"
+            text="Calenar will be displayed here. If you think this is an error - contact the administrator."
+            action={
+              <Button>Contact the administrator</Button>
+            }
+          />
+        </TabsItem>
+        <TabsItem for={3}>
+          <EmptyState 
+            title="Nothing here yet"
+            text="Timeline will be displayed here. If you think this is an error - contact the administrator."
+            action={
+              <Button>Contact the administrator</Button>
+            }
+          />
+        </TabsItem>
+      </TabsItems>
+      <CreateOrderButton />
     </Container>
   );
 };

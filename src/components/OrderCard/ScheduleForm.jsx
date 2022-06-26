@@ -21,10 +21,9 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   const { isManager } = useAuth();
   const { pushNotification } = useNotification();
 
-  const getConfig = (yup) => ({
-    schedule: {
-      value: order.orderDate ? format(order.orderDate, `yyyy-MM-dd'T'HH:mm:ss`) : null,
-      validation: yup.date().nullable().required(),
+  const getConfig = () => ({
+    completionDate: {
+      value: order.completionDate ? format(new Date(order.completionDate), `yyyy-MM-dd'T'HH:mm:ss`) : null,
     },
   });
 
@@ -55,7 +54,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
     setIsLoading(true);
 
-    updateOrder({ ...order, schedule: fields.schedule })
+    updateOrder(order._id, fields)
       .then((data) => {
         if (isManager) {
           dispatch(updateOrderInStore(data));
@@ -82,11 +81,12 @@ export const ScheduleForm = ({ order, onSuccess }) => {
     >
       <Grid space={SPACES.XL}>
         <GridEl size="12">
-          <Field error={errors.schedule}>
+          <Field error={errors.completionDate}>
             <Input 
-              value={fields.schedule}
+              value={fields.completionDate}
               type="datetime-local"
-              onChange={(e) => onFieldChange(e, 'schedule')}
+              size="medium"
+              onChange={(e) => onFieldChange(e, 'completionDate')}
             />
           </Field>
         </GridEl>

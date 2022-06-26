@@ -1,10 +1,6 @@
 import React from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
-import { useDispatch } from 'react-redux';
 
-import { updateOrder } from '../../services/updateOrder';
-import { updateOrder as updateOrderInStore } from '../../store';
-import { useNotification } from '../../hooks/useNotification';
 import { useAuth } from '../../hooks/useAuth';
 
 import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
@@ -26,34 +22,19 @@ import { ScheduleForm } from './ScheduleForm';
 import styles from './OrderCard.module.scss';
 
 export const OrderCard = (props) => {
-  const dispatch = useDispatch();
 
-  const { id, name, surname, productType, date, address, phone, email, description, priority, assigned, orderDate } = props;
-  const { code, city, street, house, flat } = address;
+  const { name, surname, type, creationDate, address, phone, email, message, priority, assignedEmployee, completionDate } = props;
 
   const { isManager } = useAuth();
-  const { pushNotification } = useNotification();
   
-  const priorityRef = React.createRef(null);
-  const actionsRef = React.createRef(null);
   const [isAssignModalOpen, setIsAssignModalOpen] = React.useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
 
-  const updatePriority = React.useCallback((key) => {
-    updateOrder({ ...props, priority: key })
-      .then((data) => {
-        dispatch(updateOrderInStore(data));
-      })
-      .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong! Try again..' });
-      });
-  }, [dispatch, props, pushNotification]);
-
   const handleClick = React.useCallback((e) => {
-    if (!priorityRef.current.contains(e.target) && !actionsRef.current.contains(e.target)) {
+    if (props.onClick) {
       props.onClick();
     }
-  }, [priorityRef, actionsRef, props]);
+  }, [props]);
 
   const openAssignModal = React.useCallback(() => {
     setIsAssignModalOpen(true);
@@ -71,64 +52,68 @@ export const OrderCard = (props) => {
     setIsScheduleModalOpen(false);
   }, []);
 
+  const { code, city, street, house, flat } = address;
+
   return (
-    <Card className={styles.card} onClick={handleClick}>
+    <Card className={styles.card}>
       <div className={styles.header}>
-        <OrderCardPriority ref={priorityRef} priority={priority} onChange={updatePriority} />
-        {isManager && <OrderCardActions order={{ ...props, ...address }} ref={actionsRef} />}
-        <div className={styles.date}>{formatDistanceToNow(date)} ago</div>
+        <OrderCardPriority id={props._id} priority={priority} />
+        {isManager && <OrderCardActions order={props} />}
+        <div className={styles.date}>{formatDistanceToNow(new Date(creationDate))} ago</div>
       </div>
-      <div className={styles.type}>{productType}</div>
-      <Text className={styles.address}>
-        {street} {house}{flat ? `, lokal ${flat}` : ''}<br />
-        {code} {city}
-      </Text>
-      <hr className={styles.hr} />
-      <Grid space={SPACES.S}>
-        <GridEl size="12">
-          <Text>{name} {surname}</Text>
-        </GridEl>
-        <GridEl size={{ md: 12, xl: 8 }}>
-          <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
-        </GridEl>
-        <GridEl size={{ md: 6, xl: 2 }}>
-          <Button href={`sms:${phone}`} icon={CommentIcon} width="full"></Button>
-        </GridEl>
-        <GridEl size={{ md: 6, xl: 2 }}>
-          <Button href={`mailto:${email}`} icon={MailIcon} width="full"></Button>
-        </GridEl>
-        {description && (
-          <GridEl size="12">
-            <Text>{description}</Text>
-          </GridEl>
-        )}
-      </Grid>
-      <div className={styles.footer}>
+      <div onClick={handleClick}>
+        <div className={styles.type}>{type}</div>
+        <Text className={styles.address}>
+          {street} {house}{flat ? `, lokal ${flat}` : ''}<br />
+          {code} {city}
+        </Text>
+        <hr className={styles.hr} />
         <Grid space={SPACES.S}>
-          <GridEl size="6">
-            <Button 
-              icon={assigned ? undefined : UserIcon} 
-              width="full" 
-              disabled={assigned && !isManager}
-              onClick={openAssignModal}
-            >
-              {assigned ? `${assigned.name} ${assigned.surname}` : 'Assignee'}
-            </Button>
+          <GridEl size="12">
+            <Text>{name} {surname}</Text>
           </GridEl>
-          <GridEl size="6">
-            <Button 
-              icon={orderDate ? undefined : CalendarIcon} 
-              width="full"
-              onClick={openScheduleModal}
-            >
-              {orderDate ? format(orderDate, 'dd.MM.yy  HH:mm') : 'Schedule'}
-            </Button>
+          <GridEl size={{ md: 12, xl: 8 }}>
+            <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
           </GridEl>
+          <GridEl size={{ md: 6, xl: 2 }}>
+            <Button href={`sms:${phone}`} icon={CommentIcon} width="full"></Button>
+          </GridEl>
+          <GridEl size={{ md: 6, xl: 2 }}>
+            <Button href={`mailto:${email}`} icon={MailIcon} width="full"></Button>
+          </GridEl>
+          {message && (
+            <GridEl size="12">
+              <Text>{message}</Text>
+            </GridEl>
+          )}
         </Grid>
+        <div className={styles.footer}>
+          <Grid space={SPACES.S}>
+            <GridEl size="6">
+              <Button 
+                icon={assignedEmployee ? undefined : UserIcon} 
+                width="full" 
+                disabled={assignedEmployee && !isManager}
+                onClick={openAssignModal}
+              >
+                {assignedEmployee ? `${assignedEmployee.name} ${assignedEmployee.surname}` : 'Assignee'}
+              </Button>
+            </GridEl>
+            <GridEl size="6">
+              <Button 
+                icon={completionDate ? undefined : CalendarIcon} 
+                width="full"
+                onClick={openScheduleModal}
+              >
+                {completionDate ? format(new Date(completionDate), 'dd.MM.yy  HH:mm') : 'Schedule'}
+              </Button>
+            </GridEl>
+          </Grid>
+        </div>
       </div>
       {isManager && (
         <Modal 
-          title={`Assign employee to measurement #${id}`}
+          title="Assign employee to measurement"
           isOpen={isAssignModalOpen} 
           onClose={onAssignModalClose}
         >
@@ -136,7 +121,7 @@ export const OrderCard = (props) => {
         </Modal>
       )}
       <Modal 
-        title={`Schedule an appointment for measurement #${id}`}
+        title="Schedule an appointment for measurement"
         isOpen={isScheduleModalOpen} 
         onClose={onScheduleModalClose}
       >

@@ -39,7 +39,9 @@ export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
 
   React.useEffect(() => {
     if (map && maps && markers.length) {
-      if (selected) {
+      const isVisible = !!markers.find(({ id }) => id === selected);
+
+      if (selected && isVisible) {
         selectMarker(selected);
       } else {
         fitBounds();

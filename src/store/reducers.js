@@ -16,7 +16,7 @@ const setEmployees = (state, action) => ({
 });
 
 const updateOrder = (state, action) => {
-  const index = state.orders.findIndex(({ id }) => id === action.payload.id);
+  const index = state.orders.findIndex(({ _id }) => _id === action.payload._id);
 
   return {
     ...state,
@@ -26,7 +26,7 @@ const updateOrder = (state, action) => {
 
 const deleteOrderById = (state, action) => ({
   ...state,
-  orders: state.orders.filter(({ id }) => id !== action.payload),
+  orders: state.orders.filter(({ _id }) => _id !== action.payload),
 });
 
 const pushNotification = (state, action) => ({

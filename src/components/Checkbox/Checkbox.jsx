@@ -16,7 +16,7 @@ export const Checkbox = (props) => {
     if (props.onChange) {
       props.onChange(e);
     }
-  }, [props.onChange]);
+  }, [props]);
 
   const classNames = cx(styles.field, { 
     [styles.checked]: isChecked,

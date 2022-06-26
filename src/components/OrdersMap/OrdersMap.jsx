@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { scrollIntoView } from 'seamless-scroll-polyfill';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { getEmployees } from '../../store';
@@ -36,11 +37,11 @@ export const OrdersMap = ({ orders }) => {
   }, [wrapperRef]);
 
   const selectOrder = React.useCallback((id) => {
-    const index = orders.findIndex((order) => order.id === id);
+    const index = orders.findIndex((order) => order._id === id);
     const card = cardsRef.current.children[index];
 
     if (card) {
-      card.scrollIntoView({ behavior: 'smooth' });
+      scrollIntoView(card, { behavior: 'smooth' });
     }
 
     setSelectedOrder(id);
@@ -66,19 +67,19 @@ export const OrdersMap = ({ orders }) => {
     return _offset;
   }, [windowSize]);
 
-  const getEmployeeColor = React.useCallback((assigned) => {
-    if (!assigned) {
+  const getEmployeeColor = React.useCallback((assignedEmployee) => {
+    if (!assignedEmployee) {
       return undefined;
     }
 
-    return employees.find(({ id }) => id === assigned.id).color;
+    return employees.find(({ _id }) => _id === assignedEmployee._id).color;
   }, [employees]);
 
-  const markers = React.useMemo(() => orders.map(({ id, assigned, address }) => ({
-    id,
-    color: getEmployeeColor(assigned),
-    lng: address.lng, 
+  const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, address }) => ({
+    id: _id,
+    color: getEmployeeColor(assignedEmployee),
     lat: address.lat,
+    lng: address.lng,
   })), [getEmployeeColor, orders]);
 
   return (
@@ -95,11 +96,11 @@ export const OrdersMap = ({ orders }) => {
             <div ref={cardsRef} className={styles.cards}>
               {orders.map((order) => (
                 <div 
-                  className={cx(styles.card, { [styles.selected]: order.id === selectedOrder })} 
-                  key={order.id}
+                  className={cx(styles.card, { [styles.selected]: order._id === selectedOrder })} 
+                  key={order._id}
                 >
-                  <div className={styles.cardOutline} style={{ color: getEmployeeColor(order.assigned) }} />
-                  <OrderCard onClick={() => selectOrder(order.id)} {...order} />
+                  <div className={styles.cardOutline} style={{ color: getEmployeeColor(order.assignedEmployee) }} />
+                  <OrderCard onClick={() => selectOrder(order._id)} {...order} />
                 </div>
               ))}
             </div>
