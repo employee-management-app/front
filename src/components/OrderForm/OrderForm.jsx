@@ -22,20 +22,20 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
 
   const serviceTypeOptions = React.useMemo(() => [
     {
-      label: 'Pomiar rolety',
-      value: 'Pomiar rolety',
+      label: 'Osłony wewnętrzne (rolety, żaluzje, plisy)',
+      value: 'Osłony wewnętrzne',
     },
     {
-      label: 'Pomiar moskitier',
-      value: 'Pomiar moskitier',
+      label: 'Osłony zewnętrzne (rolety, żaluzje, screeny, moskitiery)',
+      value: 'Osłony zewnętrzne',
     },
     {
-      label: 'Pomiar żaluzji aluminiowych',
-      value: 'Pomiar żaluzji aluminiowych',
+      label: 'Ogród (pergole, markizy)',
+      value: 'Ogród',
     },
     {
-      label: 'Montaż żaluzji aluminiowych',
-      value: 'Montaż żaluzji aluminiowych',
+      label: 'Inne (proszę opisać w polu Description)',
+      value: 'Inne',
     },
   ], []);
 
