@@ -83,14 +83,17 @@
   > div {
     box-shadow: 0 0 8px rgba($color-black, 0.3);
 
-    @include breakpoint-down("sm") {
-      max-height: 148px;
-      overflow: hidden;
+    @include breakpoint-down("md") {
 
       @media screen and (max-height: 700px) {
-        max-height: 106px;
+        max-height: 104px;
         overflow: hidden;
       }
+    }
+
+    @include breakpoint-down("sm") {
+      max-height: 129px;
+      overflow: hidden;
     }
   }
 

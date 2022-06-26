@@ -8,6 +8,7 @@ import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 import { ReactComponent as UserIcon } from '../../assets/icons/user.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
+import { ReactComponent as DirectionIcon } from '../../assets/icons/direction.svg';
 
 import { Card } from '../Card';
 import { Text } from '../Text';
@@ -52,7 +53,7 @@ export const OrderCard = (props) => {
     setIsScheduleModalOpen(false);
   }, []);
 
-  const { code, city, street, house, flat } = address;
+  const { code, city, street, house, flat, lat, lng } = address;
 
   return (
     <Card className={styles.card}>
@@ -67,6 +68,10 @@ export const OrderCard = (props) => {
           {street} {house}{flat ? `, lokal ${flat}` : ''}<br />
           {code} {city}
         </Text>
+        <a href={`https://maps.google.com/?q=${lat},${lng}`} target="_blank" rel="noreferrer" className={styles.routeLink}>
+          <span>Show route</span>
+          <DirectionIcon />
+        </a>
         <hr className={styles.hr} />
         <Grid space={SPACES.S}>
           <GridEl size="12">
