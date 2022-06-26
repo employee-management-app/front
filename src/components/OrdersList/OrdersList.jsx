@@ -3,12 +3,12 @@ import { OrderCard } from '../OrderCard';
 import { EmptyState } from '../EmptyState';
 import { Button } from '../Button';
 
-export const OrdersList = ({ orders }) => {
+export const OrdersList = ({ orders, disabled = false }) => {
   return orders.length ? (
     <Grid>
       {orders.map((order) => (
         <GridEl key={order._id} size={{ xs: 12, md: 6, xl: 4 }} filled>
-          <OrderCard {...order} />
+          <OrderCard disabled={disabled} {...order} />
         </GridEl>
       ))}
     </Grid>

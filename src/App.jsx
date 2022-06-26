@@ -11,7 +11,6 @@ import { Error } from './pages/error';
 import { Inbox } from './pages/inbox';
 import { Login } from './pages/login';
 import { Scheduled } from './pages/scheduled';
-import { Scheduler } from './pages/scheduler';
 import { Signup } from './pages/signup';
 import { UI } from './pages/ui';
 
@@ -49,17 +48,9 @@ const AppRoutes = () => {
       <Route path='*' element={<Error />} />
       {/* Manager views */}
       <Route 
-        path='/scheduler' 
-        element={
-          <ProtectedRoute role={USER_TYPES.MANAGER}>
-            <Scheduler />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
         path='/completed' 
         element={
-          <ProtectedRoute role={USER_TYPES.MANAGER}>
+          <ProtectedRoute>
             <Completed />
           </ProtectedRoute>
         } 
