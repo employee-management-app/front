@@ -5,6 +5,7 @@ import { scrollIntoView } from 'seamless-scroll-polyfill';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { getEmployees } from '../../store';
+import { useAuth } from '../../hooks/useAuth';
 
 import { Container } from '../Container';
 import { GoogleMap } from '../GoogleMap';
@@ -19,6 +20,7 @@ export const OrdersMap = ({ orders }) => {
   const wrapperRef = React.useRef(null);
   const cardsRef = React.useRef(null);
   const windowSize = useWindowSize();
+  const { isEmployee } = useAuth();
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -68,12 +70,16 @@ export const OrdersMap = ({ orders }) => {
   }, [windowSize]);
 
   const getEmployeeColor = React.useCallback((assignedEmployee) => {
+    if (isEmployee) {
+      return '#1352A1';
+    }
+
     if (!assignedEmployee) {
       return undefined;
     }
 
     return employees.find(({ _id }) => _id === assignedEmployee._id).color;
-  }, [employees]);
+  }, [isEmployee, employees]);
 
   const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, address }) => ({
     id: _id,
