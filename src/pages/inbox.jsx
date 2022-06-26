@@ -92,7 +92,7 @@ export const Inbox = () => {
           </GridEl>
         </Grid>
       </Container>
-    )
+    );
   }
 
   return (
