@@ -19,7 +19,7 @@ export const Anytime = () => {
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetchEmployeeOrders(user._id, { completionDate: false })
+    fetchEmployeeOrders(user._id, { completionDate: false, sortBy: 'priority' })
       .then((data) => {
         setOrders(data);
       })

@@ -19,7 +19,7 @@ export const Scheduled = () => {
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetchEmployeeOrders(user._id, { completionDate: true })
+    fetchEmployeeOrders(user._id, { completionDate: true, sortBy: 'completionDate', orderBy: 'asc' })
       .then((data) => {
         setOrders(data);
       })
