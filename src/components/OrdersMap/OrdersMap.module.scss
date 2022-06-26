@@ -78,6 +78,7 @@
 .card {
   position: relative;
   width: 100%;
+  scroll-margin: 20px;
 
   > div {
     box-shadow: 0 0 8px rgba($color-black, 0.3);

@@ -1,13 +1,15 @@
-import axios from 'axios';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import axios from './services/axios';
 
 const authFromLocalStorage = JSON.parse(window.localStorage.getItem('auth'));
 
 const defaultContextValue = {
-  token: '',
   isLoggedIn: false,
-  user: {},    
+  isManager: false,
+  isEmployee: false,
+  user: {},   
 };
 
 export const AuthContext = React.createContext(null);
@@ -17,17 +19,17 @@ export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const handleLogin = ({ email, password }) => new Promise((resolve, reject) => {
-    axios.post(`${process.env.REACT_APP_API_URL}/login`, { username: email, password })
+  const handleLogin = (fields) => new Promise((resolve, reject) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/auth/signin`, fields)
       .then(({ data }) => {
-        const { isManager, ...userInfo } = data.userInfo;
+        const { token, user } = data;
 
         const auth = {
-          token: data.token,
           isLoggedIn: true,
-          ...(isManager && { isManager: true }),
-          ...(!isManager && { isEmployee: true }),
-          user: userInfo,
+          ...(user.role === 'manager' && { isManager: true }),
+          ...(user.role === 'employee' && { isEmployee: true }),
+          user: user,
+          token,
         };
 
         setAuth(auth);
@@ -35,12 +37,7 @@ export const AuthProvider = ({ children }) => {
         window.localStorage.setItem('auth', JSON.stringify(auth));
       })
       .catch((err) => {
-        if (err.response && err.response.data && err.response.data.non_field_errors.length) {
-          const errorMessage = err.response.data.non_field_errors[0];
-          reject({ email: errorMessage, password: errorMessage });
-        } else {
-          reject(err);
-        }
+        reject(err.response.data || {});
       });
   });
 

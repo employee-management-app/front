@@ -18,18 +18,27 @@ export const Select = ({ options = [], ...props }) => {
     }
   };
 
+  const handleClear = () => {
+    if (props.onClear) {
+      props.onClear(null);
+    }
+  }
+
   return (
     <div 
       className={cx(styles.field, { 
         [styles.invalid]: props.invalid, 
         [styles[props.size]]: props.size,
+        [styles.required]: props.required,
+        [styles.active]: !!value,
       })}
     >
+      {(value && !props.required) && <button type="button" className={styles.clear} onClick={handleClear} />}
       <select
         value={value}
         disabled={props.disabled}
         required={props.required}
-        className={cx(styles.select, { [styles.active]: !!value })}
+        className={styles.select}
         onChange={onChange}
       >
         <option disabled hidden value=""></option>

@@ -30,6 +30,8 @@ export const Input = (props) => {
         placeholder={props.placeholder}
         value={value}
         className={styles.input}
+        onFocus={props.onFocus}
+        onBlur={props.onBlur}
         onChange={handleChange}
       />
       {props.icon && <props.icon />}

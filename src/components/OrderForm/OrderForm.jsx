@@ -1,13 +1,25 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
+import { getEmployees } from '../../store';
 import { Grid, GridEl, SPACES } from '../Grid';
 import { Field } from '../Field';
 import { Textarea } from '../Textarea';
 import { Input } from '../Input';
+import { DatePicker } from '../DatePicker';
 import { Select } from '../Select';
 import { Button } from '../Button';
 
-export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmit, onFieldChange }) => {
+export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmit, onValueChange, onFieldChange }) => {
+  const employees = useSelector(getEmployees);
+
+  const employeesOptions = React.useMemo(() => (
+    employees.map(({ _id, name, surname }) => ({
+      label: `${name} ${surname}`,
+      value: _id,
+    }))
+  ), [employees]);
+
   const serviceTypeOptions = React.useMemo(() => [
     {
       label: 'Pomiar rolety',
@@ -78,13 +90,14 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
               </Field>
             </GridEl>
             <GridEl size="12">
-              <Field label={editMode && 'Service type'} error={errors.productType}>
+              <Field label={editMode && 'Service type'} error={errors.type}>
                 <Select 
-                  value={fields.productType}
+                  value={fields.type}
                   options={serviceTypeOptions}
                   placeholder="Service type"
                   size="medium"
-                  onChange={(e) => onFieldChange(e, 'productType')}
+                  required
+                  onChange={(e) => onFieldChange(e, 'type')}
                 />
               </Field>
             </GridEl>
@@ -135,6 +148,28 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                   placeholder="Flat number"
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'flat')}
+                />
+              </Field>
+            </GridEl>
+            <GridEl size="6">
+              <Field label={editMode && 'Select employee'} error={errors.assignedEmployee}>
+                <Select 
+                  value={fields.assignedEmployee}
+                  options={employeesOptions}
+                  placeholder="Select employee"
+                  size="medium"
+                  onClear={(val) => onValueChange(val, 'assignedEmployee')}
+                  onChange={(e) => onFieldChange(e, 'assignedEmployee')}
+                />
+              </Field>
+            </GridEl>
+            <GridEl size="6">
+              <Field label={editMode && 'Schedule time'} error={errors.completionDate}>
+                <DatePicker 
+                  value={fields.completionDate}
+                  placeholder="Schedule time"
+                  size="medium"
+                  onChange={(e) => onFieldChange(e, 'completionDate')}
                 />
               </Field>
             </GridEl>

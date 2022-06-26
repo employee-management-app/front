@@ -10,7 +10,7 @@ import { updateOrder } from '../../services/updateOrder';
 import { updateOrder as updateOrderInStore } from '../../store';
 
 import { Field } from '../Field';
-import { Input } from '../Input';
+import { DatePicker } from '../DatePicker';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
 
@@ -21,10 +21,9 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   const { isManager } = useAuth();
   const { pushNotification } = useNotification();
 
-  const getConfig = (yup) => ({
-    schedule: {
-      value: order.orderDate ? format(order.orderDate, `yyyy-MM-dd'T'HH:mm:ss`) : null,
-      validation: yup.date().nullable().required(),
+  const getConfig = () => ({
+    completionDate: {
+      value: order.completionDate ? format(new Date(order.completionDate), `yyyy-MM-dd'T'HH:mm:ss`) : null,
     },
   });
 
@@ -55,7 +54,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
     setIsLoading(true);
 
-    updateOrder({ ...order, schedule: fields.schedule })
+    updateOrder(order._id, fields)
       .then((data) => {
         if (isManager) {
           dispatch(updateOrderInStore(data));
@@ -63,7 +62,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
           navigate('/scheduled');
         }
 
-        pushNotification({ theme: 'success', content: 'Scheduled time successfully set!' });
+        pushNotification({ theme: 'success', content: `Scheduled time successfully ${data.completionDate ? 'set' : 'removed'}!` });
         onSuccess();
       })
       .catch((err) => {
@@ -82,11 +81,12 @@ export const ScheduleForm = ({ order, onSuccess }) => {
     >
       <Grid space={SPACES.XL}>
         <GridEl size="12">
-          <Field error={errors.schedule}>
-            <Input 
-              value={fields.schedule}
-              type="datetime-local"
-              onChange={(e) => onFieldChange(e, 'schedule')}
+          <Field error={errors.completionDate}>
+            <DatePicker 
+              value={fields.completionDate}
+              placeholder="Schedule time"
+              size="medium"
+              onChange={(e) => onFieldChange(e, 'completionDate')}
             />
           </Field>
         </GridEl>

@@ -7,7 +7,7 @@ export const OrdersList = ({ orders }) => {
   return orders.length ? (
     <Grid>
       {orders.map((order) => (
-        <GridEl key={order.id} size={{ xs: 12, md: 6, xl: 4 }} filled>
+        <GridEl key={order._id} size={{ xs: 12, md: 6, xl: 4 }} filled>
           <OrderCard {...order} />
         </GridEl>
       ))}

@@ -16,7 +16,8 @@ import { EditOrderForm } from '../OrderForm';
 
 import styles from './OrderCard.module.scss';
 
-export const OrderCardActions = React.forwardRef((props, ref) => {
+export const OrderCardActions = (props) => {
+  const ref = React.useRef();
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = React.useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
@@ -42,16 +43,13 @@ export const OrderCardActions = React.forwardRef((props, ref) => {
     setIsLoading(true);
     setIsDeleteModalVisible(false);
 
-    deleteOrder(props.order)
+    deleteOrder(props.order._id)
       .then(() => {
-        pushNotification({ theme: 'success', content: `Measurement #${props.order.id} was successfully removed!` })
-        dispatch(deleteOrderById(props.order.id));
+        pushNotification({ theme: 'success', content: 'Measurement was successfully removed!' })
+        dispatch(deleteOrderById(props.order._id));
       })
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong! Try again later.' })
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   }, [dispatch, props.order, pushNotification]);
 
@@ -96,14 +94,14 @@ export const OrderCardActions = React.forwardRef((props, ref) => {
       <Modal
         isOpen={isEditModalVisible}
         size="medium"
-        title={`Edit measurement #${props.order.id}`}
+        title="Edit measurement"
         onClose={handleEditModalClose}
       >
         <EditOrderForm values={props.order} onSuccess={handleEditModalClose} />
       </Modal>
       <Modal
         isOpen={isDeleteModalVisible}
-        title={`Are you sure you want to delete measurement #${props.order.id}?`}
+        title="Are you sure you want to delete this measurement"
         onClose={handleDeleteModalClose}
       >
         <Grid>
@@ -121,4 +119,4 @@ export const OrderCardActions = React.forwardRef((props, ref) => {
       </Modal>
     </div>
   );
-});
+};

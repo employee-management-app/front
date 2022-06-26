@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
-import { updateOrderData } from '../../services/updateOrderData';
+import { updateOrder } from '../../services/updateOrder';
 
 import { updateOrder as updateOrderInStore } from '../../store';
 
@@ -20,6 +20,7 @@ export const EditOrderForm = (props) => {
     isValid,
     isLoading,
     setIsLoading,
+    onValueChange,
     onFieldChange,
     onSubmit,
   } = useForm((yup) => getOrderFormConfig(yup, props.values));
@@ -43,14 +44,25 @@ export const EditOrderForm = (props) => {
 
     setIsLoading(true);
 
-    updateOrderData({ ...fields, id: props.values.id })
+    const payload = {
+      ...fields,
+      address: {
+        code: fields.code,
+        city: fields.city,
+        street: fields.street,
+        house: fields.house,
+        flat: fields.flat,
+      },
+    };
+
+    updateOrder(props.values._id, payload)
       .then((data) => {
         if (props.onSuccess) {
           props.onSuccess();
         }
 
         dispatch(updateOrderInStore(data));
-        pushNotification({ theme: 'success', content: `Measurement #${data.id} was successfully updated!` });
+        pushNotification({ theme: 'success', content: 'Measurement was successfully updated!' });
       })
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong! Please double check entired data.' });
@@ -67,6 +79,7 @@ export const EditOrderForm = (props) => {
       fields={fields}
       errors={errors}
       onFieldChange={onFieldChange}
+      onValueChange={onValueChange}
       onSubmit={handleSubmit}
     />
   );

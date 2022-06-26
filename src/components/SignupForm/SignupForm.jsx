@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
+import axios from '../../services/axios';
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 
@@ -48,7 +48,6 @@ export const SignupForm = () => {
     isValid,
     isLoading,
     setFields,
-    setErrors,
     setIsLoading,
     onFieldChange,
     onSubmit,
@@ -59,10 +58,10 @@ export const SignupForm = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    const userType = searchParams.get('userType');
+    const role = searchParams.get('role');
 
-    if (!userType || userType !== 'manager') {
-      searchParams.set('userType', 'employee');
+    if (!role || role !== 'manager') {
+      searchParams.set('role', 'employee');
       setSearchParams(searchParams);
     }
   }, [searchParams, setSearchParams]);
@@ -70,7 +69,7 @@ export const SignupForm = () => {
   React.useEffect(() => {
     setFields((prevFields) => ({ 
       ...prevFields, 
-      userType: searchParams.get('userType'), 
+      role: searchParams.get('role'), 
     }));
   }, [searchParams, setFields]);
 
@@ -86,27 +85,16 @@ export const SignupForm = () => {
 
     setIsLoading(true);
 
-    axios.post(`${process.env.REACT_APP_API_URL}/register`, {
-      name: fields.name,
-      surname: fields.surname,
-      email: fields.email,
-      password: fields.password,
-      phone: fields.phone,
-      is_manager: fields.userType === 'manager',
-    })
+    axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, fields)
       .then(() => {
         setFields({});
         navigate('/login');
         pushNotification({ theme: 'success', content: 'The account has been registered! Now you can log into the system.' });
       })
       .catch((err) => {
-        const { email, password } = err.response.data;
+        const { message } = err.response.data || {};
 
-        if (email || password) {
-          setErrors({ email, password })
-        }
-
-        pushNotification({ theme: 'error', content: 'Check the entered data again!' });
+        pushNotification({ theme: 'error', content: message || 'Something went wrong...' });
       })
       .finally(() => {
         setIsLoading(false);

@@ -19,6 +19,7 @@ export const CreateOrderForm = (props) => {
     isValid,
     isLoading,
     setIsLoading,
+    onValueChange,
     onFieldChange,
     onSubmit,
   } = useForm(getOrderFormConfig);
@@ -35,7 +36,18 @@ export const CreateOrderForm = (props) => {
 
     setIsLoading(true);
 
-    createOrder(fields)
+    const payload = {
+      ...fields,
+      address: {
+        code: fields.code,
+        city: fields.city,
+        street: fields.street,
+        house: fields.house,
+        flat: fields.flat,
+      },
+    };
+
+    createOrder(payload)
       .then((data) => {
         if (props.onSuccess) {
           props.onSuccess();
@@ -58,6 +70,7 @@ export const CreateOrderForm = (props) => {
       fields={fields}
       errors={errors}
       onFieldChange={onFieldChange}
+      onValueChange={onValueChange}
       onSubmit={handleSubmit}
     />
   );

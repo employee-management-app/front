@@ -29,7 +29,6 @@ export const LoginForm = () => {
     errors,
     isValid,
     isLoading,
-    setErrors,
     setIsLoading,
     onFieldChange,
     onSubmit,
@@ -49,8 +48,7 @@ export const LoginForm = () => {
 
     onLogin(fields)
       .catch((err) => {
-        setErrors(err);
-        pushNotification({ theme: 'error', content: err.message || 'Check the entered data again!' });
+        pushNotification({ theme: 'error', content: err.message || 'Something went wrong...' });
       })
       .finally(() => {
         setIsLoading(false);
