@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 
+import axios from '../../services/axios';
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 
@@ -85,14 +85,14 @@ export const SignupForm = () => {
 
     setIsLoading(true);
 
-    axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, fields, { withCredentials: true })
+    axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, fields)
       .then(() => {
         setFields({});
         navigate('/login');
         pushNotification({ theme: 'success', content: 'The account has been registered! Now you can log into the system.' });
       })
       .catch((err) => {
-        const { message } = err.response.data;
+        const { message } = err.response.data || {};
 
         pushNotification({ theme: 'error', content: message || 'Something went wrong...' });
       })

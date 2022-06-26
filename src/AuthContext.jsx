@@ -1,6 +1,7 @@
-import axios from 'axios';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import axios from './services/axios';
 
 const authFromLocalStorage = JSON.parse(window.localStorage.getItem('auth'));
 
@@ -19,16 +20,16 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const handleLogin = (fields) => new Promise((resolve, reject) => {
-    axios.post(`${process.env.REACT_APP_API_URL}/auth/signin`, fields, { withCredentials: true })
-      .then(({ data, ...rest }) => {
-        console.log(rest);
-        const { role, ...userInfo } = data;
+    axios.post(`${process.env.REACT_APP_API_URL}/auth/signin`, fields)
+      .then(({ data }) => {
+        const { token, user } = data;
 
         const auth = {
           isLoggedIn: true,
-          ...(role === 'manager' && { isManager: true }),
-          ...(role === 'employee' && { isEmployee: true }),
-          user: userInfo,
+          ...(user.role === 'manager' && { isManager: true }),
+          ...(user.role === 'employee' && { isEmployee: true }),
+          user: user,
+          token,
         };
 
         setAuth(auth);
@@ -36,12 +37,11 @@ export const AuthProvider = ({ children }) => {
         window.localStorage.setItem('auth', JSON.stringify(auth));
       })
       .catch((err) => {
-        reject(err.response.data);
+        reject(err.response.data || {});
       });
   });
 
   const handleLogout = () => {
-    axios.post(`${process.env.REACT_APP_API_URL}/auth/signout`, {}, { withCredentials: true })
     setAuth(defaultContextValue);
     navigate('/login');
     window.localStorage.removeItem('auth');
