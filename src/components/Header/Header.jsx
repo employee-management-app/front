@@ -20,20 +20,10 @@ export const Header = () => {
   );
 
   const menu = isLoggedIn ? [
-    {
-      to: '/',
-      label: 'Inbox',
-      Icon: InboxIcon,
-    },
     ...(isManager ? [
       {
-        to: '/scheduler',
+        to: '/',
         label: 'Scheduler',
-        Icon: CalendarIcon,
-      },
-      {
-        to: '/completed',
-        label: 'Completed',
         Icon: InboxIcon,
       },
     ] : [
@@ -48,6 +38,11 @@ export const Header = () => {
         Icon: CalendarIcon,
       },
     ]),
+    {
+      to: '/completed',
+      label: 'Completed',
+      Icon: InboxIcon,
+    },
   ] : [];
 
   return (

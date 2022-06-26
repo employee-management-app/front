@@ -85,8 +85,11 @@
   @include text-small;
 
   color: $color-primary;
-  padding-right: 30px;
   transition: 0.2s padding ease-in-out;
+}
+
+.card:not(.disabled) .date {
+  padding-right: 30px;
 }
 
 .actions {
@@ -109,7 +112,7 @@
     margin: 0;
     padding: 0;
 
-    li:last-child .action {
+    li:last-child:not(:first-child) .action {
       color: $color-danger;
     }
   }
@@ -138,7 +141,7 @@
   @include text-base;
   display: flex;
   align-items: center;
-  width: 180px;
+  width: 205px;
   padding: 6px 12px;
   cursor: pointer;
 
@@ -195,16 +198,16 @@
 }
 
 @include breakpoint-up("md") {
-  .date {
+  .card:not(.disabled) .date {
     padding-right: 0;
   }
 
-  .actionsButton {
+  .card:not(.disabled) .actionsButton {
     transform: scale(0.5) rotate(90deg);
     opacity: 0;
   }
 
-  .card:hover,
+  .card:hover:not(.disabled),
   .actions.active {
     .actionsButton {
       transform: scale(1) rotate(0);
@@ -212,7 +215,7 @@
     }
   }
 
-  .card:hover .date,
+  .card:hover:not(.disabled) .date,
   .actions.active + .date {
     padding-right: 30px;
   }

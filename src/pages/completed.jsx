@@ -1,17 +1,48 @@
+import React from 'react';
+
 import { Container } from '../components/Container';
-import { EmptyState } from '../components/EmptyState';
-import { Button } from '../components/Button';
+import { Grid, GridEl } from '../components/Grid';
+import { Text } from '../components/Text';
+import { OrdersList } from '../components/OrdersList';
+import { Spinner } from '../components/Spinner';
+import { useAuth } from '../hooks/useAuth';
+import { useNotification } from '../hooks/useNotification';
+import { fetchOrders } from '../services/fetchOrders';
+import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
 
 export const Completed = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [orders, setOrders] = React.useState([]);
+
+  const { user, isEmployee } = useAuth();
+  const { pushNotification } = useNotification();
+
+  React.useEffect(() => {
+    setIsLoading(true);
+
+    (isEmployee ? fetchEmployeeOrders(user._id, { status: 'completed' }) : fetchOrders({ status: 'completed' }))
+      .then((data) => {
+        setOrders(data);
+      })
+      .catch(() => {
+        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
   return (
     <Container>
-      <EmptyState 
-        title="Nothing here yet"
-        text="Completed measurements will be displayed here. If you think this is an error - contact the administrator."
-        action={
-          <Button>Contact the administrator</Button>
-        }
-      />
+      <Grid>
+        <GridEl size="12" />
+        <GridEl size="12">
+          <Text size="h2">Completed measurements</Text>
+        </GridEl>
+        <GridEl size="12">
+          {isLoading ? <Spinner /> : <OrdersList disabled orders={orders} />}
+        </GridEl>
+      </Grid>
     </Container>
   );
 };

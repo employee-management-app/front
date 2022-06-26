@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container } from '../components/Container';
 import { EmptyState } from '../components/EmptyState';
 import { Button } from '../components/Button';
-import { Text } from '../components/Text';
 import { Grid, GridEl } from '../components/Grid';
 import { Tabs, Tab, TabsItems, TabsItem } from '../components/Tabs';
 import { OrdersMap } from '../components/OrdersMap';
@@ -24,6 +23,7 @@ import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
 import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg';
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
+import { useNavigate } from 'react-router-dom';
 
 export const Inbox = () => {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ export const Inbox = () => {
   const orders = useSelector(getOrders);
 
   const { isEmployee } = useAuth();
+  const navigate = useNavigate();
   const { pushNotification } = useNotification();
 
   const [activeTab, setActiveTab] = React.useState(1);
@@ -40,6 +41,7 @@ export const Inbox = () => {
 
   React.useEffect(() => {
     if (isEmployee) {
+      navigate('/anytime');
       return;
     }
 
@@ -81,18 +83,7 @@ export const Inbox = () => {
   ), [orders, search]);
 
   if (isEmployee) {
-    return (
-      <Container>
-        <Grid>
-          <GridEl size="12">
-            <Text size="h3">Here you can assign yourself to the measurements</Text>
-          </GridEl>
-          <GridEl size="12">
-            <OrdersList orders={[]} />
-          </GridEl>
-        </Grid>
-      </Container>
-    );
+    return null;
   }
 
   return (

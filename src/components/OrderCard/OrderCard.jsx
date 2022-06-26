@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import React from 'react';
 import { format, formatDistanceToNow } from 'date-fns';
 
@@ -24,7 +25,7 @@ import styles from './OrderCard.module.scss';
 
 export const OrderCard = (props) => {
 
-  const { name, surname, type, creationDate, address, phone, email, message, priority, assignedEmployee, completionDate } = props;
+  const { disabled, name, surname, type, creationDate, address, phone, email, message, priority, assignedEmployee, completionDate } = props;
 
   const { isManager } = useAuth();
   
@@ -56,10 +57,10 @@ export const OrderCard = (props) => {
   const { code, city, street, house, flat, lat, lng } = address;
 
   return (
-    <Card className={styles.card}>
+    <Card className={cx(styles.card, { [styles.disabled]: disabled })}>
       <div className={styles.header}>
         <OrderCardPriority id={props._id} priority={priority} />
-        {isManager && <OrderCardActions order={props} />}
+        {!disabled && <OrderCardActions order={props} />}
         <div className={styles.date}>{formatDistanceToNow(new Date(creationDate))} ago</div>
       </div>
       <div onClick={handleClick}>
@@ -98,7 +99,7 @@ export const OrderCard = (props) => {
               <Button 
                 icon={assignedEmployee ? undefined : UserIcon} 
                 width="full" 
-                disabled={assignedEmployee && !isManager}
+                disabled={((assignedEmployee && !isManager) || disabled)}
                 onClick={openAssignModal}
               >
                 {assignedEmployee ? `${assignedEmployee.name} ${assignedEmployee.surname}` : 'Assignee'}
@@ -108,6 +109,7 @@ export const OrderCard = (props) => {
               <Button 
                 icon={completionDate ? undefined : CalendarIcon} 
                 width="full"
+                disabled={disabled}
                 onClick={openScheduleModal}
               >
                 {completionDate ? format(new Date(completionDate), 'dd.MM.yy  HH:mm') : 'Schedule'}
