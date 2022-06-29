@@ -12,7 +12,6 @@ export const DatePicker = (props) => {
       {...props}
       min={min}
       type="datetime-local"
-      step={60 * 15}
     />
   );
 };

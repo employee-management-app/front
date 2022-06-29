@@ -5,5 +5,5 @@ export const formatDateToDateTimeLocal = (date) => {
     return null;
   }
 
-  return format(new Date(date), `yyyy-MM-dd'T'HH:mm:ss`);
+  return format(new Date(date), `yyyy-MM-dd'T'HH:mm`);
 };

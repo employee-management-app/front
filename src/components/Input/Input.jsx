@@ -29,6 +29,7 @@ export const Input = (props) => {
         type={props.type || 'text'}
         placeholder={props.placeholder}
         value={value}
+        min={props.min}
         className={styles.input}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
