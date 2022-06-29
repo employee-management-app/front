@@ -78,7 +78,9 @@ export const OrdersMap = ({ orders }) => {
       return undefined;
     }
 
-    return employees.find(({ _id }) => _id === assignedEmployee._id).color;
+    const employee = employees.find(({ _id }) => _id === assignedEmployee._id) || {};
+
+    return employee.color || '';
   }, [isEmployee, employees]);
 
   const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, address }) => ({
