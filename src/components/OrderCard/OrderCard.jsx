@@ -63,7 +63,7 @@ export const OrderCard = (props) => {
         {!disabled && <OrderCardActions order={props} />}
         <div className={styles.date}>{formatDistanceToNow(new Date(creationDate))} ago</div>
       </div>
-      <div onClick={handleClick}>
+      <div className={styles.body} onClick={handleClick}>
         <div className={styles.type}>{type}</div>
         <Text className={styles.address}>
           {street} {house}{flat ? `, lokal ${flat}` : ''}<br />

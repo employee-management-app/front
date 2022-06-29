@@ -1,24 +1,18 @@
 import React from 'react';
 
+import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal';
+
 import { Input } from '../Input';
 
+const min = formatDateToDateTimeLocal(Date.now());
+
 export const DatePicker = (props) => {
-  const [type, setType] = React.useState('text');
-
-  const handleBlur = () => {
-    setType('text');
-  };
-
-  const handleFocus = () => {
-    setType('datetime-local');
-  };
-
   return (
     <Input 
       {...props}
-      type={props.value ? 'datetime-local' : type}
-      onBlur={handleBlur}
-      onFocus={handleFocus}
+      min={min}
+      type="datetime-local"
+      step={60 * 15}
     />
   );
 };

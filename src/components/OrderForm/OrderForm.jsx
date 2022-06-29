@@ -152,7 +152,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
               </Field>
             </GridEl>
             <GridEl size="6">
-              <Field label={editMode && 'Select employee'} error={errors.assignedEmployee}>
+              <Field label="Assign employee" error={errors.assignedEmployee}>
                 <Select 
                   value={fields.assignedEmployee}
                   options={employeesOptions}
@@ -164,7 +164,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
               </Field>
             </GridEl>
             <GridEl size="6">
-              <Field label={editMode && 'Schedule time'} error={errors.completionDate}>
+              <Field label="Schedule time" error={errors.completionDate}>
                 <DatePicker 
                   value={fields.completionDate}
                   placeholder="Schedule time"

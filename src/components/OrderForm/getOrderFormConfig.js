@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal';
 
 export const getOrderFormConfig = (yup, values = {}) => ({
   email: {
@@ -45,7 +45,7 @@ export const getOrderFormConfig = (yup, values = {}) => ({
     value: values.assignedEmployee ? values.assignedEmployee._id : null,
   },
   completionDate: {
-    value: values.completionDate ? format(new Date(values.completionDate), `yyyy-MM-dd'T'HH:mm:ss`) : null,
+    value: formatDateToDateTimeLocal(values.completionDate),
   },
   message: {
     value: values.message || '',

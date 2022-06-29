@@ -1,11 +1,11 @@
 import React from 'react';
-import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { useAuth } from '../../hooks/useAuth';
+import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal';
 import { updateOrder } from '../../services/updateOrder';
 import { updateOrder as updateOrderInStore } from '../../store';
 
@@ -23,7 +23,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
   const getConfig = () => ({
     completionDate: {
-      value: order.completionDate ? format(new Date(order.completionDate), `yyyy-MM-dd'T'HH:mm:ss`) : null,
+      value: formatDateToDateTimeLocal(order.completionDate),
     },
   });
 
