@@ -5,5 +5,5 @@ export const formatDateToDateTimeLocal = (date) => {
     return null;
   }
 
-  return formatISO9075(new Date(date)).slice(0, -3);
+  return formatISO9075(new Date(date)).slice(0, -3).replace(' ', 'T');
 };
