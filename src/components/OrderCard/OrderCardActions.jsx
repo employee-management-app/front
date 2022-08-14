@@ -22,7 +22,7 @@ import { EditOrderForm } from '../OrderForm';
 import styles from './OrderCard.module.scss';
 import { updateOrder } from '../../services/updateOrder';
 
-export const OrderCardActions = (props) => {
+export const OrderCardActions = ({ order }) => {
   const ref = React.useRef();
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = React.useState(false);
@@ -36,7 +36,7 @@ export const OrderCardActions = (props) => {
   const { pushNotification } = useNotification();
 
   const toggleDropdown = React.useCallback(() => {
-    setIsDropdownVisible(visible => !visible);
+    setIsDropdownVisible((visible) => !visible);
   }, []);
 
   const hideDropdown = React.useCallback(() => {
@@ -47,24 +47,24 @@ export const OrderCardActions = (props) => {
     setIsLoading(true);
     setIsDeleteModalVisible(false);
 
-    deleteOrder(props.order._id)
+    deleteOrder(order._id)
       .then(() => {
-        pushNotification({ theme: 'success', content: 'Measurement was successfully removed!' })
-        dispatch(deleteOrderById(props.order._id));
+        pushNotification({ theme: 'success', content: 'Measurement was successfully removed!' });
+        dispatch(deleteOrderById(order._id));
       })
       .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong! Try again later.' })
+        pushNotification({ theme: 'error', content: 'Something went wrong! Try again later.' });
       });
-  }, [dispatch, props.order, pushNotification]);
+  }, [dispatch, order, pushNotification]);
 
   const handleCompleteOrder = React.useCallback(() => {
-    updateOrder(props.order._id, { status: 'completed' })
+    updateOrder(order._id, { status: 'completed' })
       .then(() => {
-        pushNotification({ theme: 'success', content: 'Measurement completed!' })
+        pushNotification({ theme: 'success', content: 'Measurement completed!' });
         navigate('/completed');
       })
       .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong! Try again later.' })
+        pushNotification({ theme: 'error', content: 'Something went wrong! Try again later.' });
       });
   }, []);
 
@@ -142,7 +142,7 @@ export const OrderCardActions = (props) => {
         title="Edit measurement"
         onClose={handleEditModalClose}
       >
-        <EditOrderForm values={props.order} onSuccess={handleEditModalClose} />
+        <EditOrderForm values={order} onSuccess={handleEditModalClose} />
       </Modal>
       <Modal
         isOpen={isDeleteModalVisible}

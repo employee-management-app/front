@@ -3,32 +3,33 @@ import cx from 'classnames';
 
 import styles from './Checkbox.module.scss';
 
-export const Checkbox = (props) => {
-  const [isChecked, setIsChecked] = React.useState(props.checked || false);
+export const Checkbox = ({ checked, onChange, ...props }) => {
+  const [isChecked, setIsChecked] = React.useState(checked || false);
 
   React.useEffect(() => {
-    setIsChecked(props.checked);
-  }, [props.checked]);
+    setIsChecked(checked);
+  }, [checked]);
 
-  const onChange = React.useCallback((e) => {
+  const handleChange = React.useCallback((e) => {
     setIsChecked(e.target.checked);
 
-    if (props.onChange) {
-      props.onChange(e);
+    if (onChange) {
+      onChange(e);
     }
-  }, [props]);
+  }, [onChange]);
 
-  const classNames = cx(styles.field, { 
+  const classNames = cx(styles.field, {
     [styles.checked]: isChecked,
     [styles.invalid]: props.invalid,
   });
 
   return (
+    // eslint-disable-next-line jsx-a11y/label-has-associated-control
     <label className={classNames}>
-      <input 
-        type="checkbox" 
+      <input
+        type="checkbox"
         className={styles.input}
-        onChange={onChange}
+        onChange={handleChange}
       />
       {props.children}
     </label>

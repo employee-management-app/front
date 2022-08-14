@@ -1,16 +1,17 @@
+import React from 'react';
 import cx from 'classnames';
 
 import styles from './Grid.module.scss';
 
-export const GridEl = (props) => {
-  const sizes = typeof props.size === 'object' ? props.size : { xs: props.size };
-  const classNames = props.size 
+export const GridEl = ({ size, children, filled }) => {
+  const sizes = typeof size === 'object' ? size : { xs: size };
+  const classNames = size
     ? Object.keys(sizes).map((key) => styles[`${key}${sizes[key]}`])
     : [];
 
   return (
-    <div className={cx(classNames, { [styles.filled]: props.filled })}>
-      {props.children}
+    <div className={cx(classNames, { [styles.filled]: filled })}>
+      {children}
     </div>
   );
 };

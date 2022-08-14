@@ -17,14 +17,14 @@ const ServiceWorkerWrapper = ({ children }) => {
   };
 
   const onServiceWorkerUpdate = (registration) => {
-    pushNotification({ 
-      theme: 'info', 
-      content: 'New version is available!', 
+    pushNotification({
+      theme: 'info',
+      content: 'New version is available!',
       action: {
         label: 'Get the new version',
         onClick: () => reloadPage(registration),
       },
-      manualClose: true, 
+      manualClose: true,
     });
   };
 

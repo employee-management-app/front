@@ -32,5 +32,5 @@ export const CreateOrderButton = () => {
         <CreateOrderForm onSuccess={handleModalClose} />
       </Modal>
     </>
-  )
+  );
 };

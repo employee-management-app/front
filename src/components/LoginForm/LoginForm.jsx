@@ -24,7 +24,7 @@ const getConfig = (yup) => ({
 });
 
 export const LoginForm = () => {
-  const { 
+  const {
     fields,
     errors,
     isValid,
@@ -57,7 +57,7 @@ export const LoginForm = () => {
 
   return (
     <Container height="full">
-      <form 
+      <form
         noValidate
         style={{ maxWidth: '400px', textAlign: 'center' }}
         onSubmit={handleSubmit}
@@ -70,22 +70,22 @@ export const LoginForm = () => {
             <Grid>
               <GridEl size="12">
                 <Field error={errors.email}>
-                  <Input 
+                  <Input
                     value={fields.email}
-                    size="medium" 
+                    size="medium"
                     type="email"
-                    placeholder="Email" 
+                    placeholder="Email"
                     onChange={(e) => onFieldChange(e, 'email')}
                   />
                 </Field>
               </GridEl>
               <GridEl size="12">
                 <Field error={errors.password}>
-                  <Input 
+                  <Input
                     value={fields.password}
-                    size="medium" 
+                    size="medium"
                     type="password"
-                    placeholder="Password" 
+                    placeholder="Password"
                     onChange={(e) => onFieldChange(e, 'password')}
                   />
                 </Field>
@@ -93,8 +93,8 @@ export const LoginForm = () => {
             </Grid>
           </GridEl>
           <GridEl size="12">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               size="medium"
               width="full"
               loading={isLoading}
@@ -104,7 +104,7 @@ export const LoginForm = () => {
           </GridEl>
           <GridEl size="12">
             <Link to="/signup">
-              Don't have an account yet? Register now
+              Don&apos;t have an account yet? Register now
             </Link>
           </GridEl>
         </Grid>

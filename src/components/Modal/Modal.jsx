@@ -27,16 +27,16 @@ export const Modal = ({ onClose, ...props }) => {
       overlayClassName={styles.overlay}
       closeTimeoutMS={200}
       onRequestClose={closeModal}
-    > 
+    >
       {props.title && <div className={styles.title}>{props.title}</div>}
       {props.children}
-      <button 
-        type="button" 
+      <button
+        type="button"
         className={styles.closeButton}
         onClick={closeModal}
       >
         <CloseIcon />
       </button>
     </ReactModal>
-  )
-};  
+  );
+};

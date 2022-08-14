@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import { ReactComponent as InboxIcon } from '../../assets/icons/inbox.svg';

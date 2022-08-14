@@ -34,43 +34,43 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Mixed views */}
-      <Route path='/login' element={<Login />} />
-      <Route path='/signup' element={<Signup />} />
-      <Route 
-        path='/' 
-        element={
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route
+        path="/"
+        element={(
           <ProtectedRoute>
             <Inbox />
           </ProtectedRoute>
-        } 
+        )}
       />
-      <Route path='/ui' element={<UI />} />
-      <Route path='*' element={<Error />} />
+      <Route path="/ui" element={<UI />} />
+      <Route path="*" element={<Error />} />
       {/* Manager views */}
-      <Route 
-        path='/completed' 
-        element={
+      <Route
+        path="/completed"
+        element={(
           <ProtectedRoute>
             <Completed />
           </ProtectedRoute>
-        } 
+        )}
       />
       {/* Employee views */}
-      <Route 
-        path='/anytime' 
-        element={
+      <Route
+        path="/anytime"
+        element={(
           <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
             <Anytime />
           </ProtectedRoute>
-        } 
+        )}
       />
-      <Route 
-        path='/scheduled' 
-        element={
+      <Route
+        path="/scheduled"
+        element={(
           <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
             <Scheduled />
           </ProtectedRoute>
-        } 
+        )}
       />
     </Routes>
   );

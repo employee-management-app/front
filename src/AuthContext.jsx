@@ -9,7 +9,7 @@ const defaultContextValue = {
   isLoggedIn: false,
   isManager: false,
   isEmployee: false,
-  user: {},   
+  user: {},
 };
 
 export const AuthContext = React.createContext(null);
@@ -24,17 +24,17 @@ export const AuthProvider = ({ children }) => {
       .then(({ data }) => {
         const { token, user } = data;
 
-        const auth = {
+        const authData = {
           isLoggedIn: true,
           ...(user.role === 'manager' && { isManager: true }),
           ...(user.role === 'employee' && { isEmployee: true }),
-          user: user,
+          user,
           token,
         };
 
-        setAuth(auth);
-        resolve(auth);
-        window.localStorage.setItem('auth', JSON.stringify(auth));
+        setAuth(authData);
+        resolve(authData);
+        window.localStorage.setItem('auth', JSON.stringify(authData));
       })
       .catch((err) => {
         reject(err.response.data || {});
