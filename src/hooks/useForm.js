@@ -27,7 +27,7 @@ export const useForm = (callback) => {
   const [fields, setFields] = React.useState(defaultFields);
 
   React.useEffect(() => {
-    schema.isValid(defaultFields).then(valid => setIsValid(valid));
+    schema.isValid(defaultFields).then((valid) => setIsValid(valid));
   }, []);
 
   const onSubmit = React.useCallback((e) => {
@@ -44,13 +44,13 @@ export const useForm = (callback) => {
     const updatedFields = { ...fields, [field]: value };
 
     setFields(updatedFields);
-    setErrors(errs => ({ ...errs, [field]: '' }));
+    setErrors((errs) => ({ ...errs, [field]: '' }));
 
-    schema.isValid(updatedFields).then(valid => setIsValid(valid));
+    schema.isValid(updatedFields).then((valid) => setIsValid(valid));
 
     if (isShowErrors) {
       schema.validateAt(field, updatedFields).catch(({ message }) => {
-        setErrors(errs => ({ ...errs, [field]: message }));
+        setErrors((errs) => ({ ...errs, [field]: message }));
       });
     }
   }, [schema, fields, isShowErrors]);
@@ -63,17 +63,17 @@ export const useForm = (callback) => {
     JSON.stringify(defaultFields) !== JSON.stringify(fields)
   ), [defaultFields, fields]);
 
-  return { 
-    fields, 
-    errors, 
+  return {
+    fields,
+    errors,
     isTouched,
-    isValid, 
+    isValid,
     isLoading,
     setFields,
-    setErrors, 
-    setIsLoading, 
+    setErrors,
+    setIsLoading,
     onValueChange,
-    onFieldChange, 
-    onSubmit, 
+    onFieldChange,
+    onSubmit,
   };
 };

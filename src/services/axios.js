@@ -8,7 +8,7 @@ const getAuthHeader = () => {
   }
 
   return {
-    'Authorization': `Token ${token}`,
+    Authorization: `Token ${token}`,
   };
 };
 
@@ -29,10 +29,10 @@ const _delete = (url, config) => (
 );
 
 const methods = {
-  get, 
-  post, 
-  patch, 
+  get,
+  post,
+  patch,
   delete: _delete,
-}
+};
 
 export default methods;

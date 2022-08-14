@@ -14,8 +14,8 @@ export const UserWidget = () => {
       </button>
       <div className={styles.dropdown}>
         <div className={styles.dropdownInner}>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className={styles.dropdownItem}
             onClick={onLogout}
           >

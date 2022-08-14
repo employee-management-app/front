@@ -25,7 +25,7 @@ export const Completed = () => {
         setOrders(data);
       })
       .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
+        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
       })
       .finally(() => {
         setIsLoading(false);

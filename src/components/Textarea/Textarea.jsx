@@ -3,26 +3,26 @@ import React from 'react';
 
 import styles from './Textarea.module.scss';
 
-export const Textarea = (props) => {
-  const [value, setValue] = React.useState(props.value || '');
+export const Textarea = ({ placeholder, size, onChange, ...rest }) => {
+  const [value, setValue] = React.useState(rest.value || '');
 
   React.useEffect(() => {
-    setValue(props.value || '');
-  }, [props.value]);
+    setValue(rest.value || '');
+  }, [rest.value]);
 
   const handleChange = React.useCallback((e) => {
     setValue(e.target.value);
 
-    if (props.onChange) {
-      props.onChange(e);
+    if (onChange) {
+      onChange(e);
     }
-  }, [props]);
+  }, [onChange]);
 
   return (
-    <textarea 
+    <textarea
       value={value}
-      className={cx(styles.textarea, { [styles[props.size]]: props.size })} 
-      placeholder={props.placeholder}
+      className={cx(styles.textarea, { [styles[size]]: size })}
+      placeholder={placeholder}
       onChange={handleChange}
     />
   );

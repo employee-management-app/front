@@ -42,7 +42,7 @@ const getConfig = (yup) => ({
 
 export const SignupForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { 
+  const {
     fields,
     errors,
     isValid,
@@ -67,19 +67,18 @@ export const SignupForm = () => {
   }, [searchParams, setSearchParams]);
 
   React.useEffect(() => {
-    setFields((prevFields) => ({ 
-      ...prevFields, 
-      role: searchParams.get('role'), 
+    setFields((prevFields) => ({
+      ...prevFields,
+      role: searchParams.get('role'),
     }));
   }, [searchParams, setFields]);
 
   const handleSubmit = (e) => {
     onSubmit(e);
 
-
     if (!isValid) {
       pushNotification({ theme: 'warning', content: 'Please fill in all required fields!' });
-      
+
       return;
     }
 
@@ -89,7 +88,10 @@ export const SignupForm = () => {
       .then(() => {
         setFields({});
         navigate('/login');
-        pushNotification({ theme: 'success', content: 'The account has been registered! Now you can log into the system.' });
+        pushNotification({
+          theme: 'success',
+          content: 'The account has been registered! Now you can log into the system.',
+        });
       })
       .catch((err) => {
         const { message } = err.response.data || {};
@@ -103,7 +105,7 @@ export const SignupForm = () => {
 
   return (
     <Container height="full">
-      <form 
+      <form
         noValidate
         onSubmit={handleSubmit}
       >
@@ -114,68 +116,71 @@ export const SignupForm = () => {
                 <Text size="h2">Create a new account</Text>
               </GridEl>
               <GridEl size="12">
-                <Text>Fill in the details in the form below to create an account. With this data you will be able to authorize to the system later. All the fields are required.</Text>
+                <Text>
+                  Fill in the details in the form below to create an account.
+                  With this data you will be able to authorize to the system later. All the fields are required.
+                </Text>
               </GridEl>
               <GridEl size="12">
                 <Field error={errors.email}>
-                  <Input 
+                  <Input
                     value={fields.email}
-                    size="medium" 
+                    size="medium"
                     type="email"
-                    placeholder="Email" 
+                    placeholder="Email"
                     onChange={(e) => onFieldChange(e, 'email')}
                   />
                 </Field>
               </GridEl>
               <GridEl size="12">
                 <Field error={errors.phone}>
-                  <Input 
+                  <Input
                     value={fields.phone}
-                    size="medium" 
+                    size="medium"
                     type="phone"
-                    placeholder="Phone number" 
+                    placeholder="Phone number"
                     onChange={(e) => onFieldChange(e, 'phone')}
                   />
                 </Field>
               </GridEl>
               <GridEl size={{ xs: 12, sm: 6 }}>
                 <Field error={errors.name}>
-                  <Input 
+                  <Input
                     value={fields.name}
-                    size="medium" 
-                    placeholder="Name" 
+                    size="medium"
+                    placeholder="Name"
                     onChange={(e) => onFieldChange(e, 'name')}
                   />
                 </Field>
               </GridEl>
               <GridEl size={{ xs: 12, sm: 6 }}>
                 <Field error={errors.surname}>
-                  <Input 
+                  <Input
                     value={fields.surname}
-                    size="medium" 
-                    placeholder="Surname" 
+                    size="medium"
+                    placeholder="Surname"
                     onChange={(e) => onFieldChange(e, 'surname')}
                   />
                 </Field>
               </GridEl>
               <GridEl size={{ xs: 12, sm: 6 }}>
                 <Field error={errors.password}>
-                  <Input 
+                  <Input
                     value={fields.password}
-                    size="medium" 
+                    size="medium"
                     type="password"
-                    placeholder="Password" 
+                    placeholder="Password"
                     onChange={(e) => onFieldChange(e, 'password')}
                   />
                 </Field>
               </GridEl>
               <GridEl size={{ xs: 12, sm: 6 }}>
                 <Field error={errors.repeatPassword}>
-                  <Input 
+                  <Input
                     value={fields.repeatPassword}
-                    size="medium" 
+                    size="medium"
                     type="password"
-                    placeholder="Repeat password" 
+                    placeholder="Repeat password"
                     onChange={(e) => onFieldChange(e, 'repeatPassword')}
                   />
                 </Field>
@@ -185,8 +190,8 @@ export const SignupForm = () => {
           <GridEl size="12">
             <Grid space={SPACES.L}>
               <GridEl size="12">
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   size="medium"
                   loading={isLoading}
                 >
@@ -196,7 +201,7 @@ export const SignupForm = () => {
               <GridEl size="12">
                 <Link to="/">
                   Already have an account? Log in
-                </Link>            
+                </Link>
               </GridEl>
             </Grid>
           </GridEl>

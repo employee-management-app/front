@@ -12,9 +12,9 @@ export const Tab = ({ id, children, ...props }) => {
   }, [id, setActive]);
 
   return (
-    <button 
+    <button
       type="button"
-      className={cx(styles.tab, { [styles.active]: active === id })} 
+      className={cx(styles.tab, { [styles.active]: active === id })}
       onClick={onClick}
     >
       {props.icon && <props.icon />}

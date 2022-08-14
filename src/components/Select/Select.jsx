@@ -22,18 +22,20 @@ export const Select = ({ options = [], ...props }) => {
     if (props.onClear) {
       props.onClear(null);
     }
-  }
+  };
 
   return (
-    <div 
-      className={cx(styles.field, { 
-        [styles.invalid]: props.invalid, 
+    <div
+      className={cx(styles.field, {
+        [styles.invalid]: props.invalid,
         [styles[props.size]]: props.size,
         [styles.required]: props.required,
         [styles.active]: !!value,
       })}
     >
-      {(value && !props.required) && <button type="button" className={styles.clear} onClick={handleClear} />}
+      {(value && !props.required) && (
+        <button type="button" aria-label="Clear" className={styles.clear} onClick={handleClear} />
+      )}
       <select
         value={value}
         disabled={props.disabled}
@@ -41,7 +43,7 @@ export const Select = ({ options = [], ...props }) => {
         className={styles.select}
         onChange={onChange}
       >
-        <option disabled hidden value=""></option>
+        <option aria-label="Clear" disabled hidden value="" />
         {options.map((option) => (
           <option key={option.value} value={option.value}>{option.label}</option>
         ))}
