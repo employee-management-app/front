@@ -38,7 +38,9 @@
   width: 100%;
   border-bottom: 1px solid $color-gray-lighten-1;
   color: $color-dark;
-  padding: 4px 10px;
+  padding: 4px 25px 4px 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   transition: 0.2s;
   cursor: pointer;
 
@@ -97,7 +99,7 @@
 .field {
   &.medium {
     .select {
-      padding: 8px 16px;
+      padding: 8px 25px 8px 16px;
     }
 
     .placeholder {
