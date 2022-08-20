@@ -35,7 +35,6 @@ export const Completed = () => {
   return (
     <Container>
       <Grid>
-        <GridEl size="12" />
         <GridEl size="12">
           <Text size="h2">Completed measurements</Text>
         </GridEl>

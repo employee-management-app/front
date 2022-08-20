@@ -32,12 +32,12 @@ export const Scheduled = () => {
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetchEmployeeOrders(user._id, { completionDate: true, sortBy: 'completionDate', orderBy: 'asc' })
+    fetchEmployeeOrders(user._id, { startDate: true, sortBy: 'startDate', orderBy: 'asc' })
       .then((data) => {
         setOrders(data);
       })
       .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
+        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
       })
       .finally(() => {
         setIsLoading(false);
@@ -88,7 +88,7 @@ export const Scheduled = () => {
           <OrdersMap orders={filteredOrders} />
         </TabsItem>
         <TabsItem for={2}>
-          <EmptyState 
+          <EmptyState
             title="Nothing here yet"
             text="Calenar will be displayed here. If you think this is an error - contact the administrator."
             action={
@@ -97,7 +97,7 @@ export const Scheduled = () => {
           />
         </TabsItem>
         <TabsItem for={3}>
-          <EmptyState 
+          <EmptyState
             title="Nothing here yet"
             text="Timeline will be displayed here. If you think this is an error - contact the administrator."
             action={

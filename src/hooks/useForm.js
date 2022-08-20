@@ -41,19 +41,21 @@ export const useForm = (callback) => {
   }, [fields, schema]);
 
   const onValueChange = React.useCallback(async (value, field) => {
-    const updatedFields = { ...fields, [field]: value };
-
-    setFields(updatedFields);
     setErrors((errs) => ({ ...errs, [field]: '' }));
+    setFields((flds) => {
+      const updatedFields = { ...flds, [field]: value };
 
-    schema.isValid(updatedFields).then((valid) => setIsValid(valid));
+      schema.isValid(updatedFields).then((valid) => setIsValid(valid));
 
-    if (isShowErrors) {
-      schema.validateAt(field, updatedFields).catch(({ message }) => {
-        setErrors((errs) => ({ ...errs, [field]: message }));
-      });
-    }
-  }, [schema, fields, isShowErrors]);
+      if (isShowErrors) {
+        schema.validateAt(field, updatedFields).catch(({ message }) => {
+          setErrors((errs) => ({ ...errs, [field]: message }));
+        });
+      }
+
+      return updatedFields;
+    });
+  }, [schema, isShowErrors]);
 
   const onFieldChange = React.useCallback(async (e, field) => {
     onValueChange(e.target.value, field);

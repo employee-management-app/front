@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Container } from '../components/Container';
 import { EmptyState } from '../components/EmptyState';
@@ -23,7 +24,6 @@ import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
 import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg';
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
-import { useNavigate } from 'react-router-dom';
 
 export const Inbox = () => {
   const dispatch = useDispatch();
@@ -56,12 +56,12 @@ export const Inbox = () => {
       return;
     }
 
-    fetchOrders({ assignedEmployee: showAssigned, completionDate: showScheduled })
+    fetchOrders({ assignedEmployee: showAssigned, startDate: showScheduled })
       .then((data) => {
         dispatch(setOrders(data));
       })
       .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
+        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
       });
   }, [showAssigned, showScheduled]);
 
@@ -70,11 +70,11 @@ export const Inbox = () => {
   }, []);
 
   const handleAssignCheckbox = React.useCallback((e) => {
-    setShowAssigned(e.target.checked || undefined)
+    setShowAssigned(e.target.checked || undefined);
   }, []);
 
   const handleScheduleCheckbox = React.useCallback((e) => {
-    setShowScheduled(e.target.checked || undefined)
+    setShowScheduled(e.target.checked || undefined);
   }, []);
 
   // Temporary solution on front part for the search
@@ -131,7 +131,7 @@ export const Inbox = () => {
           <OrdersMap orders={filteredOrders} />
         </TabsItem>
         <TabsItem for={2}>
-          <EmptyState 
+          <EmptyState
             title="Nothing here yet"
             text="Calenar will be displayed here. If you think this is an error - contact the administrator."
             action={
@@ -140,7 +140,7 @@ export const Inbox = () => {
           />
         </TabsItem>
         <TabsItem for={3}>
-          <EmptyState 
+          <EmptyState
             title="Nothing here yet"
             text="Timeline will be displayed here. If you think this is an error - contact the administrator."
             action={

@@ -10,9 +10,9 @@ import { updateOrder } from '../../services/updateOrder';
 import { updateOrder as updateOrderInStore } from '../../store';
 
 import { Field } from '../Field';
-import { DatePicker } from '../DatePicker';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
+import { DateTimePicker } from '../DateTimePicker';
 
 export const ScheduleForm = ({ order, onSuccess }) => {
   const dispatch = useDispatch();
@@ -22,12 +22,15 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   const { pushNotification } = useNotification();
 
   const getConfig = () => ({
-    completionDate: {
-      value: formatDateToDateTimeLocal(order.completionDate),
+    startDate: {
+      value: formatDateToDateTimeLocal(order.startDate),
+    },
+    endDate: {
+      value: formatDateToDateTimeLocal(order.endDate),
     },
   });
 
-  const { 
+  const {
     fields,
     errors,
     isTouched,
@@ -35,9 +38,14 @@ export const ScheduleForm = ({ order, onSuccess }) => {
     isLoading,
     setErrors,
     setIsLoading,
-    onFieldChange,
+    onValueChange,
     onSubmit,
   } = useForm(getConfig);
+
+  const handleChange = React.useCallback(([startDate, endDate]) => {
+    onValueChange(startDate, 'startDate');
+    onValueChange(endDate, 'endDate');
+  }, [onValueChange]);
 
   const handleSubmit = (e) => {
     onSubmit(e);
@@ -48,7 +56,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
     if (isValid && !isTouched) {
       onSuccess();
-      
+
       return;
     }
 
@@ -59,10 +67,13 @@ export const ScheduleForm = ({ order, onSuccess }) => {
         if (isManager) {
           dispatch(updateOrderInStore(data));
         } else {
-          navigate(data.completionDate ? '/scheduled' : '/anytime');
+          navigate(data.startDate ? '/scheduled' : '/anytime');
         }
 
-        pushNotification({ theme: 'success', content: `Scheduled time successfully ${data.completionDate ? 'set' : 'removed'}!` });
+        pushNotification({
+          theme: 'success',
+          content: `Scheduled time successfully ${data.startDate ? 'set' : 'removed'}!`,
+        });
         onSuccess();
       })
       .catch((err) => {
@@ -75,18 +86,19 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   };
 
   return (
-    <form 
+    <form
       noValidate
       onSubmit={handleSubmit}
     >
       <Grid space={SPACES.XL}>
         <GridEl size="12">
-          <Field error={errors.completionDate}>
-            <DatePicker 
-              value={fields.completionDate}
+          <Field error={errors.startDate || errors.endDate}>
+            <DateTimePicker
+              value={[fields.startDate, fields.endDate]}
               placeholder="Schedule time"
               size="medium"
-              onChange={(e) => onFieldChange(e, 'completionDate')}
+              rangeMode="time"
+              onChange={handleChange}
             />
           </Field>
         </GridEl>

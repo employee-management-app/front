@@ -32,12 +32,12 @@ export const Anytime = () => {
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetchEmployeeOrders(user._id, { completionDate: false, sortBy: 'priority' })
+    fetchEmployeeOrders(user._id, { startDate: false, sortBy: 'priority' })
       .then((data) => {
         setOrders(data);
       })
       .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
+        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
       })
       .finally(() => {
         setIsLoading(false);
@@ -88,7 +88,7 @@ export const Anytime = () => {
           <OrdersMap orders={filteredOrders} />
         </TabsItem>
         <TabsItem for={2}>
-          <EmptyState 
+          <EmptyState
             title="Nothing here yet"
             text="Calenar will be displayed here. If you think this is an error - contact the administrator."
             action={
@@ -97,7 +97,7 @@ export const Anytime = () => {
           />
         </TabsItem>
         <TabsItem for={3}>
-          <EmptyState 
+          <EmptyState
             title="Nothing here yet"
             text="Timeline will be displayed here. If you think this is an error - contact the administrator."
             action={

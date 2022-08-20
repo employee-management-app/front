@@ -44,8 +44,11 @@ export const getOrderFormConfig = (yup, values = {}) => ({
   assignedEmployee: {
     value: values.assignedEmployee ? values.assignedEmployee._id : null,
   },
-  completionDate: {
-    value: formatDateToDateTimeLocal(values.completionDate),
+  startDate: {
+    value: formatDateToDateTimeLocal(values.startDate),
+  },
+  endDate: {
+    value: formatDateToDateTimeLocal(values.endDate),
   },
   message: {
     value: values.message || '',
