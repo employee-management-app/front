@@ -7,7 +7,6 @@ import { ReactComponent as EditIcon } from '../../assets/icons/edit.svg';
 import { ReactComponent as TrashIcon } from '../../assets/icons/trash.svg';
 import { ReactComponent as DoneIcon } from '../../assets/icons/done.svg';
 
-import { useClickOutside } from '../../hooks/useClickOutside';
 import { ReactComponent as DotsIcon } from '../../assets/icons/dots.svg';
 import { deleteOrder } from '../../services/deleteOrder';
 import { deleteOrderById } from '../../store';
@@ -18,29 +17,29 @@ import { Modal } from '../Modal';
 import { Grid, GridEl } from '../Grid';
 import { Button } from '../Button';
 import { EditOrderForm } from '../OrderForm';
+import { PopoverMenu } from '../PopoverMenu';
 
 import styles from './OrderCard.module.scss';
 import { updateOrder } from '../../services/updateOrder';
 
 export const OrderCardActions = ({ order }) => {
-  const ref = React.useRef();
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = React.useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = React.useState(false);
   const [isCompleteModalVisible, setIsCompleteModalVisible] = React.useState(false);
-  const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
+  const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
 
   const dispatch = useDispatch();
   const { isEmployee } = useAuth();
   const navigate = useNavigate();
   const { pushNotification } = useNotification();
 
-  const toggleDropdown = React.useCallback(() => {
-    setIsDropdownVisible((visible) => !visible);
+  const togglePopover = React.useCallback(() => {
+    setIsPopoverVisible((visible) => !visible);
   }, []);
 
-  const hideDropdown = React.useCallback(() => {
-    setIsDropdownVisible(false);
+  const hidePopover = React.useCallback(() => {
+    setIsPopoverVisible(false);
   }, []);
 
   const handleDeleteOrder = React.useCallback(() => {
@@ -69,19 +68,16 @@ export const OrderCardActions = ({ order }) => {
   }, []);
 
   const handleEditModalOpen = React.useCallback(() => {
-    hideDropdown();
     setIsEditModalVisible(true);
-  }, [hideDropdown]);
+  }, []);
 
   const handleDeleteModalOpen = React.useCallback(() => {
-    hideDropdown();
     setIsDeleteModalVisible(true);
-  }, [hideDropdown]);
+  }, []);
 
   const handleCompleteModalOpen = React.useCallback(() => {
-    hideDropdown();
     setIsCompleteModalVisible(true);
-  }, [hideDropdown]);
+  }, []);
 
   const handleEditModalClose = React.useCallback(() => {
     setIsEditModalVisible(false);
@@ -94,8 +90,6 @@ export const OrderCardActions = ({ order }) => {
   const handleCompleteModalClose = React.useCallback(() => {
     setIsCompleteModalVisible(false);
   }, []);
-
-  useClickOutside(ref, hideDropdown);
 
   const actions = [
     {
@@ -112,30 +106,23 @@ export const OrderCardActions = ({ order }) => {
       {
         label: 'Delete measurement',
         Icon: TrashIcon,
+        theme: 'danger',
         handler: handleDeleteModalOpen,
       },
     ] : []),
   ];
 
   return (
-    <div className={cx(styles.actions, { [styles.active]: isDropdownVisible })} ref={ref}>
-      <button type="button" className={styles.actionsButton} onClick={toggleDropdown}>
-        <DotsIcon />
-      </button>
-      {isDropdownVisible && (
-        <div className={styles.actionsDropdown}>
-          <ul>
-            {actions.map(({ label, Icon, handler }) => (
-              <li key={label}>
-                <button type="button" className={styles.action} onClick={handler}>
-                  <Icon />
-                  {label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className={cx(styles.actions, { [styles.active]: isPopoverVisible })}>
+      <PopoverMenu
+        visible={isPopoverVisible}
+        items={actions}
+        onVisibleChange={hidePopover}
+      >
+        <button type="button" className={styles.actionsButton} onClick={togglePopover}>
+          <DotsIcon />
+        </button>
+      </PopoverMenu>
       <Modal
         isOpen={isEditModalVisible}
         size="medium"

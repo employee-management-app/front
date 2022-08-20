@@ -102,26 +102,8 @@
   position: absolute;
   top: 10px;
   right: 10px;
-}
-
-.actionsDropdown {
-  background-color: $color-white;
-  border-radius: 2px;
-  padding: 4px 0;
-  margin-left: -8px;
-  box-shadow: 0 0 5px rgba($color-black, 0.5);
-  margin-top: 24px;
-  z-index: 10;
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    li:last-child:not(:first-child) .action {
-      color: $color-danger;
-    }
-  }
+  width: 24px;
+  height: 24px;
 }
 
 .actionsButton {
@@ -129,8 +111,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 24px;
-  height: 24px;
+  width: 100%;
+  height: 100%;
   transform: scale(1) rotate(0);
   transition: 0.2s all ease-in-out;
   cursor: pointer;
@@ -139,27 +121,6 @@
     width: 100%;
     height: 100%;
     fill: $color-primary;
-  }
-}
-
-.action {
-  all: unset;
-  @include text-base;
-  display: flex;
-  align-items: center;
-  width: 205px;
-  padding: 6px 12px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $color-gray-lighten-3;
-  }
-
-  svg {
-    width: 24px;
-    height: 24px;
-    margin-right: 4px;
-    fill: currentColor;
   }
 }
 

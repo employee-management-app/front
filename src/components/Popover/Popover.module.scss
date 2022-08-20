@@ -3,7 +3,7 @@
 .wrapper {
   background-color: $color-white;
   border-radius: 4px;
-  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.3);
   overflow: auto;
   max-height: 90vh;
   z-index: 1000;
@@ -17,4 +17,5 @@
 
 .trigger {
   display: inherit;
+  height: 100%;
 }

@@ -15,19 +15,19 @@ import { ReactComponent as VeryHighPriorityIcon } from '../../assets/icons/prior
 
 import styles from './OrderCard.module.scss';
 
-const icons = {
-  0: LowPriorityIcon,
-  1: NormalPriorityIcon,
-  2: HighPriorityIcon,
-  3: VeryHighPriorityIcon,
-};
+const icons = [
+  LowPriorityIcon,
+  NormalPriorityIcon,
+  HighPriorityIcon,
+  VeryHighPriorityIcon,
+];
 
-const labels = {
-  0: 'Low',
-  1: 'Normal',
-  2: 'High',
-  3: 'Very high',
-};
+const labels = [
+  'Low',
+  'Normal',
+  'High',
+  'Very high',
+];
 
 export const OrderCardPriority = ({ id, ...rest }) => {
   const ref = React.useRef();
@@ -81,7 +81,7 @@ export const OrderCardPriority = ({ id, ...rest }) => {
       {isDropdownVisible && (
         <div className={styles.priorityDropdown}>
           <ul>
-            {Object.keys(labels).map((key) => (
+            {labels.map((_, key) => (
               // eslint-disable-next-line max-len
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
               <li
@@ -89,7 +89,7 @@ export const OrderCardPriority = ({ id, ...rest }) => {
                 className={cx(
                   styles.priority,
                   styles[`priority-${key}`],
-                  { [styles.selected]: priority === Number(key) },
+                  { [styles.selected]: priority === key },
                 )}
                 onClick={handlePriorityClick(key)}
               >
