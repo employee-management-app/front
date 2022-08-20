@@ -24,19 +24,33 @@ import { ScheduleForm } from './ScheduleForm';
 import styles from './OrderCard.module.scss';
 
 export const OrderCard = (props) => {
-
-  const { disabled, name, surname, type, creationDate, address, phone, email, message, priority, assignedEmployee, completionDate } = props;
+  const {
+    _id,
+    address,
+    assignedEmployee,
+    startDate,
+    creationDate,
+    disabled,
+    email,
+    message,
+    name,
+    onClick,
+    phone,
+    priority,
+    surname,
+    type,
+  } = props;
 
   const { isManager } = useAuth();
-  
+
   const [isAssignModalOpen, setIsAssignModalOpen] = React.useState(false);
   const [isScheduleModalOpen, setIsScheduleModalOpen] = React.useState(false);
 
   const handleClick = React.useCallback((e) => {
-    if (props.onClick) {
-      props.onClick();
+    if (onClick) {
+      onClick(e);
     }
-  }, [props]);
+  }, [onClick]);
 
   const openAssignModal = React.useCallback(() => {
     setIsAssignModalOpen(true);
@@ -59,17 +73,23 @@ export const OrderCard = (props) => {
   return (
     <Card className={cx(styles.card, { [styles.disabled]: disabled })}>
       <div className={styles.header}>
-        <OrderCardPriority id={props._id} priority={priority} />
+        <OrderCardPriority id={_id} priority={priority} />
         {!disabled && <OrderCardActions order={props} />}
         <div className={styles.date}>{formatDistanceToNow(new Date(creationDate))} ago</div>
       </div>
-      <div className={styles.body} onClick={handleClick}>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/interactive-supports-focus */}
+      <div className={styles.body} role="link" onClick={handleClick}>
         <div className={styles.type}>{type}</div>
         <Text className={styles.address}>
           {street} {house}{flat ? `, lokal ${flat}` : ''}<br />
           {code} {city}
         </Text>
-        <a href={`https://maps.google.com/?q=${lat},${lng}`} target="_blank" rel="noreferrer" className={styles.routeLink}>
+        <a
+          href={`https://maps.google.com/?q=${lat},${lng}`}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.routeLink}
+        >
           <span>Show route</span>
           <DirectionIcon />
         </a>
@@ -82,10 +102,10 @@ export const OrderCard = (props) => {
             <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
           </GridEl>
           <GridEl size={{ md: 6, xl: 2 }}>
-            <Button href={`sms:${phone}`} icon={CommentIcon} width="full"></Button>
+            <Button href={`sms:${phone}`} icon={CommentIcon} width="full" />
           </GridEl>
           <GridEl size={{ md: 6, xl: 2 }}>
-            <Button href={`mailto:${email}`} icon={MailIcon} width="full"></Button>
+            <Button href={`mailto:${email}`} icon={MailIcon} width="full" />
           </GridEl>
           {message && (
             <GridEl size="12">
@@ -96,9 +116,9 @@ export const OrderCard = (props) => {
         <div className={styles.footer}>
           <Grid space={SPACES.S}>
             <GridEl size="6">
-              <Button 
-                icon={assignedEmployee ? undefined : UserIcon} 
-                width="full" 
+              <Button
+                icon={assignedEmployee ? undefined : UserIcon}
+                width="full"
                 disabled={((assignedEmployee && !isManager) || disabled)}
                 onClick={openAssignModal}
               >
@@ -106,30 +126,30 @@ export const OrderCard = (props) => {
               </Button>
             </GridEl>
             <GridEl size="6">
-              <Button 
-                icon={completionDate ? undefined : CalendarIcon} 
+              <Button
+                icon={startDate ? undefined : CalendarIcon}
                 width="full"
                 disabled={disabled}
                 onClick={openScheduleModal}
               >
-                {completionDate ? format(new Date(completionDate), 'dd.MM.yy  HH:mm') : 'Schedule'}
+                {startDate ? format(new Date(startDate), 'dd.MM.yy  HH:mm') : 'Schedule'}
               </Button>
             </GridEl>
           </Grid>
         </div>
       </div>
       {isManager && (
-        <Modal 
+        <Modal
           title="Assign employee to measurement"
-          isOpen={isAssignModalOpen} 
+          isOpen={isAssignModalOpen}
           onClose={onAssignModalClose}
         >
           <AssignForm order={props} onSuccess={onAssignModalClose} />
         </Modal>
       )}
-      <Modal 
+      <Modal
         title="Schedule an appointment for measurement"
-        isOpen={isScheduleModalOpen} 
+        isOpen={isScheduleModalOpen}
         onClose={onScheduleModalClose}
       >
         <ScheduleForm order={props} onSuccess={onScheduleModalClose} />

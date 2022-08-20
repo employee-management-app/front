@@ -3,7 +3,7 @@ import React from 'react';
 
 import styles from './Input.module.scss';
 
-export const Input = (props) => {
+export const Input = ({ ...props }) => {
   const [value, setValue] = React.useState(props.value || '');
 
   React.useEffect(() => {
@@ -11,21 +11,31 @@ export const Input = (props) => {
   }, [props.value]);
 
   const handleChange = React.useCallback((e) => {
+    if (props.frozen) {
+      return;
+    }
+
     setValue(e.target.value);
 
-    if (props.onChange) {
-      props.onChange(e);
-    }
+    props?.onChange(e);
   }, [props]);
 
-  const classNames = cx(styles.field, { 
+  const handleClear = React.useCallback(() => {
+    setValue('');
+
+    props?.onClear();
+  }, [props]);
+
+  const classNames = cx(styles.field, {
     [styles[props.size]]: props.size,
     [styles.invalid]: props.invalid,
+    [styles.withIcon]: props.icon,
   });
 
   return (
+    // eslint-disable-next-line jsx-a11y/label-has-associated-control
     <label className={classNames}>
-      <input 
+      <input
         type={props.type || 'text'}
         placeholder={props.placeholder}
         value={value}
@@ -36,6 +46,14 @@ export const Input = (props) => {
         onChange={handleChange}
       />
       {props.icon && <props.icon />}
+      {props.clearable && value && (
+        <button
+          type="button"
+          aria-label="Clear"
+          className={styles.clear}
+          onClick={handleClear}
+        />
+      )}
     </label>
   );
 };

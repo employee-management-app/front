@@ -2,7 +2,8 @@
 // TODO: GET /orders?s=search
 const getObjectValues = (obj) => {
   const values = Object.values(obj);
-  return values.map((value) => (value && typeof value === 'object') ? getObjectValues(value) : value)
+
+  return values.map((value) => ((value && typeof value === 'object') ? getObjectValues(value) : value));
 };
 
 export const filterOrdersByQuery = (orders, query) => orders.filter((order) => {

@@ -52,9 +52,9 @@ export const Notifications = () => {
                     </div>
                   )}
                 </div>
-                <button 
-                  type="button" 
-                  className={styles.closeButton} 
+                <button
+                  type="button"
+                  className={styles.closeButton}
                   onClick={() => handleCloseButtonClick(notification.id)}
                 >
                   <CloseIcon />

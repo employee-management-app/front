@@ -6,9 +6,9 @@ import { Grid, GridEl, SPACES } from '../Grid';
 import { Field } from '../Field';
 import { Textarea } from '../Textarea';
 import { Input } from '../Input';
-import { DatePicker } from '../DatePicker';
 import { Select } from '../Select';
 import { Button } from '../Button';
+import { DateTimePicker } from '../DateTimePicker';
 
 export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmit, onValueChange, onFieldChange }) => {
   const employees = useSelector(getEmployees);
@@ -39,6 +39,11 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
     },
   ], []);
 
+  const handleScheduleTimeChange = React.useCallback(([startDate, endDate]) => {
+    onValueChange(startDate, 'startDate');
+    onValueChange(endDate, 'endDate');
+  }, [onValueChange]);
+
   return (
     <form
       noValidate
@@ -49,7 +54,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
           <Grid>
             <GridEl size="6">
               <Field label={editMode && 'Name'} error={errors.name}>
-                <Input 
+                <Input
                   value={fields.name}
                   placeholder="Name"
                   size="medium"
@@ -59,7 +64,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'Surname'} error={errors.surname}>
-                <Input 
+                <Input
                   value={fields.surname}
                   placeholder="Surname"
                   size="medium"
@@ -69,7 +74,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'Email'} error={errors.email}>
-                <Input 
+                <Input
                   value={fields.email}
                   placeholder="Email"
                   type="email"
@@ -80,7 +85,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'Phone'} error={errors.phone}>
-                <Input 
+                <Input
                   value={fields.phone}
                   type="phone"
                   placeholder="Phone"
@@ -89,9 +94,9 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                 />
               </Field>
             </GridEl>
-            <GridEl size="12">
+            <GridEl size={{ xs: 12, sm: 6 }}>
               <Field label={editMode && 'Service type'} error={errors.type}>
-                <Select 
+                <Select
                   value={fields.type}
                   options={serviceTypeOptions}
                   placeholder="Service type"
@@ -103,7 +108,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'City'} error={errors.city}>
-                <Input 
+                <Input
                   value={fields.city}
                   placeholder="City"
                   size="medium"
@@ -113,7 +118,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'Post code'} error={errors.code}>
-                <Input 
+                <Input
                   value={fields.code}
                   placeholder="Post code"
                   size="medium"
@@ -121,9 +126,9 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                 />
               </Field>
             </GridEl>
-            <GridEl size="12">
+            <GridEl size={{ xs: 12, sm: 6 }}>
               <Field label={editMode && 'Street'} error={errors.street}>
-                <Input 
+                <Input
                   value={fields.street}
                   placeholder="Street"
                   size="medium"
@@ -133,7 +138,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'House number'} error={errors.house}>
-                <Input 
+                <Input
                   value={fields.house}
                   placeholder="House number"
                   size="medium"
@@ -143,7 +148,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'Flat number'} error={errors.flat}>
-                <Input 
+                <Input
                   value={fields.flat}
                   placeholder="Flat number"
                   size="medium"
@@ -151,9 +156,9 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                 />
               </Field>
             </GridEl>
-            <GridEl size="6">
-              <Field label="Assign employee" error={errors.assignedEmployee}>
-                <Select 
+            <GridEl size={{ xs: 12, sm: 6 }}>
+              <Field label={editMode && 'Assign employee'} error={errors.assignedEmployee}>
+                <Select
                   value={fields.assignedEmployee}
                   options={employeesOptions}
                   placeholder="Select employee"
@@ -163,13 +168,14 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                 />
               </Field>
             </GridEl>
-            <GridEl size="6">
-              <Field label="Schedule time" error={errors.completionDate}>
-                <DatePicker 
-                  value={fields.completionDate}
+            <GridEl size={{ xs: 12, sm: 6 }}>
+              <Field label={editMode && 'Schedule time'} error={errors.startDate || errors.endDate}>
+                <DateTimePicker
+                  value={[fields.startDate, fields.endDate]}
                   placeholder="Schedule time"
                   size="medium"
-                  onChange={(e) => onFieldChange(e, 'completionDate')}
+                  rangeMode="time"
+                  onChange={handleScheduleTimeChange}
                 />
               </Field>
             </GridEl>
@@ -177,7 +183,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
         </GridEl>
         <GridEl size="12">
           <Field label={editMode && 'Description'} error={errors.message}>
-            <Textarea 
+            <Textarea
               value={fields.message}
               placeholder="Type your message"
               size="medium"

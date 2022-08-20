@@ -4,10 +4,8 @@ import { ReactComponent as SpinnerIcon } from '../../assets/icons/spinner.svg';
 
 import styles from './Spinner.module.scss';
 
-export const Spinner = () => {
-  return (
-    <div className={styles.spinner}>
-      <SpinnerIcon />
-    </div>
-  );
-};
+export const Spinner = () => (
+  <div className={styles.spinner}>
+    <SpinnerIcon />
+  </div>
+);

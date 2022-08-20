@@ -6,6 +6,7 @@ import { Text } from '../components/Text';
 import { Button } from '../components/Button';
 import { Checkbox } from '../components/Checkbox';
 import { Input } from '../components/Input';
+import { DateTimePicker } from '../components/DateTimePicker';
 import { Modal } from '../components/Modal';
 import { ReactComponent as CommentIcon } from '../assets/icons/comment.svg';
 import { useNotification } from '../hooks/useNotification';
@@ -14,7 +15,7 @@ export const UI = () => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const { pushNotification } = useNotification();
-  
+
   const openModal = React.useCallback(() => {
     setIsModalOpen(true);
   }, []);
@@ -134,6 +135,15 @@ export const UI = () => {
           </Checkbox>
         </GridEl>
         <GridEl size="12">
+          <Text size="h2">Date-time picker</Text>
+        </GridEl>
+        <GridEl size="4">
+          <DateTimePicker
+            size="medium"
+            placeholder="Select date"
+          />
+        </GridEl>
+        <GridEl size="12">
           <Text size="h2">Modal</Text>
         </GridEl>
         <GridEl>
@@ -165,12 +175,13 @@ export const UI = () => {
           </Button>
         </GridEl>
       </Grid>
-      <Modal 
+      <Modal
         title="Modal title"
-        isOpen={isModalOpen} 
+        isOpen={isModalOpen}
         onClose={onModalClose}
       >
-        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+        {/* eslint-disable-next-line max-len */}
+        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don&apos;t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn&apos;t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
       </Modal>
     </Container>
   );

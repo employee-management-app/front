@@ -29,9 +29,9 @@ const labels = {
   3: 'Very high',
 };
 
-export const OrderCardPriority = (props) => {
+export const OrderCardPriority = ({ id, ...rest }) => {
   const ref = React.useRef();
-  const [priority, setPriority] = React.useState(props.priority);
+  const [priority, setPriority] = React.useState(rest.priority);
   const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -50,14 +50,14 @@ export const OrderCardPriority = (props) => {
     hideDropdown();
     setPriority(key);
 
-    updateOrder(props.id, { priority: key })
+    updateOrder(id, { priority: key })
       .then((data) => {
         dispatch(updateOrderInStore(data));
       })
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong! Try again..' });
       });
-  }, [hideDropdown, props.id, dispatch, pushNotification]);
+  }, [hideDropdown, id, dispatch, pushNotification]);
 
   useClickOutside(ref, hideDropdown);
 
@@ -65,14 +65,14 @@ export const OrderCardPriority = (props) => {
     const IconByKey = icons[key];
 
     return <IconByKey />;
-  }
+  };
 
   return (
     <span ref={ref} style={{ position: 'relative' }}>
-      <button 
-        type="button" 
+      <button
+        type="button"
         className={cx(styles.priority, styles[`priority-${priority}`])}
-        disabled={!isManager} 
+        disabled={!isManager}
         onClick={handleClick}
       >
         {labels[priority]}
@@ -82,9 +82,15 @@ export const OrderCardPriority = (props) => {
         <div className={styles.priorityDropdown}>
           <ul>
             {Object.keys(labels).map((key) => (
-              <li 
-                key={key} 
-                className={cx(styles.priority, styles[`priority-${key}`], { [styles.selected]: priority === Number(key) })} 
+              // eslint-disable-next-line max-len
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
+              <li
+                key={key}
+                className={cx(
+                  styles.priority,
+                  styles[`priority-${key}`],
+                  { [styles.selected]: priority === Number(key) },
+                )}
                 onClick={handlePriorityClick(key)}
               >
                 {labels[key]}

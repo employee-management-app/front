@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import cx from 'classnames';
 
@@ -5,8 +6,8 @@ import { ReactComponent as SpinnerIcon } from '../../assets/icons/spinner.svg';
 
 import styles from './Button.module.scss';
 
-export const Button = (props) => {
-  const classNames = cx(styles.button, { 
+export const Button = ({ type = 'button', ...props }) => {
+  const classNames = cx(styles.button, {
     [styles[props.width]]: props.width,
     [styles[props.theme]]: props.theme,
     [styles[props.size]]: props.size,
@@ -39,7 +40,8 @@ export const Button = (props) => {
 
   return (
     <button
-      type={props.type || 'button'}
+      // eslint-disable-next-line react/button-has-type
+      type={type}
       disabled={props.loading || props.disabled}
       className={classNames}
       onClick={props.onClick}

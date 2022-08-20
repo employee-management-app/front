@@ -11,7 +11,7 @@ import { Select } from '../Select';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
 
-export const AssignForm = ({ order, onSuccess }) => {  
+export const AssignForm = ({ order, onSuccess }) => {
   const dispatch = useDispatch();
   const employees = useSelector(getEmployees);
 
@@ -23,13 +23,12 @@ export const AssignForm = ({ order, onSuccess }) => {
   });
 
   const { pushNotification } = useNotification();
-  const { 
+  const {
     fields,
     errors,
     isTouched,
     isValid,
     isLoading,
-    setErrors,
     setIsLoading,
     onValueChange,
     onFieldChange,
@@ -60,11 +59,13 @@ export const AssignForm = ({ order, onSuccess }) => {
 
     updateOrder(order._id, fields)
       .then((data) => {
-        pushNotification({ 
-          theme: 'success', 
-          content: data.assignedEmployee 
+        pushNotification({
+          theme: 'success',
+          content: data.assignedEmployee
+            // eslint-disable-next-line max-len
             ? `${data.assignedEmployee.name} ${data.assignedEmployee.surname} was successfully assigned to this measurement!`
-            : `${order.assignedEmployee.name} ${order.assignedEmployee.surname} was successfully removed from this measurement!`
+            // eslint-disable-next-line max-len
+            : `${order.assignedEmployee.name} ${order.assignedEmployee.surname} was successfully removed from this measurement!`,
         });
 
         dispatch(updateOrderInStore(data));
@@ -79,17 +80,17 @@ export const AssignForm = ({ order, onSuccess }) => {
   };
 
   return (
-    <form 
+    <form
       noValidate
       onSubmit={handleSubmit}
     >
       <Grid space={SPACES.XL}>
         <GridEl size="12">
           <Field error={errors.assignedEmployee}>
-            <Select 
+            <Select
               value={fields.assignedEmployee}
               size="medium"
-              placeholder="Select employee" 
+              placeholder="Select employee"
               options={employeesOptions}
               onClear={(val) => onValueChange(val, 'assignedEmployee')}
               onChange={(e) => onFieldChange(e, 'assignedEmployee')}

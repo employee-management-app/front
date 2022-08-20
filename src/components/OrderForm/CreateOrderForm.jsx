@@ -1,19 +1,19 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { createOrder } from '../../services/createOrder';
 
-import { useDispatch } from 'react-redux';
 import { addOrder } from '../../store';
 
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
 
-export const CreateOrderForm = (props) => {
+export const CreateOrderForm = ({ onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { 
+  const {
     fields,
     errors,
     isValid,
@@ -27,10 +27,9 @@ export const CreateOrderForm = (props) => {
   const handleSubmit = (e) => {
     onSubmit(e);
 
-
     if (!isValid) {
       pushNotification({ theme: 'warning', content: 'Please fill in all required fields!' });
-      
+
       return;
     }
 
@@ -49,14 +48,14 @@ export const CreateOrderForm = (props) => {
 
     createOrder(payload)
       .then((data) => {
-        if (props.onSuccess) {
-          props.onSuccess();
+        if (onSuccess) {
+          onSuccess();
         }
 
         dispatch(addOrder(data));
         pushNotification({ theme: 'success', content: 'Measurement was successfully created!' });
       })
-      .catch((err) => {
+      .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong! Please double check entired data.' });
       })
       .finally(() => {
@@ -65,7 +64,7 @@ export const CreateOrderForm = (props) => {
   };
 
   return (
-    <OrderForm 
+    <OrderForm
       isLoading={isLoading}
       fields={fields}
       errors={errors}

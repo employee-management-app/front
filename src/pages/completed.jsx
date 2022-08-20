@@ -25,7 +25,7 @@ export const Completed = () => {
         setOrders(data);
       })
       .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' })
+        pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
       })
       .finally(() => {
         setIsLoading(false);
@@ -35,7 +35,6 @@ export const Completed = () => {
   return (
     <Container>
       <Grid>
-        <GridEl size="12" />
         <GridEl size="12">
           <Text size="h2">Completed measurements</Text>
         </GridEl>

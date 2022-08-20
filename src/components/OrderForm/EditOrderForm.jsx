@@ -10,10 +10,10 @@ import { updateOrder as updateOrderInStore } from '../../store';
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
 
-export const EditOrderForm = (props) => {
+export const EditOrderForm = ({ values, onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { 
+  const {
     fields,
     errors,
     isTouched,
@@ -23,14 +23,14 @@ export const EditOrderForm = (props) => {
     onValueChange,
     onFieldChange,
     onSubmit,
-  } = useForm((yup) => getOrderFormConfig(yup, props.values));
+  } = useForm((yup) => getOrderFormConfig(yup, values));
 
   const handleSubmit = (e) => {
     onSubmit(e);
 
     if (!isTouched) {
-      if (props.onSuccess) {
-        props.onSuccess();
+      if (onSuccess) {
+        onSuccess();
       }
 
       return;
@@ -38,7 +38,7 @@ export const EditOrderForm = (props) => {
 
     if (!isValid) {
       pushNotification({ theme: 'warning', content: 'Please fill in all required fields!' });
-      
+
       return;
     }
 
@@ -55,10 +55,10 @@ export const EditOrderForm = (props) => {
       },
     };
 
-    updateOrder(props.values._id, payload)
+    updateOrder(values._id, payload)
       .then((data) => {
-        if (props.onSuccess) {
-          props.onSuccess();
+        if (onSuccess) {
+          onSuccess();
         }
 
         dispatch(updateOrderInStore(data));
@@ -73,7 +73,7 @@ export const EditOrderForm = (props) => {
   };
 
   return (
-    <OrderForm 
+    <OrderForm
       editMode
       isLoading={isLoading}
       fields={fields}

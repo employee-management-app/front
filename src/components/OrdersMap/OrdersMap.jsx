@@ -25,7 +25,7 @@ export const OrdersMap = ({ orders }) => {
   React.useEffect(() => {
     const handleResize = () => {
       setHeight(document.body.clientHeight - wrapperRef.current.offsetTop);
-    }
+    };
 
     handleResize();
 
@@ -92,7 +92,7 @@ export const OrdersMap = ({ orders }) => {
 
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>
-      <GoogleMap 
+      <GoogleMap
         markers={markers}
         selected={selectedOrder}
         offset={offset}
@@ -103,8 +103,8 @@ export const OrdersMap = ({ orders }) => {
           <Container className={styles.containerInner}>
             <div ref={cardsRef} className={styles.cards}>
               {orders.map((order) => (
-                <div 
-                  className={cx(styles.card, { [styles.selected]: order._id === selectedOrder })} 
+                <div
+                  className={cx(styles.card, { [styles.selected]: order._id === selectedOrder })}
                   key={order._id}
                 >
                   <div className={styles.cardOutline} style={{ color: getEmployeeColor(order.assignedEmployee) }} />
