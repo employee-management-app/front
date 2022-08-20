@@ -98,7 +98,7 @@ export const DateTimePicker = ({ value, placeholder, size, rangeMode, onChange }
           size={size}
           icon={CalendarIcon}
           clearable
-          frozen
+          readOnly
           onClear={handleClear}
           onFocus={showPopover}
         />

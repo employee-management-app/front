@@ -11,10 +11,6 @@ export const Input = ({ ...props }) => {
   }, [props.value]);
 
   const handleChange = React.useCallback((e) => {
-    if (props.frozen) {
-      return;
-    }
-
     setValue(e.target.value);
 
     props?.onChange(e);
@@ -40,6 +36,7 @@ export const Input = ({ ...props }) => {
         placeholder={props.placeholder}
         value={value}
         min={props.min}
+        readOnly={props.readOnly}
         className={styles.input}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
