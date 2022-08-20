@@ -69,7 +69,7 @@
         "exports": "always-multiline"
       }],
       "react/jsx-no-constructed-context-values": "warn",
-      "no-underscore-dangle": "warn",
+      "no-underscore-dangle": "off",
       "default-param-last": "off"
     }
   },
