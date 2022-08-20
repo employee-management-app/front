@@ -65,7 +65,7 @@ export const OrderCardActions = ({ order }) => {
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong! Try again later.' });
       });
-  }, []);
+  }, [navigate, order._id, pushNotification]);
 
   const handleEditModalOpen = React.useCallback(() => {
     setIsEditModalVisible(true);
