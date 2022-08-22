@@ -7,8 +7,8 @@ export const getTimeOptions = (date) => {
   const day = date.date();
 
   const values = eachMinuteOfInterval({
-    start: new Date(year, month, day, 0),
-    end: new Date(year, month, day, 23, 45),
+    start: new Date(year, month, day, 7),
+    end: new Date(year, month, day, 21, 0),
   }, { step: 15 });
 
   return values.map((value) => ({
