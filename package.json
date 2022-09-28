@@ -19,6 +19,7 @@
     "redux": "^4.2.0",
     "sass": "^1.49.9",
     "seamless-scroll-polyfill": "^2.2.0",
+    "swiper": "^8.3.2",
     "use-supercluster": "^0.4.0",
     "workbox-background-sync": "^5.1.4",
     "workbox-broadcast-update": "^5.1.4",
@@ -49,10 +50,20 @@
       "airbnb/hooks"
     ],
     "rules": {
-      "max-len": ["error", { "code": 120 }],
+      "max-len": [
+        "error",
+        {
+          "code": 120
+        }
+      ],
       "react/prop-types": "off",
       "import/prefer-default-export": "off",
-      "react/function-component-definition": ["error", { "namedComponents": "arrow-function" }],
+      "react/function-component-definition": [
+        "error",
+        {
+          "namedComponents": "arrow-function"
+        }
+      ],
       "object-curly-newline": "off",
       "react-hooks/exhaustive-deps": "warn",
       "jsx-a11y/mouse-events-have-key-events": "warn",
@@ -61,13 +72,16 @@
       "no-nested-ternary": "warn",
       "no-plusplus": "warn",
       "react/jsx-props-no-spreading": "off",
-      "comma-dangle": ["error", { 
-        "functions": "only-multiline", 
-        "arrays": "always-multiline",
-        "objects": "always-multiline",
-        "imports": "always-multiline",
-        "exports": "always-multiline"
-      }],
+      "comma-dangle": [
+        "error",
+        {
+          "functions": "only-multiline",
+          "arrays": "always-multiline",
+          "objects": "always-multiline",
+          "imports": "always-multiline",
+          "exports": "always-multiline"
+        }
+      ],
       "react/jsx-no-constructed-context-values": "warn",
       "no-underscore-dangle": "off",
       "default-param-last": "off"
