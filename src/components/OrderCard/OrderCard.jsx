@@ -7,6 +7,7 @@ import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 
+import { useAuth } from '../../hooks/useAuth';
 import { OrderButtons } from '../OrderButtons';
 import { Card } from '../Card';
 import { Text } from '../Text';
@@ -26,6 +27,8 @@ export const OrderCard = (props) => {
     disabled,
     email,
     message,
+    employeeMessage,
+    managerMessage,
     name,
     onClick,
     phone,
@@ -34,11 +37,19 @@ export const OrderCard = (props) => {
     type,
   } = props;
 
+  const { isManager } = useAuth();
+
   const handleClick = React.useCallback((e) => {
     onClick?.(e);
   }, [onClick]);
 
   const { code, city, street, house, flat, lat, lng } = address;
+
+  const shortDescription = React.useMemo(() => (
+    isManager
+      ? managerMessage || message || employeeMessage
+      : employeeMessage
+  ), [employeeMessage, isManager, managerMessage, message]);
 
   return (
     <Card className={cx(styles.card, { [styles.disabled]: disabled })}>
@@ -71,9 +82,9 @@ export const OrderCard = (props) => {
           <GridEl size={{ md: 6, xl: 2 }}>
             <Button href={`mailto:${email}`} icon={MailIcon} width="full" />
           </GridEl>
-          {message && (
+          {shortDescription && (
             <GridEl size="12">
-              <Text>{message}</Text>
+              <Text nowrap>{shortDescription}</Text>
             </GridEl>
           )}
         </Grid>

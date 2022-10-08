@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import styles from './Text.module.scss';
 
-export const Text = ({ size = 'base', center, fontWeight, italic, children }) => {
+export const Text = ({ size = 'base', center, fontWeight, italic, nowrap, children }) => {
   const sizes = typeof size === 'object' ? size : { xs: size };
 
   const sizeClassNames = size
@@ -14,6 +14,7 @@ export const Text = ({ size = 'base', center, fontWeight, italic, children }) =>
     [styles.center]: center,
     [styles[`fontWeight${fontWeight}`]]: fontWeight,
     [styles.italic]: italic,
+    [styles.nowrap]: nowrap,
   });
 
   return (
