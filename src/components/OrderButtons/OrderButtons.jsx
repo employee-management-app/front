@@ -30,7 +30,7 @@ export const OrderButtons = ({ size, order }) => {
 
   return (
     <Grid space={SPACES.S}>
-      <GridEl size={size === 'auto' ? 'auto' : 6}>
+      <GridEl size={{ xs: 6, sm: size === 'auto' ? 'auto' : 6 }}>
         <Button
           icon={assignedEmployee ? undefined : UserIcon}
           width="full"
@@ -40,7 +40,7 @@ export const OrderButtons = ({ size, order }) => {
           {assignedEmployee ? `${assignedEmployee.name} ${assignedEmployee.surname}` : 'Assign'}
         </Button>
       </GridEl>
-      <GridEl size={size === 'auto' ? 'auto' : 6}>
+      <GridEl size={{ xs: 6, sm: size === 'auto' ? 'auto' : 6 }}>
         <Button
           icon={startDate ? undefined : CalendarIcon}
           width="full"

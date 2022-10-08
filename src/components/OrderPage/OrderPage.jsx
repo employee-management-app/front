@@ -21,7 +21,8 @@ import { OrderActions } from '../OrderActions';
 import { OrderPriority } from '../OrderPriority';
 import { Container } from '../Container';
 
-import { MessageModal } from './MessageModal';
+import { ManagerMessageModal } from './ManagerMessageModal';
+import { EmployeeMessageModal } from './EmployeeMessageModal';
 import styles from './OrderPage.module.scss';
 
 export const OrderPage = ({ order }) => {
@@ -42,6 +43,8 @@ export const OrderPage = ({ order }) => {
   const { showModal: showEditModal } = useModalVisibility('EditOrder');
   const { showModal: showDeleteModal } = useModalVisibility('DeleteOrder');
   const { showModal: showCompleteModal } = useModalVisibility('CompleteOrder');
+  const { showModal: showManagerMessageModal } = useModalVisibility('ManagerMessageModal');
+  const { showModal: showEmployeeMessageModal } = useModalVisibility('EmployeeMessageModal');
 
   const isCompleted = order.status === 'completed';
 
@@ -121,7 +124,7 @@ export const OrderPage = ({ order }) => {
               <GridEl size="12">
                 <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{order.name} {order.surname}</Text>
               </GridEl>
-              <GridEl size="auto">
+              <GridEl size={{ xs: 'fluid', sm: 'auto' }}>
                 <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
               </GridEl>
               <GridEl size="auto">
@@ -142,25 +145,36 @@ export const OrderPage = ({ order }) => {
               </GridEl>
             </Grid>
           </GridEl>
+          {isManager && (
+            <GridEl size="12">
+              <Grid space={SPACES.S}>
+                <GridEl size="12">
+                  <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
+                    Customer message
+                  </Text>
+                </GridEl>
+                <GridEl size="12">
+                  <Text size={{ xs: 'base', md: 'medium' }} italic={!message}>
+                    {message || 'Empty'}
+                  </Text>
+                </GridEl>
+              </Grid>
+            </GridEl>
+          )}
           <GridEl size="12">
             <Grid space={SPACES.S}>
               <GridEl size="12">
                 <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
-                  Customer message
-                </Text>
-              </GridEl>
-              <GridEl size="12">
-                <Text size={{ xs: 'base', md: 'medium' }} italic={!message}>
-                  {message || 'Empty'}
-                </Text>
-              </GridEl>
-            </Grid>
-          </GridEl>
-          <GridEl size="12">
-            <Grid space={SPACES.S}>
-              <GridEl size="12">
-                <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
-                  Description for employees
+                  {isManager
+                    ? (
+                      <>
+                        Description for employees
+                        <button type="button" className={styles.editButton} onClick={showEmployeeMessageModal}>
+                          <EditIcon />
+                        </button>
+                      </>
+                    )
+                    : 'Description'}
                 </Text>
               </GridEl>
               <GridEl size="12">
@@ -170,20 +184,25 @@ export const OrderPage = ({ order }) => {
               </GridEl>
             </Grid>
           </GridEl>
-          <GridEl size="12">
-            <Grid space={SPACES.S}>
-              <GridEl size="12">
-                <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
-                  Description for managers
-                </Text>
-              </GridEl>
-              <GridEl size="12">
-                <Text size={{ xs: 'base', md: 'medium' }} italic={!managerMessage}>
-                  {managerMessage || 'Empty'}
-                </Text>
-              </GridEl>
-            </Grid>
-          </GridEl>
+          {isManager && (
+            <GridEl size="12">
+              <Grid space={SPACES.S}>
+                <GridEl size="12">
+                  <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
+                    Description for managers
+                    <button type="button" className={styles.editButton} onClick={showManagerMessageModal}>
+                      <EditIcon />
+                    </button>
+                  </Text>
+                </GridEl>
+                <GridEl size="12">
+                  <Text size={{ xs: 'base', md: 'medium' }} italic={!managerMessage}>
+                    {managerMessage || 'Empty'}
+                  </Text>
+                </GridEl>
+              </Grid>
+            </GridEl>
+          )}
           <GridEl size="12">
             <Grid space={SPACES.S}>
               <GridEl size="12">
@@ -211,7 +230,8 @@ export const OrderPage = ({ order }) => {
           }]}
         />
       </div>
-      <MessageModal orderId={id} />
+      <ManagerMessageModal orderId={id} message={managerMessage} />
+      <EmployeeMessageModal orderId={id} message={employeeMessage} />
     </>
   );
 };

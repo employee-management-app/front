@@ -18,11 +18,13 @@
 
       .#{$breakpoint}0 {
         display: none;
+        flex: 0 1 auto;
       }
 
       .#{$breakpoint}auto {
         display: block;
         width: auto;
+        flex: 0 1 auto;
       }
 
       .#{$breakpoint}fluid {

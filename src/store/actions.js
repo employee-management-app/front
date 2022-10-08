@@ -61,5 +61,5 @@ export const hideModal = (modal) => ({
 });
 
 export const hideAllModals = () => ({
-  type: HIDE_MODAL,
+  type: HIDE_ALL_MODALS,
 });

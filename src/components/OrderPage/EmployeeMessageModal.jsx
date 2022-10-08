@@ -5,7 +5,6 @@ import { updateOrder } from '../../services/updateOrder';
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { Modal } from '../Modal';
-import { OrderActions } from '../OrderActions';
 import { Textarea } from '../Textarea';
 import { Field } from '../Field';
 import { Button } from '../Button';
@@ -13,17 +12,14 @@ import { Grid, GridEl, SPACES } from '../Grid';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { setOrder } from '../../store';
 
-export const MessageModal = ({ orderId }) => {
+export const EmployeeMessageModal = ({ orderId, message }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { isVisible, hideAllModals } = useModalVisibility('ManagerMessageModal');
+  const { isVisible, hideModal } = useModalVisibility('EmployeeMessageModal');
 
   const getConfig = () => ({
     employeeMessage: {
-      value: OrderActions.employeeMessage,
-    },
-    managerMessage: {
-      value: OrderActions.managerMessage,
+      value: message,
     },
   });
 
@@ -32,15 +28,15 @@ export const MessageModal = ({ orderId }) => {
     isTouched,
     isLoading,
     setIsLoading,
-    onValueChange,
+    onFieldChange,
     onSubmit,
   } = useForm(getConfig);
 
-  const handleSubmit = React.useCallback(() => {
-    onSubmit();
+  const handleSubmit = React.useCallback((e) => {
+    onSubmit(e);
 
     if (!isTouched) {
-      hideAllModals();
+      hideModal();
 
       return;
     }
@@ -50,7 +46,7 @@ export const MessageModal = ({ orderId }) => {
     updateOrder(orderId, fields)
       .then((data) => {
         dispatch(setOrder(data));
-
+        hideModal();
         pushNotification({
           theme: 'success',
           content: 'Message successfully updated!',
@@ -62,32 +58,28 @@ export const MessageModal = ({ orderId }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [dispatch, fields, hideAllModals, isTouched, onSubmit, orderId, pushNotification, setIsLoading]);
+  }, [dispatch, fields, hideModal, isTouched, onSubmit, orderId, pushNotification, setIsLoading]);
 
   return (
-    <Modal>
+    <Modal
+      isOpen={isVisible}
+      size="medium"
+      title="Edit description"
+      onClose={hideModal}
+    >
       <form
         noValidate
         onSubmit={handleSubmit}
       >
         <Grid space={SPACES.XL}>
           <GridEl size="12">
-            <Field label={isVisible ? 'lol' : 'kek'}>
-              {isVisible ? (
-                <Textarea
-                  value={fields.managerMessage}
-                  placeholder="lol"
-                  size="medium"
-                  onChange={(e) => onValueChange(e, 'managerMessage')}
-                />
-              ) : (
-                <Textarea
-                  value={fields.employeeMessage}
-                  placeholder="lol"
-                  size="medium"
-                  onChange={(e) => onValueChange(e, 'employeeMessage')}
-                />
-              )}
+            <Field label="Description for employees">
+              <Textarea
+                value={fields.employeeMessage}
+                placeholder="Description for employees"
+                size="medium"
+                onChange={(e) => onFieldChange(e, 'employeeMessage')}
+              />
             </Field>
           </GridEl>
           <GridEl size="12">
