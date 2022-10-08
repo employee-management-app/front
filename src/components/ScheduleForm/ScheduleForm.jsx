@@ -7,9 +7,8 @@ import { useNotification } from '../../hooks/useNotification';
 import { useAuth } from '../../hooks/useAuth';
 import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal';
 import { updateOrder } from '../../services/updateOrder';
-import { updateOrder as updateOrderInStore } from '../../store';
+import { setOrder, updateOrder as updateOrderInStore } from '../../store';
 
-import { Field } from '../Field';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
 import { DateTimePicker } from '../DateTimePicker';
@@ -32,11 +31,8 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
   const {
     fields,
-    errors,
     isTouched,
-    isValid,
     isLoading,
-    setErrors,
     setIsLoading,
     onValueChange,
     onSubmit,
@@ -50,11 +46,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   const handleSubmit = (e) => {
     onSubmit(e);
 
-    if (!isValid) {
-      return;
-    }
-
-    if (isValid && !isTouched) {
+    if (!isTouched) {
       onSuccess();
 
       return;
@@ -66,6 +58,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
       .then((data) => {
         if (isManager) {
           dispatch(updateOrderInStore(data));
+          dispatch(setOrder(data));
         } else {
           navigate(data.startDate ? '/scheduled' : '/anytime');
         }
@@ -76,9 +69,8 @@ export const ScheduleForm = ({ order, onSuccess }) => {
         });
         onSuccess();
       })
-      .catch((err) => {
+      .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong! Try again..' });
-        setErrors(err);
       })
       .finally(() => {
         setIsLoading(false);
@@ -92,15 +84,13 @@ export const ScheduleForm = ({ order, onSuccess }) => {
     >
       <Grid space={SPACES.XL}>
         <GridEl size="12">
-          <Field error={errors.startDate || errors.endDate}>
-            <DateTimePicker
-              value={[fields.startDate, fields.endDate]}
-              placeholder="Schedule time"
-              size="medium"
-              rangeMode="time"
-              onChange={handleChange}
-            />
-          </Field>
+          <DateTimePicker
+            value={[fields.startDate, fields.endDate]}
+            placeholder="Schedule time"
+            size="medium"
+            rangeMode="time"
+            onChange={handleChange}
+          />
         </GridEl>
         <GridEl size="12">
           <Button type="submit" loading={isLoading}>Confirm</Button>

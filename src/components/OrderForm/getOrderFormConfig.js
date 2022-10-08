@@ -50,8 +50,8 @@ export const getOrderFormConfig = (yup, values = {}) => ({
   endDate: {
     value: formatDateToDateTimeLocal(values.endDate),
   },
-  message: {
-    value: values.message || '',
+  employeeMessage: {
+    value: values.employeeMessage || '',
     validation: yup.string(),
   },
 });

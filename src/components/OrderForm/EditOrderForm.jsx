@@ -5,7 +5,7 @@ import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { updateOrder } from '../../services/updateOrder';
 
-import { updateOrder as updateOrderInStore } from '../../store';
+import { setOrder, updateOrder as updateOrderInStore } from '../../store';
 
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
@@ -62,6 +62,7 @@ export const EditOrderForm = ({ values, onSuccess }) => {
         }
 
         dispatch(updateOrderInStore(data));
+        dispatch(setOrder(data));
         pushNotification({ theme: 'success', content: 'Measurement was successfully updated!' });
       })
       .catch(() => {

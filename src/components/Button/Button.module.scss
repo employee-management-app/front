@@ -2,6 +2,7 @@
 
 .button {
   all: unset;
+  @include focusable;
   @include text-base;
   line-height: 24px;
   box-sizing: border-box;
@@ -20,10 +21,6 @@
     border-color: $color-primary;
     color: $color-primary;
     box-shadow: none;
-
-    svg {
-      fill: currentColor;
-    }
   }
 
   &:active {
@@ -34,7 +31,7 @@
     flex: 0 0 24px;
     width: 24px;
     height: 24px;
-    fill: $color-dark;
+    fill: currentColor;
   }
 
   svg + .text {

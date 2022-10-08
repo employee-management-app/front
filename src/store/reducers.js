@@ -1,5 +1,7 @@
 import * as actions from './actions';
 
+// Orders
+
 const setOrders = (state, action) => ({
   ...state,
   orders: action.payload,
@@ -8,11 +10,6 @@ const setOrders = (state, action) => ({
 const addOrder = (state, action) => ({
   ...state,
   orders: [action.payload, ...state.orders],
-});
-
-const setEmployees = (state, action) => ({
-  ...state,
-  employees: action.payload,
 });
 
 const updateOrder = (state, action) => {
@@ -29,6 +26,22 @@ const deleteOrderById = (state, action) => ({
   orders: state.orders.filter(({ _id }) => _id !== action.payload),
 });
 
+// Order
+
+const setOrder = (state, action) => ({
+  ...state,
+  order: action.payload,
+});
+
+// Employees
+
+const setEmployees = (state, action) => ({
+  ...state,
+  employees: action.payload,
+});
+
+// UI
+
 const pushNotification = (state, action) => ({
   ...state,
   notifications: [...state.notifications, action.payload],
@@ -43,12 +56,31 @@ const removeFirstNotification = (state, action) => {
   };
 };
 
+const showModal = (state, action) => ({
+  ...state,
+  visibleModals: [...state.visibleModals, action.payload],
+});
+
+const hideModal = (state, action) => ({
+  ...state,
+  visibleModals: state.visibleModals.filter((modal) => modal !== action.payload),
+});
+
+const hideAllModals = (state) => ({
+  ...state,
+  visibleModals: [],
+});
+
 export const reducers = {
   [actions.SET_ORDERS]: setOrders,
   [actions.ADD_ORDER]: addOrder,
-  [actions.SET_EMPLOYEES]: setEmployees,
   [actions.UPDATE_ORDER]: updateOrder,
   [actions.DELETE_ORDER_BY_ID]: deleteOrderById,
+  [actions.SET_ORDER]: setOrder,
+  [actions.SET_EMPLOYEES]: setEmployees,
   [actions.PUSH_NOTIFICATION]: pushNotification,
   [actions.REMOVE_NOTIFICATION_BY_ID]: removeFirstNotification,
+  [actions.SHOW_MODAL]: showModal,
+  [actions.HIDE_MODAL]: hideModal,
+  [actions.HIDE_ALL_MODALS]: hideAllModals,
 };

@@ -1,7 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { getEmployees } from '../../store';
+import { fetchEmployees } from '../../services/fetchEmployees';
+import { getEmployees, setEmployees } from '../../store';
 import { Grid, GridEl, SPACES } from '../Grid';
 import { Field } from '../Field';
 import { Textarea } from '../Textarea';
@@ -11,6 +12,7 @@ import { Button } from '../Button';
 import { DateTimePicker } from '../DateTimePicker';
 
 export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmit, onValueChange, onFieldChange }) => {
+  const dispatch = useDispatch();
   const employees = useSelector(getEmployees);
 
   const employeesOptions = React.useMemo(() => (
@@ -38,6 +40,13 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
       value: 'Inne',
     },
   ], []);
+
+  React.useEffect(() => {
+    fetchEmployees()
+      .then((data) => {
+        dispatch(setEmployees(data));
+      });
+  }, []);
 
   const handleScheduleTimeChange = React.useCallback(([startDate, endDate]) => {
     onValueChange(startDate, 'startDate');
@@ -182,12 +191,12 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
           </Grid>
         </GridEl>
         <GridEl size="12">
-          <Field label={editMode && 'Description'} error={errors.message}>
+          <Field label={editMode && 'Description for employees'} error={errors.employeeMessage}>
             <Textarea
-              value={fields.message}
-              placeholder="Type your message"
+              value={fields.employeeMessage}
+              placeholder="Type message for employees"
               size="medium"
-              onChange={(e) => onFieldChange(e, 'message')}
+              onChange={(e) => onFieldChange(e, 'employeeMessage')}
             />
           </Field>
         </GridEl>

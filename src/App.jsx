@@ -3,6 +3,12 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { AuthProvider } from './AuthContext';
 import { Header } from './components/Header';
+import { CreateOrderModal } from './components/CreateOrderModal';
+import { EditOrderModal } from './components/EditOrderModal';
+import { CompleteOrderModal } from './components/CompleteOrderModal';
+import { DeleteOrderModal } from './components/DeleteOrderModal';
+import { AssignOrderModal } from './components/AssignOrderModal';
+import { ScheduleOrderModal } from './components/ScheduleOrderModal';
 import { Notifications } from './components/Notifications';
 import { useAuth } from './hooks/useAuth';
 import { Anytime } from './pages/anytime';
@@ -12,6 +18,7 @@ import { Inbox } from './pages/inbox';
 import { Login } from './pages/login';
 import { Scheduled } from './pages/scheduled';
 import { Signup } from './pages/signup';
+import { Order } from './pages/order';
 import { UI } from './pages/ui';
 
 const ProtectedRoute = ({ children, role }) => {
@@ -41,6 +48,14 @@ const AppRoutes = () => {
         element={(
           <ProtectedRoute>
             <Inbox />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/orders/:id"
+        element={(
+          <ProtectedRoute>
+            <Order />
           </ProtectedRoute>
         )}
       />
@@ -83,6 +98,12 @@ const App = () => (
       <main>
         <AppRoutes />
       </main>
+      <CreateOrderModal />
+      <EditOrderModal />
+      <CompleteOrderModal />
+      <DeleteOrderModal />
+      <AssignOrderModal />
+      <ScheduleOrderModal />
     </AuthProvider>
     <Notifications />
   </BrowserRouter>

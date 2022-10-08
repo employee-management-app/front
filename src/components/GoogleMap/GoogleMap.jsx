@@ -7,6 +7,7 @@ import { ReactComponent as MeasurementIcon } from '../../assets/icons/measuremen
 
 import styles from './GoogleMap.module.scss';
 
+const DEFAULT_OFFSET = { top: 0, bottom: 0, left: 0, right: 0 };
 const DEFAULT_CENTER = {
   lat: 51.107883,
   lng: 17.038538,
@@ -24,7 +25,7 @@ const MapCluster = ({ children, onClick }) => (
   <div className={styles.marker} onClick={onClick}>{children}</div>
 );
 
-export const GoogleMap = ({ markers, selected, offset, onSelect }) => {
+export const GoogleMap = ({ markers, selected, offset = DEFAULT_OFFSET, onSelect }) => {
   const [map, setMap] = React.useState(null);
   const [maps, setMaps] = React.useState(null);
   const [zoom, setZoom] = React.useState(11);

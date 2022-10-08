@@ -13,7 +13,7 @@ import { ReactComponent as NormalPriorityIcon } from '../../assets/icons/priorit
 import { ReactComponent as HighPriorityIcon } from '../../assets/icons/priorities/high.svg';
 import { ReactComponent as VeryHighPriorityIcon } from '../../assets/icons/priorities/very-high.svg';
 
-import styles from './OrderCard.module.scss';
+import styles from './OrderPriority.module.scss';
 
 const icons = [
   LowPriorityIcon,
@@ -29,9 +29,9 @@ const labels = [
   'Very high',
 ];
 
-export const OrderCardPriority = ({ id, ...rest }) => {
+export const OrderPriority = ({ id, disabled, ...props }) => {
   const ref = React.useRef();
-  const [priority, setPriority] = React.useState(rest.priority);
+  const [priority, setPriority] = React.useState(props.priority);
   const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ export const OrderCardPriority = ({ id, ...rest }) => {
 
   useClickOutside(ref, hideDropdown);
 
-  const getIconByKey = (key) => {
+  const getIconByIndex = (key) => {
     const IconByKey = icons[key];
 
     return <IconByKey />;
@@ -72,29 +72,29 @@ export const OrderCardPriority = ({ id, ...rest }) => {
       <button
         type="button"
         className={cx(styles.priority, styles[`priority-${priority}`])}
-        disabled={!isManager}
+        disabled={!isManager || disabled}
         onClick={handleClick}
       >
         {labels[priority]}
-        {getIconByKey(priority)}
+        {getIconByIndex(priority)}
       </button>
       {isDropdownVisible && (
         <div className={styles.priorityDropdown}>
           <ul>
-            {labels.map((_, key) => (
+            {labels.map((label, index) => (
               // eslint-disable-next-line max-len
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
               <li
-                key={key}
+                key={label}
                 className={cx(
                   styles.priority,
-                  styles[`priority-${key}`],
-                  { [styles.selected]: priority === key },
+                  styles[`priority-${index}`],
+                  { [styles.selected]: priority === index },
                 )}
-                onClick={handlePriorityClick(key)}
+                onClick={handlePriorityClick(index)}
               >
-                {labels[key]}
-                {getIconByKey(key)}
+                {label}
+                {getIconByIndex(index)}
               </li>
             ))}
           </ul>

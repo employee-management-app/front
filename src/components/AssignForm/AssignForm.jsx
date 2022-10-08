@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { updateOrder } from '../../services/updateOrder';
-import { getEmployees, updateOrder as updateOrderInStore } from '../../store';
+import { fetchEmployees } from '../../services/fetchEmployees';
+import { getEmployees, updateOrder as updateOrderInStore, setEmployees, setOrder } from '../../store';
 
-import { Field } from '../Field';
 import { Select } from '../Select';
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
@@ -25,15 +25,20 @@ export const AssignForm = ({ order, onSuccess }) => {
   const { pushNotification } = useNotification();
   const {
     fields,
-    errors,
     isTouched,
-    isValid,
     isLoading,
     setIsLoading,
     onValueChange,
     onFieldChange,
     onSubmit,
   } = useForm(getConfig);
+
+  React.useEffect(() => {
+    fetchEmployees()
+      .then((data) => {
+        dispatch(setEmployees(data));
+      });
+  }, []);
 
   const employeesOptions = React.useMemo(() => (
     employees.map(({ _id, name, surname }) => ({
@@ -45,11 +50,7 @@ export const AssignForm = ({ order, onSuccess }) => {
   const handleSubmit = (e) => {
     onSubmit(e);
 
-    if (!isValid) {
-      return;
-    }
-
-    if (isValid && !isTouched) {
+    if (!isTouched) {
       onSuccess();
 
       return;
@@ -69,6 +70,7 @@ export const AssignForm = ({ order, onSuccess }) => {
         });
 
         dispatch(updateOrderInStore(data));
+        dispatch(setOrder(data));
         onSuccess();
       })
       .catch(() => {
@@ -86,16 +88,14 @@ export const AssignForm = ({ order, onSuccess }) => {
     >
       <Grid space={SPACES.XL}>
         <GridEl size="12">
-          <Field error={errors.assignedEmployee}>
-            <Select
-              value={fields.assignedEmployee}
-              size="medium"
-              placeholder="Select employee"
-              options={employeesOptions}
-              onClear={(val) => onValueChange(val, 'assignedEmployee')}
-              onChange={(e) => onFieldChange(e, 'assignedEmployee')}
-            />
-          </Field>
+          <Select
+            value={fields.assignedEmployee}
+            size="medium"
+            placeholder="Select employee"
+            options={employeesOptions}
+            onClear={(val) => onValueChange(val, 'assignedEmployee')}
+            onChange={(e) => onFieldChange(e, 'assignedEmployee')}
+          />
         </GridEl>
         <GridEl size="12">
           <Button type="submit" loading={isLoading}>Confirm</Button>

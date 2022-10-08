@@ -16,77 +16,6 @@
   flex-direction: column;
 }
 
-.priority {
-  all: unset;
-  @include text-small;
-  display: inline-flex;
-  align-items: center;
-  border-radius: 2px;
-  padding-left: 4px;
-  margin-left: -4px;
-  cursor: pointer;
-
-  &:hover {
-    box-shadow: 0 0 2px rgba($color-black, 0.3);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  &[disabled] {
-    pointer-events: none;
-  }
-
-  svg {
-    flex: 0 0 24px;
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-  }
-
-  &.selected {
-    background-color: rgba($color-primary, 0.1);
-  }
-
-  &.priority-0 {
-    color: $color-primary;
-  }
-
-  &.priority-1 {
-    color: $color-warning;
-  }
-
-  &.priority-2,
-  &.priority-3 {
-    color: $color-danger;
-  }
-}
-
-.priorityDropdown {
-  position: absolute;
-  top: -4px;
-  left: 0;
-  background-color: $color-white;
-  border-radius: 2px;
-  padding: 4px 4px 4px 8px;
-  margin-left: -8px;
-  box-shadow: 0 0 5px rgba($color-black, 0.5);
-  z-index: 10;
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-
-    li {
-      white-space: nowrap;
-    }
-  }
-}
-
 .date {
   @include text-small;
 
@@ -104,30 +33,16 @@
   right: 10px;
   width: 24px;
   height: 24px;
-}
-
-.actionsButton {
-  all: unset;
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
   transform: scale(1) rotate(0);
   transition: 0.2s all ease-in-out;
-  cursor: pointer;
-
-  svg {
-    width: 100%;
-    height: 100%;
-    fill: $color-primary;
-  }
 }
 
 .type {
   @include text-large;
 
+  width: fit-content;
   font-weight: 600;
+  color: $color-dark;
 }
 
 .hr {
@@ -135,27 +50,6 @@
   height: 1px;
   background-color: $color-gray-lighten-2;
   margin: 10px 0;
-}
-
-.routeLink {
-  @include text-small;
-
-  display: inline-flex;
-  align-items: center;
-  color: $color-primary;
-  text-decoration: none;
-  width: fit-content;
-
-  span {
-    border-bottom: 1px solid $color-primary;
-  }
-
-  svg {
-    width: 16px;
-    height: 16px;
-    margin-left: 4px;
-    fill: currentColor;
-  }
 }
 
 .footer {
@@ -170,21 +64,19 @@
     padding-right: 0;
   }
 
-  .card:not(.disabled) .actionsButton {
+  .card:not(.disabled) .actions {
     transform: scale(0.5) rotate(90deg);
     opacity: 0;
   }
 
-  .card:hover:not(.disabled),
-  .actions.active {
-    .actionsButton {
-      transform: scale(1) rotate(0);
-      opacity: 1;
-    }
+  .card:hover:not(.disabled) .actions,
+  .card:not(.disabled) .actions:global(.active) {
+    transform: scale(1) rotate(0);
+    opacity: 1;
   }
 
   .card:hover:not(.disabled) .date,
-  .actions.active + .date {
+  .actions:global(.active) + .date {
     padding-right: 30px;
   }
 }

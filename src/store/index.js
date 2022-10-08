@@ -4,8 +4,10 @@ import { reducers } from './reducers';
 
 const initialStore = {
   orders: [],
+  order: null,
   notifications: [],
   employees: [],
+  visibleModals: [],
 };
 
 const reducer = (state = initialStore, action) => {
