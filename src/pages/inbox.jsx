@@ -15,7 +15,8 @@ import { Checkbox } from '../components/Checkbox';
 import { useAuth } from '../hooks/useAuth';
 import { useNotification } from '../hooks/useNotification';
 import { fetchOrders } from '../services/fetchOrders';
-import { setOrders, getOrders } from '../store';
+import { fetchEmployees } from '../services/fetchEmployees';
+import { setEmployees, setOrders, getOrders } from '../store';
 import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
@@ -41,7 +42,13 @@ export const Inbox = () => {
   React.useEffect(() => {
     if (isEmployee) {
       navigate('/anytime');
+      return;
     }
+
+    fetchEmployees()
+      .then((data) => {
+        dispatch(setEmployees(data));
+      });
   }, []);
 
   React.useEffect(() => {
