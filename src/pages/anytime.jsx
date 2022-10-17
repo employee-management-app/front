@@ -82,7 +82,7 @@ export const Anytime = () => {
       </Grid>
       <TabsItems active={activeTab}>
         <TabsItem for={0}>
-          {isLoading ? <Spinner /> : <OrdersList orders={orders} />}
+          {isLoading ? <Spinner /> : <OrdersList orders={filteredOrders} />}
         </TabsItem>
         <TabsItem for={1}>
           <OrdersMap orders={filteredOrders} />
