@@ -71,6 +71,7 @@
   height: 200px;
   border: 2px dashed $color-gray-lighten-1;
   border-radius: 4px;
+  overflow: hidden;
   transition: 0.1s box-shadow ease-in-out;
   cursor: pointer;
 
