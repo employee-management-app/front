@@ -13,9 +13,7 @@ export const Checkbox = ({ checked, onChange, ...props }) => {
   const handleChange = React.useCallback((e) => {
     setIsChecked(e.target.checked);
 
-    if (onChange) {
-      onChange(e);
-    }
+    onChange?.(e);
   }, [onChange]);
 
   const classNames = cx(styles.field, {
@@ -28,6 +26,7 @@ export const Checkbox = ({ checked, onChange, ...props }) => {
     <label className={classNames}>
       <input
         type="checkbox"
+        checked={isChecked}
         className={styles.input}
         onChange={handleChange}
       />

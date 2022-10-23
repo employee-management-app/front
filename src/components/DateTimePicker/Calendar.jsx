@@ -1,12 +1,42 @@
 import cx from 'classnames';
 import React from 'react';
+import dayjs from 'dayjs';
+import { startOfWeek, endOfWeek, addWeeks, differenceInDays } from 'date-fns';
 
 import { getTimeOptions, changeDateMonth, getCalendarCells, getIsDateBeetwen } from './helpers';
 import { CalendarArrow } from './CalendarArrow';
 import styles from './DateTimePicker.module.scss';
 
-export const Calendar = ({ visibleDate, selectedDate, rangeMode, onChange, onVisibleDateChange }) => {
+const options = {
+  weekStartsOn: 1,
+};
+
+const ranges = [
+  {
+    id: 'day',
+    label: 'Day',
+    value: [dayjs(), dayjs()],
+  },
+  {
+    id: 'week',
+    label: 'Week',
+    value: [dayjs(startOfWeek(new Date(), options)), dayjs(endOfWeek(new Date(), options))],
+  },
+  {
+    id: '2weeks',
+    label: '2 weeks',
+    value: [dayjs(startOfWeek(new Date(), options)), dayjs(endOfWeek(addWeeks(new Date(), 1), options))],
+  },
+  {
+    id: 'custom',
+    label: 'Custom',
+    value: [null, null],
+  },
+];
+
+export const Calendar = ({ visibleDate, selectedDate, rangeMode, rangeTypes, onChange, onVisibleDateChange }) => {
   const [hoveredCells, setHoveredCells] = React.useState([]);
+  const [range, setRange] = React.useState(null);
   const [selectedTime, setSelectedTime] = React.useState(selectedDate);
 
   const cells = getCalendarCells(visibleDate);
@@ -49,6 +79,12 @@ export const Calendar = ({ visibleDate, selectedDate, rangeMode, onChange, onVis
     onChange(date.isAfter(start) ? [start, date] : [date, start]);
   }, [onChange, rangeMode, selectedDate]);
 
+  const selectRange = React.useCallback((id, value) => () => {
+    setRange(id);
+    setHoveredCells([]);
+    onChange(value);
+  }, [onChange]);
+
   const handleSelectTime = React.useCallback((date) => () => {
     if (!rangeMode) {
       onChange(date);
@@ -64,7 +100,6 @@ export const Calendar = ({ visibleDate, selectedDate, rangeMode, onChange, onVis
     }
 
     if ((timeStart && timeEnd) || (!timeStart && !timeEnd)) {
-      // eslint-disable-next-line newline-per-chained-call
       onChange([
         date,
         end
@@ -104,6 +139,30 @@ export const Calendar = ({ visibleDate, selectedDate, rangeMode, onChange, onVis
 
     return time.isSame(start) || time.isSame(end);
   }, [rangeMode, selectedDate, selectedTime]);
+
+  React.useEffect(() => {
+    if (!rangeMode) {
+      return;
+    }
+
+    if (!selectedDate[0] && range !== 'custom') {
+      setRange(null);
+      return;
+    }
+
+    const difference = -differenceInDays(selectedDate[0]?.toDate(), selectedDate[1]?.toDate());
+    const dayStart = selectedDate[0]?.day() ?? null;
+
+    if (difference === 0) {
+      setRange('day');
+    } else if (difference === 6 && dayStart === 1) {
+      setRange('week');
+    } else if (difference === 13 && dayStart === 1) {
+      setRange('2weeks');
+    } else {
+      setRange('custom');
+    }
+  }, [range, rangeMode, selectedDate]);
 
   React.useEffect(() => {
     if (rangeMode === 'time' && !selectedDate[1]) {
@@ -203,6 +262,22 @@ export const Calendar = ({ visibleDate, selectedDate, rangeMode, onChange, onVis
 
   return (
     <div className={styles.wrapper}>
+      {rangeTypes && (
+        <div className={styles.ranges}>
+          <div className={styles.rangeOptions}>
+            {ranges.map(({ id, label, value }) => (
+              <button
+                key={id}
+                type="button"
+                className={cx(styles.rangeButton, { [styles.selected]: range === id })}
+                onClick={selectRange(id, value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <div className={styles.calendar}>
         <div className={styles.header}>
           <div className={styles.date}>

@@ -18,19 +18,43 @@ const getDefaultValue = (value, rangeMode) => {
 };
 
 const getDefaultVisibleDate = (value, rangeMode) => {
-  const normalizedValue = (rangeMode && value) ? value[0] : value;
+  const normalizedValue = (rangeMode && value) ? (value[1] || value[0]) : value;
 
   return dayjs(normalizedValue || new Date());
 };
 
-export const DateTimePicker = ({ value, placeholder, size, rangeMode, onChange }) => {
+export const DateTimePicker = (props) => {
+  const { value, placeholder, size, rangeMode, rangeTypes, children, onChange, onClose } = props;
+
   const [selectedDate, setSelectedDate] = React.useState(getDefaultValue(value, rangeMode));
   const [visibleDate, setVisibleDate] = React.useState(getDefaultVisibleDate(value, rangeMode));
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
 
+  React.useEffect(() => {
+    setSelectedDate(getDefaultValue(value, rangeMode));
+    setVisibleDate(getDefaultVisibleDate(value, rangeMode));
+  }, [value, rangeMode]);
+
   const showPopover = React.useCallback(() => {
     setIsPopoverVisible(true);
   }, []);
+
+  const closePopover = React.useCallback(() => {
+    setIsPopoverVisible(false);
+
+    if (isPopoverVisible) {
+      onClose?.();
+    }
+  }, [isPopoverVisible, onClose]);
+
+  const togglePopover = React.useCallback(() => {
+    if (isPopoverVisible) {
+      closePopover();
+      return;
+    }
+
+    showPopover();
+  }, [closePopover, isPopoverVisible, showPopover]);
 
   const handleClear = React.useCallback(() => {
     setSelectedDate(rangeMode ? [null, null] : null);
@@ -49,9 +73,8 @@ export const DateTimePicker = ({ value, placeholder, size, rangeMode, onChange }
     }
 
     const [start, end] = date;
-
-    setVisibleDate((end && end.isSame(selectedDate[0])) ? start : (end || start));
-    onChange?.([start.toDate(), end ? end.toDate() : null]);
+    setVisibleDate((end && end.isSame(selectedDate[0])) ? start : (end || start || dayjs()));
+    onChange?.([start ? start.toDate() : null, end ? end.toDate() : null]);
   }, [onChange, rangeMode, selectedDate]);
 
   const handleVisibleDateChange = React.useCallback((date) => () => {
@@ -85,23 +108,27 @@ export const DateTimePicker = ({ value, placeholder, size, rangeMode, onChange }
             visibleDate={visibleDate}
             selectedDate={selectedDate}
             rangeMode={rangeMode}
+            rangeTypes={rangeTypes}
             onChange={handleChange}
             onVisibleDateChange={handleVisibleDateChange}
           />
         )}
+        placement="bottom-center"
         className={styles.popover}
-        onVisibleChange={setIsPopoverVisible}
+        onVisibleChange={closePopover}
       >
-        <Input
-          value={displayValue}
-          placeholder={placeholder}
-          size={size}
-          icon={CalendarIcon}
-          clearable
-          readOnly
-          onClear={handleClear}
-          onFocus={showPopover}
-        />
+        {!children ? (
+          <Input
+            value={displayValue}
+            placeholder={placeholder}
+            size={size}
+            icon={CalendarIcon}
+            clearable
+            readOnly
+            onClear={handleClear}
+            onFocus={showPopover}
+          />
+        ) : children({ closePopover, togglePopover })}
       </Popover>
     </div>
   );

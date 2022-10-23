@@ -1,0 +1,70 @@
+@use "../../styles/variables" as *;
+
+.button {
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  @include text-medium;
+  display: flex;
+  font-weight: 500;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.popover {
+  padding: 20px;
+  width: 100%;
+  max-width: min(350px, calc(100vw - 40px));
+  z-index: 999;
+
+  :global(.popoverTrigger) {
+    display: inline-block;
+  }
+}
+
+.count {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  border-radius: 50%;
+  background-color: $color-primary;
+  color: $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.clearButton {
+  all: unset;
+  box-sizing: border-box;
+  @include text-base;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $color-danger;
+  cursor: pointer;
+
+  svg {
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+  }
+}
+
+@include breakpoint-down("lg") {
+  .label {
+    display: none;
+  }
+}

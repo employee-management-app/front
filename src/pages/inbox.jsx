@@ -1,7 +1,19 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
+import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
+import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg';
+import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
+import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
+
+import { setOrders, getOrders, setEmployees } from '../store';
+import { useAuth } from '../hooks/useAuth';
+import { useNotification } from '../hooks/useNotification';
+import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
+import { fetchOrders } from '../services/fetchOrders';
+import { fetchEmployees } from '../services/fetchEmployees';
 import { Container } from '../components/Container';
 import { EmptyState } from '../components/EmptyState';
 import { Button } from '../components/Button';
@@ -11,19 +23,7 @@ import { OrdersMap } from '../components/OrdersMap';
 import { OrdersList } from '../components/OrdersList';
 import { CreateOrderButton } from '../components/CreateOrderButton';
 import { Input } from '../components/Input';
-import { Checkbox } from '../components/Checkbox';
-import { useAuth } from '../hooks/useAuth';
-import { useNotification } from '../hooks/useNotification';
-import { fetchOrders } from '../services/fetchOrders';
-import { fetchEmployees } from '../services/fetchEmployees';
-import { setEmployees, setOrders, getOrders } from '../store';
-import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
-
-import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
-import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
-import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg';
-import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
-import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
+import { Filters } from '../components/Filters';
 
 export const Inbox = () => {
   const dispatch = useDispatch();
@@ -31,13 +31,12 @@ export const Inbox = () => {
   const orders = useSelector(getOrders);
 
   const { isEmployee } = useAuth();
-  const navigate = useNavigate();
   const { pushNotification } = useNotification();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = React.useState(1);
   const [search, setSearch] = React.useState('');
-  const [showAssigned, setShowAssigned] = React.useState(undefined);
-  const [showScheduled, setShowScheduled] = React.useState(undefined);
+  const [searchParams] = useSearchParams();
 
   React.useEffect(() => {
     if (isEmployee) {
@@ -56,25 +55,19 @@ export const Inbox = () => {
       return;
     }
 
-    fetchOrders({ assignedEmployee: showAssigned, startDate: showScheduled })
+    const filters = Object.fromEntries([...searchParams]);
+
+    fetchOrders(filters)
       .then((data) => {
         dispatch(setOrders(data));
       })
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
       });
-  }, [showAssigned, showScheduled]);
+  }, [searchParams]);
 
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
-  }, []);
-
-  const handleAssignCheckbox = React.useCallback((e) => {
-    setShowAssigned(e.target.checked || undefined);
-  }, []);
-
-  const handleScheduleCheckbox = React.useCallback((e) => {
-    setShowScheduled(e.target.checked || undefined);
   }, []);
 
   // Temporary solution on front part for the search
@@ -91,8 +84,8 @@ export const Inbox = () => {
       <Grid>
         <GridEl size="12">
           <Container withoutPaddings>
-            <Grid alignItems="flex-end" justifyContent="space-between">
-              <GridEl size={{ xs: 12, md: 5, lg: 3 }}>
+            <Grid alignItems="flex-end">
+              <GridEl size={{ xs: 'fluid', md: 5, lg: 3 }}>
                 <Input
                   value={search}
                   icon={SearchIcon}
@@ -100,7 +93,10 @@ export const Inbox = () => {
                   onChange={handleSearchChange}
                 />
               </GridEl>
-              <GridEl size={{ xs: 12, md: 'auto', lg: 'fluid' }}>
+              <GridEl size={{ xs: 'auto', md: 0 }}>
+                <Filters />
+              </GridEl>
+              <GridEl size={{ xs: 12, md: 'fluid' }}>
                 <Tabs active={activeTab} onChange={setActiveTab}>
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
@@ -108,15 +104,8 @@ export const Inbox = () => {
                   <Tab id={3} icon={TimelineIcon}>Timeline</Tab>
                 </Tabs>
               </GridEl>
-              <GridEl size={{ xs: 0, lg: 'auto' }}>
-                <Checkbox value={showAssigned} onChange={handleAssignCheckbox}>
-                  Show assigned
-                </Checkbox>
-              </GridEl>
-              <GridEl size={{ xs: 0, lg: 'auto' }}>
-                <Checkbox value={showScheduled} onChange={handleScheduleCheckbox}>
-                  Show scheduled
-                </Checkbox>
+              <GridEl size={{ xs: 0, md: 'auto' }}>
+                <Filters />
               </GridEl>
             </Grid>
           </Container>

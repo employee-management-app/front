@@ -58,7 +58,7 @@ export const Anytime = () => {
       <Grid>
         <GridEl size="12">
           <Container withoutPaddings>
-            <Grid alignItems="flex-end" justifyContent="space-between">
+            <Grid alignItems="flex-end">
               <GridEl size={{ xs: 12, md: 5, lg: 3 }}>
                 <Input
                   value={search}
@@ -67,7 +67,7 @@ export const Anytime = () => {
                   onChange={handleSearchChange}
                 />
               </GridEl>
-              <GridEl size={{ xs: 12, md: 'auto', lg: 'fluid' }}>
+              <GridEl size={{ xs: 12, md: 'fluid' }}>
                 <Tabs active={activeTab} onChange={setActiveTab}>
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
@@ -85,7 +85,7 @@ export const Anytime = () => {
           {isLoading ? <Spinner /> : <OrdersList orders={filteredOrders} />}
         </TabsItem>
         <TabsItem for={1}>
-          <OrdersMap orders={filteredOrders} />
+          <OrdersMap orders={filteredOrders} showDateFilter={false} />
         </TabsItem>
         <TabsItem for={2}>
           <EmptyState

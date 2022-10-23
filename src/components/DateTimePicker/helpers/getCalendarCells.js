@@ -18,17 +18,18 @@ export const getCalendarCells = (date) => {
     calendarCells.push(prepareCell(date, i + 1, 'current'));
   }
 
-  const cellsToAdd = 35 - daysInMonth;
-
   const lastMonth = date.subtract(1, 'month');
 
-  for (let i = 0; i < Math.floor(cellsToAdd / 2); i++) {
+  const startCellsToAdd = (calendarCells[0].value.day() + 6) % 7;
+
+  for (let i = 0; i < startCellsToAdd; i++) {
     calendarCells.unshift(prepareCell(lastMonth, lastMonth.daysInMonth() - i, 'prev'));
   }
 
   const nextMonth = date.add(1, 'month');
+  const endCellsToAdd = 42 - calendarCells.length;
 
-  for (let i = 0; i < Math.round(cellsToAdd / 2); i++) {
+  for (let i = 0; i < endCellsToAdd; i++) {
     calendarCells.push(prepareCell(nextMonth, i + 1, 'next'));
   }
 

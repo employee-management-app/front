@@ -49,6 +49,7 @@ export const Popover = ({
     isOpen,
     onDisappear: handleDisappear,
     onOutsideClick: handleClose,
+    onParentClose: handleClose,
     overflowContainer,
     placement,
     possiblePlacements,
@@ -68,7 +69,7 @@ export const Popover = ({
 
   return (
     <>
-      <span className={styles.trigger} {...triggerProps} {...hoverProps}>
+      <span className={cx(styles.trigger, 'popoverTrigger')} {...triggerProps} {...hoverProps}>
         {children}
       </span>
       {renderLayer(

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
 import { Container } from '../components/Container';
@@ -10,6 +11,7 @@ import { Grid, GridEl } from '../components/Grid';
 import { Spinner } from '../components/Spinner';
 import { OrdersMap } from '../components/OrdersMap';
 import { OrdersList } from '../components/OrdersList';
+import { Filters } from '../components/Filters';
 import { useNotification } from '../hooks/useNotification';
 import { useAuth } from '../hooks/useAuth';
 import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
@@ -25,14 +27,16 @@ export const Scheduled = () => {
   const [orders, setOrders] = React.useState([]);
   const [activeTab, setActiveTab] = React.useState(1);
   const [search, setSearch] = React.useState('');
-
+  const [searchParams] = useSearchParams();
   const { pushNotification } = useNotification();
   const { user } = useAuth();
 
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetchEmployeeOrders(user._id, { startDate: true, sortBy: 'startDate', orderBy: 'asc' })
+    const filters = Object.fromEntries([...searchParams]);
+
+    fetchEmployeeOrders(user._id, { startDate: true, sortBy: 'startDate', orderBy: 'asc', ...filters })
       .then((data) => {
         setOrders(data);
       })
@@ -42,7 +46,7 @@ export const Scheduled = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [searchParams]);
 
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
@@ -58,8 +62,8 @@ export const Scheduled = () => {
       <Grid>
         <GridEl size="12">
           <Container withoutPaddings>
-            <Grid alignItems="flex-end" justifyContent="space-between">
-              <GridEl size={{ xs: 12, md: 5, lg: 3 }}>
+            <Grid alignItems="flex-end">
+              <GridEl size={{ xs: 'fluid', md: 5, lg: 3 }}>
                 <Input
                   value={search}
                   icon={SearchIcon}
@@ -67,13 +71,19 @@ export const Scheduled = () => {
                   onChange={handleSearchChange}
                 />
               </GridEl>
-              <GridEl size={{ xs: 12, md: 'auto', lg: 'fluid' }}>
+              <GridEl size={{ xs: 'auto', md: 0 }}>
+                <Filters />
+              </GridEl>
+              <GridEl size={{ xs: 12, md: 'fluid' }}>
                 <Tabs active={activeTab} onChange={setActiveTab}>
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
                   <Tab id={2} icon={CalendarIcon}>Calendar</Tab>
                   <Tab id={3} icon={TimelineIcon}>Timeline</Tab>
                 </Tabs>
+              </GridEl>
+              <GridEl size={{ xs: 0, md: 'auto' }}>
+                <Filters />
               </GridEl>
             </Grid>
           </Container>

@@ -10,10 +10,11 @@ import { useAuth } from '../../hooks/useAuth';
 import { Container } from '../Container';
 import { GoogleMap } from '../GoogleMap';
 import { OrderCard } from '../OrderCard';
+import { DateFilter } from '../DateFilter';
 
 import styles from './OrdersMap.module.scss';
 
-export const OrdersMap = ({ orders }) => {
+export const OrdersMap = ({ orders, showDateFilter = true }) => {
   const employees = useSelector(getEmployees);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
   const [height, setHeight] = React.useState(0);
@@ -92,6 +93,7 @@ export const OrdersMap = ({ orders }) => {
 
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>
+      {showDateFilter && <DateFilter />}
       <GoogleMap
         markers={markers}
         selected={selectedOrder}
