@@ -121,7 +121,7 @@
 }
 
 .wrapper {
-  :global(.popoverTrigger) {
+  :global(> div > span.popoverTrigger) {
     position: absolute;
     top: 20px;
     left: 50%;
