@@ -24,7 +24,7 @@ export const Button = ({ type = 'button', ...props }) => {
 
   if (props.href) {
     return (
-      <a href={props.href} target={props.target} className={classNames}>
+      <a href={props.href} target={props.target} className={classNames} onClick={props.onClick}>
         {content()}
       </a>
     );
@@ -32,7 +32,7 @@ export const Button = ({ type = 'button', ...props }) => {
 
   if (props.to) {
     return (
-      <Link to={props.to} target={props.target} className={classNames}>
+      <Link to={props.to} target={props.target} className={classNames} onClick={props.onClick}>
         {content()}
       </Link>
     );

@@ -46,7 +46,7 @@ export const Notifications = () => {
                   {notification.content}
                   {notification.action && (
                     <div className={styles.action}>
-                      <Button onClick={notification.action.onClick}>
+                      <Button to={notification.action.to} onClick={notification.action.onClick}>
                         {notification.action.label}
                       </Button>
                     </div>

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
+import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { createOrder } from '../../services/createOrder';
 
 import { addOrder } from '../../store';
@@ -23,6 +24,7 @@ export const CreateOrderForm = ({ onSuccess }) => {
     onFieldChange,
     onSubmit,
   } = useForm(getOrderFormConfig);
+  const { hideModal } = useModalVisibility('CreateOrder');
 
   const handleSubmit = (e) => {
     onSubmit(e);
@@ -55,8 +57,15 @@ export const CreateOrderForm = ({ onSuccess }) => {
         dispatch(addOrder(data));
         pushNotification({ theme: 'success', content: 'Measurement was successfully created!' });
       })
-      .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong! Please double check entired data.' });
+      .catch((error) => {
+        const content = error.response?.data.message ?? 'Something went wrong';
+        const action = !!error.response?.data.value && {
+          to: `/orders/${error.response?.data.value}`,
+          onClick: hideModal,
+          label: 'See order',
+        };
+
+        pushNotification({ theme: 'error', content, action });
       })
       .finally(() => {
         setIsLoading(false);

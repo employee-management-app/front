@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
+import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { updateOrder } from '../../services/updateOrder';
 import { fetchEmployees } from '../../services/fetchEmployees';
 import { getEmployees, updateOrder as updateOrderInStore, setEmployees, setOrder } from '../../store';
@@ -22,6 +23,7 @@ export const AssignForm = ({ order, onSuccess }) => {
     },
   });
 
+  const { hideModal } = useModalVisibility('AssignOrder');
   const { pushNotification } = useNotification();
   const {
     fields,
@@ -73,8 +75,15 @@ export const AssignForm = ({ order, onSuccess }) => {
         dispatch(setOrder(data));
         onSuccess();
       })
-      .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong! Try again..' });
+      .catch((error) => {
+        const content = error.response?.data.message ?? 'Something went wrong';
+        const action = !!error.response?.data.value && {
+          to: `/orders/${error.response?.data.value}`,
+          onClick: hideModal,
+          label: 'See order',
+        };
+
+        pushNotification({ theme: 'error', content, action });
       })
       .finally(() => {
         setIsLoading(false);

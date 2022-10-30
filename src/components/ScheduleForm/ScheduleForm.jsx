@@ -6,6 +6,7 @@ import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { useAuth } from '../../hooks/useAuth';
 import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal';
+import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { updateOrder } from '../../services/updateOrder';
 import { setOrder, updateOrder as updateOrderInStore } from '../../store';
 
@@ -18,6 +19,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   const navigate = useNavigate();
 
   const { isManager } = useAuth();
+  const { hideModal } = useModalVisibility('ScheduleOrder');
   const { pushNotification } = useNotification();
 
   const getConfig = () => ({
@@ -69,8 +71,15 @@ export const ScheduleForm = ({ order, onSuccess }) => {
         });
         onSuccess();
       })
-      .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong! Try again..' });
+      .catch((error) => {
+        const content = error.response?.data.message ?? 'Something went wrong';
+        const action = !!error.response?.data.value && {
+          to: `/orders/${error.response?.data.value}`,
+          onClick: hideModal,
+          label: 'See order',
+        };
+
+        pushNotification({ theme: 'error', content, action });
       })
       .finally(() => {
         setIsLoading(false);
