@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
+import { useOrderPriority } from '../../hooks/useOrderPriority';
 import { getEmployees } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -22,6 +23,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
   const wrapperRef = React.useRef(null);
   const cardsRef = React.useRef(null);
   const windowSize = useWindowSize();
+  const { colors: priorityColors } = useOrderPriority();
   const { isEmployee } = useAuth();
 
   React.useEffect(() => {
@@ -89,12 +91,13 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     orders.find((order) => order._id === selectedOrderId)
   ), [orders, selectedOrderId]);
 
-  const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, address }) => ({
+  const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, priority, address, startDate }) => ({
     id: _id,
     color: getEmployeeColor(assignedEmployee),
+    warningColor: (assignedEmployee && startDate) ? undefined : priorityColors[priority],
     lat: address.lat,
     lng: address.lng,
-  })), [getEmployeeColor, orders]);
+  })), [getEmployeeColor, orders, priorityColors]);
 
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>

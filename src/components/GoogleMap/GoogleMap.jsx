@@ -13,10 +13,11 @@ const DEFAULT_CENTER = {
   lng: 17.038538,
 };
 
-const MapMarker = ({ color, className, onClick }) => (
+const MapMarker = ({ color, warningColor, className, onClick }) => (
   // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
   <div className={cx(styles.marker, className)} style={{ color }} onClick={onClick}>
     <MeasurementIcon />
+    {warningColor && <span className={styles.circle} style={{ color: warningColor }} />}
   </div>
 );
 
@@ -90,9 +91,9 @@ export const GoogleMap = ({ markers, selected, offset = DEFAULT_OFFSET, onSelect
   }, []);
 
   const { clusters, supercluster } = useSupercluster({
-    points: markers.map(({ id, color, lat, lng }) => ({
+    points: markers.map(({ id, color, warningColor, lat, lng }) => ({
       type: 'Feature',
-      properties: { id, color },
+      properties: { id, color, warningColor },
       geometry: {
         type: 'Point',
         coordinates: [lng, lat],
@@ -115,7 +116,7 @@ export const GoogleMap = ({ markers, selected, offset = DEFAULT_OFFSET, onSelect
     >
       {clusters.map((cluster) => {
         const [lng, lat] = cluster.geometry.coordinates;
-        const { cluster: isCluster, point_count: pointCount, id, color } = cluster.properties;
+        const { cluster: isCluster, point_count: pointCount, id, color, warningColor } = cluster.properties;
 
         const onClusterClick = () => {
           const x = (offset.right - offset.left) / 2;
@@ -145,6 +146,7 @@ export const GoogleMap = ({ markers, selected, offset = DEFAULT_OFFSET, onSelect
             lat={lat}
             lng={lng}
             color={color}
+            warningColor={warningColor}
             className={cx({ [styles.selected]: id === selectedMarker })}
             onClick={() => selectMarker(id)}
           />
