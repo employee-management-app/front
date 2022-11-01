@@ -91,10 +91,10 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     orders.find((order) => order._id === selectedOrderId)
   ), [orders, selectedOrderId]);
 
-  const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, priority, address, startDate }) => ({
+  const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, priority, address, status }) => ({
     id: _id,
     color: getEmployeeColor(assignedEmployee),
-    warningColor: (assignedEmployee && startDate) ? undefined : priorityColors[priority],
+    warningColor: status === 'inbox' ? priorityColors[priority] : undefined,
     lat: address.lat,
     lng: address.lng,
   })), [getEmployeeColor, orders, priorityColors]);
@@ -125,7 +125,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
           </Container>
         </div>
       )}
-      {selectedOrder && selectedOrder.assignedEmployee && selectedOrder.startDate && (
+      {selectedOrder && selectedOrder.status !== 'inbox' && (
         <div className={styles.timeline}>
           <Timeline
             order={selectedOrder}
