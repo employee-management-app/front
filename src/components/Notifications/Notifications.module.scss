@@ -7,7 +7,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
-  padding: 20px;
+  padding: var(--container-padding) var(--container-padding) $page-bottom-padding;
   pointer-events: none;
   z-index: 200;
 }
@@ -42,7 +42,7 @@
   }
 
   &.success {
-    fill: $color-success; 
+    fill: $color-success;
     border-left: 3px solid $color-success;
   }
 
@@ -54,6 +54,12 @@
   &.warning {
     fill: $color-warning;
     border-left: 3px solid $color-warning;
+  }
+}
+
+@include breakpoint-up("md") {
+  .notifications {
+    padding: var(--container-padding);
   }
 }
 

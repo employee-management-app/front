@@ -6,28 +6,10 @@ import { updateOrder } from '../../services/updateOrder';
 import { updateOrder as updateOrderInStore } from '../../store';
 import { useNotification } from '../../hooks/useNotification';
 import { useClickOutside } from '../../hooks/useClickOutside';
+import { useOrderPriority } from '../../hooks/useOrderPriority';
 import { useAuth } from '../../hooks/useAuth';
 
-import { ReactComponent as LowPriorityIcon } from '../../assets/icons/priorities/low.svg';
-import { ReactComponent as NormalPriorityIcon } from '../../assets/icons/priorities/normal.svg';
-import { ReactComponent as HighPriorityIcon } from '../../assets/icons/priorities/high.svg';
-import { ReactComponent as VeryHighPriorityIcon } from '../../assets/icons/priorities/very-high.svg';
-
 import styles from './OrderPriority.module.scss';
-
-const icons = [
-  LowPriorityIcon,
-  NormalPriorityIcon,
-  HighPriorityIcon,
-  VeryHighPriorityIcon,
-];
-
-const labels = [
-  'Low',
-  'Normal',
-  'High',
-  'Very high',
-];
 
 export const OrderPriority = ({ id, disabled, ...props }) => {
   const ref = React.useRef();
@@ -61,11 +43,7 @@ export const OrderPriority = ({ id, disabled, ...props }) => {
 
   useClickOutside(ref, hideDropdown);
 
-  const getIconByIndex = (key) => {
-    const IconByKey = icons[key];
-
-    return <IconByKey />;
-  };
+  const { icon: Icon, label, priorities } = useOrderPriority(priority);
 
   return (
     <span ref={ref} style={{ position: 'relative' }}>
@@ -75,13 +53,13 @@ export const OrderPriority = ({ id, disabled, ...props }) => {
         disabled={!isManager || disabled}
         onClick={handleClick}
       >
-        {labels[priority]}
-        {getIconByIndex(priority)}
+        {label}
+        <Icon />
       </button>
       {isDropdownVisible && (
         <div className={styles.priorityDropdown}>
           <ul>
-            {labels.map((label, index) => (
+            {priorities.map((p, index) => (
               // eslint-disable-next-line max-len
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
               <li
@@ -93,8 +71,8 @@ export const OrderPriority = ({ id, disabled, ...props }) => {
                 )}
                 onClick={handlePriorityClick(index)}
               >
-                {label}
-                {getIconByIndex(index)}
+                {p.label}
+                <p.icon />
               </li>
             ))}
           </ul>

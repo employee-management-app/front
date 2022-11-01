@@ -7,7 +7,7 @@ import { EmptyState } from '../components/EmptyState';
 import { Button } from '../components/Button';
 import { Tabs, Tab, TabsItems, TabsItem } from '../components/Tabs';
 import { Input } from '../components/Input';
-import { Grid, GridEl } from '../components/Grid';
+import { Grid, GridEl, SPACES } from '../components/Grid';
 import { Spinner } from '../components/Spinner';
 import { OrdersMap } from '../components/OrdersMap';
 import { OrdersList } from '../components/OrdersList';
@@ -62,7 +62,7 @@ export const Scheduled = () => {
       <Grid>
         <GridEl size="12">
           <Container withoutPaddings>
-            <Grid alignItems="flex-end">
+            <Grid space={SPACES.S} alignItems="flex-end">
               <GridEl size={{ xs: 'fluid', md: 5, lg: 3 }}>
                 <Input
                   value={search}

@@ -3,13 +3,13 @@
 .button {
   all: unset;
   position: fixed;
-  bottom: 100px;
-  right: 30px;
+  bottom: calc($page-bottom-padding + 10px);
+  right: calc(var(--container-padding) + 10px);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-color: $color-white;
   box-shadow: 0 0 5px rgba($color-black, 0.3);
@@ -25,14 +25,16 @@
   }
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: 60%;
+    height: 60%;
     fill: $color-primary;
   }
 }
 
-@include breakpoint-up('md') {
+@include breakpoint-up("md") {
   .button {
     bottom: 30px;
+    width: 50px;
+    height: 50px;
   }
 }

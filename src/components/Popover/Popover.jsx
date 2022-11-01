@@ -72,7 +72,7 @@ export const Popover = ({
       <span className={cx(styles.trigger, 'popoverTrigger')} {...triggerProps} {...hoverProps}>
         {children}
       </span>
-      {renderLayer(
+      {isOpen && renderLayer(
         <div
           {...layerProps}
           {...hoverProps}

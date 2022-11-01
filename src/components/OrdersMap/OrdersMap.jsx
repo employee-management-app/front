@@ -11,12 +11,13 @@ import { Container } from '../Container';
 import { GoogleMap } from '../GoogleMap';
 import { OrderCard } from '../OrderCard';
 import { DateFilter } from '../DateFilter';
+import { Timeline } from '../Timeline';
 
 import styles from './OrdersMap.module.scss';
 
 export const OrdersMap = ({ orders, showDateFilter = true }) => {
   const employees = useSelector(getEmployees);
-  const [selectedOrder, setSelectedOrder] = React.useState(null);
+  const [selectedOrderId, setSelectedOrderId] = React.useState(null);
   const [height, setHeight] = React.useState(0);
   const wrapperRef = React.useRef(null);
   const cardsRef = React.useRef(null);
@@ -47,7 +48,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
       scrollIntoView(card, { behavior: 'smooth' });
     }
 
-    setSelectedOrder(id);
+    setSelectedOrderId(id);
   }, [orders]);
 
   const offset = React.useMemo(() => {
@@ -84,6 +85,10 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     return employee.color || '';
   }, [isEmployee, employees]);
 
+  const selectedOrder = React.useMemo(() => (
+    orders.find((order) => order._id === selectedOrderId)
+  ), [orders, selectedOrderId]);
+
   const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, address }) => ({
     id: _id,
     color: getEmployeeColor(assignedEmployee),
@@ -96,7 +101,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
       {showDateFilter && <DateFilter />}
       <GoogleMap
         markers={markers}
-        selected={selectedOrder}
+        selected={selectedOrderId}
         offset={offset}
         onSelect={selectOrder}
       />
@@ -106,7 +111,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
             <div ref={cardsRef} className={styles.cards}>
               {orders.map((order) => (
                 <div
-                  className={cx(styles.card, { [styles.selected]: order._id === selectedOrder })}
+                  className={cx(styles.card, { [styles.selected]: order._id === selectedOrderId })}
                   key={order._id}
                 >
                   <div className={styles.cardOutline} style={{ color: getEmployeeColor(order.assignedEmployee) }} />
@@ -115,6 +120,15 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
               ))}
             </div>
           </Container>
+        </div>
+      )}
+      {selectedOrder && selectedOrder.assignedEmployee && selectedOrder.startDate && (
+        <div className={styles.timeline}>
+          <Timeline
+            order={selectedOrder}
+            color={getEmployeeColor(selectedOrder.assignedEmployee)}
+            onSelect={selectOrder}
+          />
         </div>
       )}
     </div>

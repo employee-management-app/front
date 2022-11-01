@@ -3,6 +3,7 @@
 // Colors
 
 $color-primary: #1352A1;
+$color-primary-lighten-1: #BBD5F7;
 
 $color-white: #FFFFFF;
 $color-black: #000000;
@@ -16,13 +17,6 @@ $color-gray: #AAAAAA;
 $color-gray-lighten-1: #C7C7C7;
 $color-gray-lighten-2: #E1E1E1;
 $color-gray-lighten-3: #F5F5F5;
-
-// Container
-
-$container-width: 1250px;
-$container-padding: 20px;
-$container-padding-mobile: 20px;
-$page-bottom-padding: calc(85px + env(safe-area-inset-bottom));
 
 // Font sizes
 
@@ -164,6 +158,24 @@ $breakpoints: (
     @include breakpoint-down($next) {
       @content;
     }
+  }
+}
+
+// Container
+
+$safe-area-inset-bottom: calc(env(safe-area-inset-bottom) / 2);
+$container-width: 1250px;
+$page-bottom-padding: calc(70px + $safe-area-inset-bottom);
+
+:root {
+  --container-padding: 20px;
+  --header-height: 72px;
+}
+
+@include breakpoint-down("sm") {
+  :root {
+    --container-padding: 10px;
+    --header-height: 54px;
   }
 }
 

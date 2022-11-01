@@ -1,55 +1,25 @@
-import cx from 'classnames';
 import React from 'react';
-import { mergeRefs, useHover, useLayer } from 'react-laag';
+import { Arrow, useHover, useLayer } from 'react-laag';
 
 import styles from './Tooltip.module.scss';
-
-const EXIT_TIMEOUT = 100;
-
-const DEFAULT_DELAY = 100;
 
 export const Tooltip = ({
   children,
   content,
-  overlayClassName,
   visible,
-  container,
   placement = 'top-center',
-  mouseEnterDelay = DEFAULT_DELAY,
-  mouseLeaveDelay = DEFAULT_DELAY,
-  autoHide = true,
-  autoPlacement = true,
-  onTooltipHide,
-  overflowContainer = true,
 }) => {
-  const layerRef = React.useRef(null);
-  const [shouldRenderLayer, setShouldRenderLayer] = React.useState(true);
-  const [isOver, hoverProps] = useHover({
-    delayEnter: mouseEnterDelay,
-    delayLeave: mouseLeaveDelay,
-  });
+  const [isOver, hoverProps] = useHover();
 
   const isOpen = visible ?? isOver;
 
-  const { triggerProps, layerProps, renderLayer } = useLayer({
-    auto: autoPlacement,
-    container,
+  const { arrowProps, triggerProps, layerProps, renderLayer } = useLayer({
+    auto: true,
     isOpen,
-    onDisappear: () => autoHide && setShouldRenderLayer(false),
-    overflowContainer,
+    overflowContainer: true,
     placement,
     triggerOffset: 10,
   });
-
-  React.useEffect(() => {
-    setShouldRenderLayer(true);
-
-    if (!isOpen) {
-      setTimeout(() => {
-        onTooltipHide?.();
-      }, EXIT_TIMEOUT + 1);
-    }
-  }, [isOpen]);
 
   const trigger = React.useMemo(() => (
     React.cloneElement(children, {
@@ -61,14 +31,13 @@ export const Tooltip = ({
   return (
     <>
       {trigger}
-      {shouldRenderLayer && renderLayer(
+      {isOpen && renderLayer(
         <div
           {...layerProps}
-          ref={mergeRefs(layerProps.ref, layerRef)}
-          onMouseLeave={hoverProps.onMouseLeave}
-          className={cx(overlayClassName, styles.tooltipBox)}
+          className={styles.tooltip}
         >
           {content}
+          <Arrow {...arrowProps} {...hoverProps} backgroundColor="rgba(0, 0, 0, 0.8)" />
         </div>
       )}
     </>
