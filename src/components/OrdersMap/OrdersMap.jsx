@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
-import { useOrderPriority } from '../../hooks/useOrderPriority';
 import { getEmployees } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -23,7 +22,6 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
   const wrapperRef = React.useRef(null);
   const cardsRef = React.useRef(null);
   const windowSize = useWindowSize();
-  const { colors: priorityColors } = useOrderPriority();
   const { isEmployee } = useAuth();
 
   React.useEffect(() => {
@@ -73,12 +71,12 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     return _offset;
   }, [windowSize]);
 
-  const getEmployeeColor = React.useCallback(({ status, assignedEmployee }) => {
+  const getEmployeeColor = React.useCallback(({ assignedEmployee }) => {
     if (isEmployee) {
       return '#1352A1';
     }
 
-    if (status === 'inbox') {
+    if (!assignedEmployee) {
       return undefined;
     }
 
@@ -94,10 +92,10 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
   const markers = React.useMemo(() => orders.map((order) => ({
     id: order._id,
     color: getEmployeeColor(order),
-    warningColor: order.status === 'inbox' ? priorityColors[order.priority] : undefined,
+    showWarning: order.status === 'inbox',
     lat: order.address.lat,
     lng: order.address.lng,
-  })), [getEmployeeColor, orders, priorityColors]);
+  })), [getEmployeeColor, orders]);
 
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>

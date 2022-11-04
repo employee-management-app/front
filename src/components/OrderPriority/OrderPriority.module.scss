@@ -1,5 +1,10 @@
 @use "../../styles/variables" as *;
 
+.wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
 .priority {
   all: unset;
   @include text-small;
@@ -34,7 +39,7 @@
   }
 
   &.priority-0 {
-    color: $color-success;
+    color: $color-gray;
   }
 
   &.priority-1 {

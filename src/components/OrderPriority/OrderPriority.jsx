@@ -46,7 +46,7 @@ export const OrderPriority = ({ id, disabled, ...props }) => {
   const { icon: Icon, label, priorities } = useOrderPriority(priority);
 
   return (
-    <span ref={ref} style={{ position: 'relative' }}>
+    <span ref={ref} className={styles.wrapper}>
       <button
         type="button"
         className={cx(styles.priority, styles[`priority-${priority}`])}
