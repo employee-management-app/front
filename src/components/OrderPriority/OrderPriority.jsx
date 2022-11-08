@@ -46,33 +46,33 @@ export const OrderPriority = ({ id, disabled, ...props }) => {
   const { icon: Icon, label, priorities } = useOrderPriority(priority);
 
   return (
-    <span ref={ref} style={{ position: 'relative' }}>
+    <span ref={ref} className={styles.wrapper}>
       <button
         type="button"
         className={cx(styles.priority, styles[`priority-${priority}`])}
         disabled={!isManager || disabled}
         onClick={handleClick}
       >
-        {label}
         <Icon />
+        {label}
       </button>
       {isDropdownVisible && (
         <div className={styles.priorityDropdown}>
           <ul>
-            {priorities.map((p, index) => (
+            {priorities.map((p) => (
               // eslint-disable-next-line max-len
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
               <li
                 key={label}
                 className={cx(
                   styles.priority,
-                  styles[`priority-${index}`],
-                  { [styles.selected]: priority === index },
+                  styles[`priority-${p.value}`],
+                  { [styles.selected]: priority === p.value },
                 )}
-                onClick={handlePriorityClick(index)}
+                onClick={handlePriorityClick(p.value)}
               >
-                {p.label}
                 <p.icon />
+                {p.label}
               </li>
             ))}
           </ul>

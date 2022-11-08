@@ -1,12 +1,17 @@
 @use "../../styles/variables" as *;
 
+.wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
 .priority {
   all: unset;
   @include text-small;
   display: inline-flex;
   align-items: center;
   border-radius: 2px;
-  padding-left: 4px;
+  padding-right: 4px;
   margin-left: -4px;
   cursor: pointer;
 
@@ -34,14 +39,17 @@
   }
 
   &.priority-0 {
-    color: $color-primary;
+    color: $color-gray;
   }
 
   &.priority-1 {
+    color: $color-dark;
+  }
+
+  &.priority-2 {
     color: $color-warning;
   }
 
-  &.priority-2,
   &.priority-3 {
     color: $color-danger;
   }

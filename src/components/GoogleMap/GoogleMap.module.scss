@@ -37,3 +37,15 @@
     opacity: 0.35;
   }
 }
+
+.warning {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background-color: $color-warning;
+  box-shadow: 0 0 4px $color-warning;
+  border-radius: 50%;
+  z-index: 1;
+}

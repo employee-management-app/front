@@ -71,7 +71,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     return _offset;
   }, [windowSize]);
 
-  const getEmployeeColor = React.useCallback((assignedEmployee) => {
+  const getEmployeeColor = React.useCallback(({ assignedEmployee }) => {
     if (isEmployee) {
       return '#1352A1';
     }
@@ -89,11 +89,12 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     orders.find((order) => order._id === selectedOrderId)
   ), [orders, selectedOrderId]);
 
-  const markers = React.useMemo(() => orders.map(({ _id, assignedEmployee, address }) => ({
-    id: _id,
-    color: getEmployeeColor(assignedEmployee),
-    lat: address.lat,
-    lng: address.lng,
+  const markers = React.useMemo(() => orders.map((order) => ({
+    id: order._id,
+    color: getEmployeeColor(order),
+    showWarning: order.status === 'inbox',
+    lat: order.address.lat,
+    lng: order.address.lng,
   })), [getEmployeeColor, orders]);
 
   return (
@@ -114,7 +115,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
                   className={cx(styles.card, { [styles.selected]: order._id === selectedOrderId })}
                   key={order._id}
                 >
-                  <div className={styles.cardOutline} style={{ color: getEmployeeColor(order.assignedEmployee) }} />
+                  <div className={styles.cardOutline} style={{ color: getEmployeeColor(order) }} />
                   <OrderCard onClick={() => selectOrder(order._id)} {...order} />
                 </div>
               ))}
@@ -122,11 +123,11 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
           </Container>
         </div>
       )}
-      {selectedOrder && selectedOrder.assignedEmployee && selectedOrder.startDate && (
+      {selectedOrder && selectedOrder.status !== 'inbox' && (
         <div className={styles.timeline}>
           <Timeline
             order={selectedOrder}
-            color={getEmployeeColor(selectedOrder.assignedEmployee)}
+            color={getEmployeeColor(selectedOrder)}
             onSelect={selectOrder}
           />
         </div>

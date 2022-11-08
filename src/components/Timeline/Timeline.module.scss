@@ -81,14 +81,17 @@
   }
 
   &.priority-0 {
-    color: $color-primary;
+    color: $color-gray;
   }
 
   &.priority-1 {
+    color: $color-dark;
+  }
+
+  &.priority-2 {
     color: $color-warning;
   }
 
-  &.priority-2,
   &.priority-3 {
     color: $color-danger;
   }
