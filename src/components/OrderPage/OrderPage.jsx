@@ -55,7 +55,7 @@ export const OrderPage = ({ order }) => {
           <GridEl size="12">
             <Grid space={SPACES.S} alignItems="flex-start">
               <GridEl size="fluid">
-                <OrderPriority id={id} priority={priority} />
+                <OrderPriority id={id} priority={priority} disabled={isCompleted} />
               </GridEl>
               <GridEl size="auto">
                 <Grid space={SPACES.S} alignItems="center">
@@ -141,7 +141,7 @@ export const OrderPage = ({ order }) => {
                 <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">Assignee</Text>
               </GridEl>
               <GridEl size="12">
-                <OrderButtons size="auto" order={order} />
+                <OrderButtons size="auto" order={{ ...order, disabled: isCompleted }} />
               </GridEl>
             </Grid>
           </GridEl>
@@ -169,9 +169,11 @@ export const OrderPage = ({ order }) => {
                     ? (
                       <>
                         Description for employees
-                        <button type="button" className={styles.editButton} onClick={showEmployeeMessageModal}>
-                          <EditIcon />
-                        </button>
+                        {!isCompleted && (
+                          <button type="button" className={styles.editButton} onClick={showEmployeeMessageModal}>
+                            <EditIcon />
+                          </button>
+                        )}
                       </>
                     )
                     : 'Description'}
@@ -190,9 +192,11 @@ export const OrderPage = ({ order }) => {
                 <GridEl size="12">
                   <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
                     Description for managers
-                    <button type="button" className={styles.editButton} onClick={showManagerMessageModal}>
-                      <EditIcon />
-                    </button>
+                    {!isCompleted && (
+                      <button type="button" className={styles.editButton} onClick={showManagerMessageModal}>
+                        <EditIcon />
+                      </button>
+                    )}
                   </Text>
                 </GridEl>
                 <GridEl size="12">
