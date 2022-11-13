@@ -31,16 +31,12 @@ export const EditOrderForm = ({ values, onSuccess }) => {
     onSubmit(e);
 
     if (!isTouched) {
-      if (onSuccess) {
-        onSuccess();
-      }
-
+      onSuccess?.();
       return;
     }
 
     if (!isValid) {
       pushNotification({ theme: 'warning', content: 'Please fill in all required fields!' });
-
       return;
     }
 
@@ -59,10 +55,7 @@ export const EditOrderForm = ({ values, onSuccess }) => {
 
     updateOrder(values._id, payload)
       .then((data) => {
-        if (onSuccess) {
-          onSuccess();
-        }
-
+        onSuccess?.();
         dispatch(updateOrderInStore(data));
         dispatch(setOrder(data));
         pushNotification({ theme: 'success', content: 'Measurement was successfully updated!' });
