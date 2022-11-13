@@ -40,6 +40,22 @@ const setEmployees = (state, action) => ({
   employees: action.payload,
 });
 
+const updateEmployee = (state, action) => {
+  const index = state.employees.findIndex(({ _id }) => _id === action.payload._id);
+
+  return {
+    ...state,
+    employees: Object.assign([], state.employees, { [index]: action.payload }),
+  };
+};
+
+// Employee
+
+const setEmployee = (state, action) => ({
+  ...state,
+  employee: action.payload,
+});
+
 // UI
 
 const pushNotification = (state, action) => ({
@@ -77,7 +93,9 @@ export const reducers = {
   [actions.UPDATE_ORDER]: updateOrder,
   [actions.DELETE_ORDER_BY_ID]: deleteOrderById,
   [actions.SET_ORDER]: setOrder,
+  [actions.SET_EMPLOYEE]: setEmployee,
   [actions.SET_EMPLOYEES]: setEmployees,
+  [actions.UPDATE_EMPLOYEE]: updateEmployee,
   [actions.PUSH_NOTIFICATION]: pushNotification,
   [actions.REMOVE_NOTIFICATION_BY_ID]: removeFirstNotification,
   [actions.SHOW_MODAL]: showModal,

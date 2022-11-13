@@ -6,6 +6,8 @@ import { AuthProvider } from './AuthContext';
 import { Header } from './components/Header';
 import { CreateOrderModal } from './components/CreateOrderModal';
 import { EditOrderModal } from './components/EditOrderModal';
+import { AddEmployeeModal } from './components/AddEmployeeModal';
+import { EditEmployeeModal } from './components/EditEmployeeModal';
 import { CompleteOrderModal } from './components/CompleteOrderModal';
 import { DeleteOrderModal } from './components/DeleteOrderModal';
 import { AssignOrderModal } from './components/AssignOrderModal';
@@ -14,8 +16,10 @@ import { Notifications } from './components/Notifications';
 import { useAuth } from './hooks/useAuth';
 import { Anytime } from './pages/anytime';
 import { Completed } from './pages/completed';
+import { Employees } from './pages/employees';
 import { Error } from './pages/error';
 import { Inbox } from './pages/inbox';
+import { Invitation } from './pages/invitation';
 import { Login } from './pages/login';
 import { Scheduled } from './pages/scheduled';
 import { Signup } from './pages/signup';
@@ -44,6 +48,7 @@ const AppRoutes = () => {
       {/* Mixed views */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/invitation/:token" element={<Invitation />} />
       <Route
         path="/"
         element={(
@@ -60,14 +65,22 @@ const AppRoutes = () => {
           </ProtectedRoute>
         )}
       />
-      <Route path="/ui" element={<UI />} />
-      <Route path="*" element={<Error />} />
-      {/* Manager views */}
       <Route
         path="/completed"
         element={(
           <ProtectedRoute>
             <Completed />
+          </ProtectedRoute>
+        )}
+      />
+      <Route path="/ui" element={<UI />} />
+      <Route path="*" element={<Error />} />
+      {/* Manager views */}
+      <Route
+        path="/employees"
+        element={(
+          <ProtectedRoute role={USER_TYPES.MANAGER}>
+            <Employees />
           </ProtectedRoute>
         )}
       />
@@ -101,6 +114,8 @@ const App = () => (
       </main>
       <CreateOrderModal />
       <EditOrderModal />
+      <AddEmployeeModal />
+      <EditEmployeeModal />
       <CompleteOrderModal />
       <DeleteOrderModal />
       <AssignOrderModal />

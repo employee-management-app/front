@@ -50,10 +50,7 @@ export const CreateOrderForm = ({ onSuccess }) => {
 
     createOrder(payload)
       .then((data) => {
-        if (onSuccess) {
-          onSuccess();
-        }
-
+        onSuccess?.();
         dispatch(addOrder(data));
         pushNotification({ theme: 'success', content: 'Measurement was successfully created!' });
       })

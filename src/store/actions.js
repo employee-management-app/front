@@ -1,9 +1,11 @@
 export const SET_ORDERS = 'SET_ORDERS';
 export const ADD_ORDER = 'ADD_ORDER';
 export const SET_EMPLOYEES = 'SET_EMPLOYEES';
+export const UPDATE_EMPLOYEE = 'UPDATE_EMPLOYEE';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const DELETE_ORDER_BY_ID = 'DELETE_ORDER_BY_ID';
 export const SET_ORDER = 'SET_ORDER';
+export const SET_EMPLOYEE = 'SET_EMPLOYEE';
 export const PUSH_NOTIFICATION = 'PUSH_NOTIFICATION';
 export const REMOVE_NOTIFICATION_BY_ID = 'REMOVE_NOTIFICATION_BY_ID';
 export const SHOW_MODAL = 'SHOW_MODAL';
@@ -38,6 +40,16 @@ export const setOrder = (order) => ({
 export const setEmployees = (employees) => ({
   type: SET_EMPLOYEES,
   payload: employees,
+});
+
+export const updateEmployee = (employee) => ({
+  type: UPDATE_EMPLOYEE,
+  payload: employee,
+});
+
+export const setEmployee = (employee) => ({
+  type: SET_EMPLOYEE,
+  payload: employee,
 });
 
 export const pushNotification = (notification) => ({

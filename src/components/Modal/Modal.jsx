@@ -15,8 +15,7 @@ export const Modal = ({ onClose, ...props }) => {
 
   const closeModal = React.useCallback(() => {
     setIsOpen(false);
-
-    if (onClose) onClose();
+    onClose?.();
   }, [onClose]);
 
   return (
