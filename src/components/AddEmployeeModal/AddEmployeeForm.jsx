@@ -57,8 +57,9 @@ export const AddEmployeeForm = ({ onSuccess }) => {
         dispatch(setEmployees([...employees, data]));
         pushNotification({ theme: 'success', content: 'Invitation link has been sent to the employee!' });
       })
-      .catch(() => {
-        pushNotification({ theme: 'error', content: 'Something went wrong' });
+      .catch((error) => {
+        const content = error.response?.data.message ?? 'Something went wrong';
+        pushNotification({ theme: 'error', content });
       })
       .finally(() => {
         setIsLoading(false);

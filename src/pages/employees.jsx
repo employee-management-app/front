@@ -22,9 +22,8 @@ export const Employees = () => {
       .then((data) => {
         dispatch(setEmployees(data));
       })
-      .catch((error) => {
-        const content = error.response?.data.message ?? 'Something went wrong';
-        pushNotification({ theme: 'error', content });
+      .catch(() => {
+        pushNotification({ theme: 'error', content: 'Something went wrong' });
       })
       .finally(() => {
         setIsLoading(false);
