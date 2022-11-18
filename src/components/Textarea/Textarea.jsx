@@ -12,7 +12,7 @@ export const Textarea = ({ placeholder, size, onChange, ...rest }) => {
 
   const handleChange = React.useCallback((e) => {
     setValue(e.target.value);
-    onChange?.();
+    onChange?.(e);
   }, [onChange]);
 
   return (
