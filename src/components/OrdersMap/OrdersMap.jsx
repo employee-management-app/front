@@ -129,7 +129,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
           </Container>
         </div>
       )}
-      {isTimelineVisible && selectedOrder.status !== 'inbox' && (
+      {isTimelineVisible && selectedOrder && selectedOrder.status !== 'inbox' && (
         <div className={styles.timeline}>
           <Timeline
             order={selectedOrder}
