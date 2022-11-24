@@ -11,13 +11,14 @@ import { Container } from '../Container';
 import { GoogleMap } from '../GoogleMap';
 import { OrderCard } from '../OrderCard';
 import { DateFilter } from '../DateFilter';
-import { Timeline } from '../Timeline';
+import { Timeline } from './Timeline';
 
 import styles from './OrdersMap.module.scss';
 
 export const OrdersMap = ({ orders, showDateFilter = true }) => {
   const employees = useSelector(getEmployees);
   const [selectedOrderId, setSelectedOrderId] = React.useState(null);
+  const [isTimelineVisible, setIsTimelineVisible] = React.useState(false);
   const [height, setHeight] = React.useState(0);
   const wrapperRef = React.useRef(null);
   const cardsRef = React.useRef(null);
@@ -49,6 +50,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     }
 
     setSelectedOrderId(id);
+    setIsTimelineVisible(orders[index].status !== 'inbox');
   }, [orders]);
 
   const offset = React.useMemo(() => {
@@ -89,13 +91,17 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     orders.find((order) => order._id === selectedOrderId)
   ), [orders, selectedOrderId]);
 
+  const hideTimeline = React.useCallback(() => {
+    setIsTimelineVisible(false);
+  }, []);
+
   const markers = React.useMemo(() => orders.map((order) => ({
     id: order._id,
     color: getEmployeeColor(order),
     showWarning: order.status === 'inbox',
     lat: order.address.lat,
     lng: order.address.lng,
-  })), [getEmployeeColor, orders]);
+  })), [orders]);
 
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>
@@ -123,12 +129,13 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
           </Container>
         </div>
       )}
-      {selectedOrder && selectedOrder.status !== 'inbox' && (
+      {isTimelineVisible && selectedOrder.status !== 'inbox' && (
         <div className={styles.timeline}>
           <Timeline
             order={selectedOrder}
             color={getEmployeeColor(selectedOrder)}
             onSelect={selectOrder}
+            onClose={hideTimeline}
           />
         </div>
       )}

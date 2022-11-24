@@ -2,10 +2,10 @@ import cx from 'classnames';
 import { format, differenceInMinutes, set } from 'date-fns';
 import React from 'react';
 
-import { useOrderPriority } from '../../hooks/useOrderPriority';
-import { Tooltip } from '../Tooltip';
-import { Grid, GridEl, SPACES } from '../Grid';
-import { Text } from '../Text';
+import { useOrderPriority } from '../../../hooks/useOrderPriority';
+import { Tooltip } from '../../Tooltip';
+import { Grid, GridEl, SPACES } from '../../Grid';
+import { Text } from '../../Text';
 
 import styles from './Timeline.module.scss';
 

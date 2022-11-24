@@ -1,15 +1,16 @@
 import { format } from 'date-fns';
 import React from 'react';
 
-import { ReactComponent as AvatarIcon } from '../../assets/icons/avatar.svg';
-import { fetchEmployeeSlots } from '../../services/fetchEmployeeSlots';
-import { useNotification } from '../../hooks/useNotification';
-import { Text } from '../Text';
+import { ReactComponent as AvatarIcon } from '../../../assets/icons/avatar.svg';
+import { ReactComponent as CloseIcon } from '../../../assets/icons/close.svg';
+import { fetchEmployeeSlots } from '../../../services/fetchEmployeeSlots';
+import { useNotification } from '../../../hooks/useNotification';
+import { Text } from '../../Text';
 import { getIntervals } from './consts';
 import { Slot } from './Slot';
 import styles from './Timeline.module.scss';
 
-export const Timeline = ({ color, order, onSelect }) => {
+export const Timeline = ({ color, order, onSelect, onClose }) => {
   const [slots, setSlots] = React.useState([]);
 
   const intervals = getIntervals(order.startDate);
@@ -60,6 +61,13 @@ export const Timeline = ({ color, order, onSelect }) => {
           ))}
         </div>
       </div>
+      <button
+        type="button"
+        className={styles.closeButton}
+        onClick={onClose}
+      >
+        <CloseIcon />
+      </button>
     </div>
   );
 };
