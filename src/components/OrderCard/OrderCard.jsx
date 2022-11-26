@@ -34,6 +34,7 @@ export const OrderCard = (props) => {
     phone,
     priority,
     surname,
+    stage,
     type,
   } = props;
 
@@ -71,7 +72,7 @@ export const OrderCard = (props) => {
         <hr className={styles.hr} />
         <Grid space={SPACES.S}>
           <GridEl size="12">
-            <Text>{name} {surname}</Text>
+            <Text>{stage}: {name} {surname}</Text>
           </GridEl>
           <GridEl size={{ md: 12, xl: 8 }}>
             <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>

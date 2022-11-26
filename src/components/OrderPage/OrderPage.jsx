@@ -29,9 +29,12 @@ export const OrderPage = ({ order }) => {
   const {
     _id: id,
     type,
+    name,
+    surname,
     priority,
     phone,
     email,
+    stage,
     message,
     employeeMessage,
     managerMessage,
@@ -121,11 +124,9 @@ export const OrderPage = ({ order }) => {
           </GridEl>
           <GridEl size="12">
             <Grid space={SPACES.S}>
-              {(order.name || order.surname) && (
-                <GridEl size="12">
-                  <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{order.name} {order.surname}</Text>
-                </GridEl>
-              )}
+              <GridEl size="12">
+                <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{stage}: {name} {surname}</Text>
+              </GridEl>
               <GridEl size={{ xs: 'fluid', sm: 'auto' }}>
                 <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
               </GridEl>
