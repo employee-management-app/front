@@ -7,12 +7,12 @@ export const TabsContext = React.createContext({
   setActive: () => {},
 });
 
-export const Tabs = ({ children, ...props }) => {
+export const Tabs = ({ children, onChange, ...props }) => {
   const [active, setActive] = React.useState(props.active);
 
   React.useEffect(() => {
-    props.onChange(active);
-  }, [active, props.onChange]);
+    onChange(active);
+  }, [active]);
 
   return (
     <div className={styles.tabs}>

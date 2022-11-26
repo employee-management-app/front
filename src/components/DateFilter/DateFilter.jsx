@@ -14,16 +14,20 @@ import { DateTimePicker } from '../DateTimePicker';
 import styles from './DateFilter.module.scss';
 import { Button } from '../Button';
 
-export const DateFilter = ({ theme }) => {
+export const DateFilter = ({ theme, defaultValue, required, dayRange }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [value, setValue] = React.useState([null, null]);
+  const [value, setValue] = React.useState(defaultValue ?? [null, null]);
 
   const updateValue = React.useCallback(() => {
+    if (defaultValue) {
+      return;
+    }
+
     const start = searchParams.get('dateStart') || null;
     const end = searchParams.get('dateEnd') || null;
 
     setValue([stringToDate(start), stringToDate(end)]);
-  }, [searchParams]);
+  }, [defaultValue, searchParams]);
 
   React.useEffect(updateValue, [updateValue]);
 
@@ -54,9 +58,16 @@ export const DateFilter = ({ theme }) => {
   }, [updateSearchParams]);
 
   const handleChange = React.useCallback((newValue) => {
+    if (dayRange) {
+      setValue([newValue[0], newValue[0]]);
+      updateSearchParams([newValue[0], newValue[0]]);
+
+      return;
+    }
+
     setValue(newValue);
     updateSearchParams(newValue);
-  }, [updateSearchParams]);
+  }, [dayRange, updateSearchParams]);
 
   const handleClose = React.useCallback(() => {
     const [, end] = value;
@@ -125,7 +136,7 @@ export const DateFilter = ({ theme }) => {
           </button>
         )}
       </div>
-      {value[1] && (
+      {value[1] && !required && (
         <button type="button" className={styles.closeButton} onClick={resetValue(closePopover)}>
           <CloseIcon />
         </button>
@@ -146,8 +157,8 @@ export const DateFilter = ({ theme }) => {
   return (
     <DateTimePicker
       value={value}
-      rangeTypes
-      rangeMode="date"
+      rangeTypes={!dayRange}
+      rangeMode
       onChange={handleChange}
       onClose={handleClose}
     >

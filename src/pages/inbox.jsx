@@ -24,6 +24,7 @@ import { OrdersList } from '../components/OrdersList';
 import { CreateOrderButton } from '../components/CreateOrderButton';
 import { Input } from '../components/Input';
 import { Filters } from '../components/Filters';
+import { Timeline } from '../components/Timeline';
 
 export const Inbox = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ export const Inbox = () => {
 
   const [activeTab, setActiveTab] = React.useState(1);
   const [search, setSearch] = React.useState('');
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   React.useEffect(() => {
     if (isEmployee) {
@@ -51,7 +52,7 @@ export const Inbox = () => {
   }, []);
 
   React.useEffect(() => {
-    if (isEmployee) {
+    if (isEmployee || activeTab === 2) {
       return;
     }
 
@@ -75,6 +76,14 @@ export const Inbox = () => {
     filterOrdersByQuery(orders, search)
   ), [orders, search]);
 
+  const handleTabChange = React.useCallback((tabId) => {
+    if (activeTab + tabId !== 1) {
+      setSearchParams([]);
+    }
+
+    setActiveTab(tabId);
+  }, [activeTab, setSearchParams]);
+
   if (isEmployee) {
     return null;
   }
@@ -93,20 +102,24 @@ export const Inbox = () => {
                   onChange={handleSearchChange}
                 />
               </GridEl>
-              <GridEl size={{ xs: 'auto', md: 0 }}>
-                <Filters />
-              </GridEl>
+              {activeTab !== 2 && (
+                <GridEl size={{ xs: 'auto', md: 0 }}>
+                  <Filters />
+                </GridEl>
+              )}
               <GridEl size={{ xs: 12, md: 'fluid' }}>
-                <Tabs active={activeTab} onChange={setActiveTab}>
+                <Tabs active={activeTab} onChange={handleTabChange}>
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
-                  <Tab id={2} icon={CalendarIcon}>Calendar</Tab>
-                  <Tab id={3} icon={TimelineIcon}>Timeline</Tab>
+                  <Tab id={2} icon={TimelineIcon}>Timeline</Tab>
+                  <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
-              <GridEl size={{ xs: 0, md: 'auto' }}>
-                <Filters />
-              </GridEl>
+              {activeTab !== 2 && (
+                <GridEl size={{ xs: 0, md: 'auto' }}>
+                  <Filters />
+                </GridEl>
+              )}
             </Grid>
           </Container>
         </GridEl>
@@ -120,18 +133,12 @@ export const Inbox = () => {
           <OrdersMap orders={filteredOrders} />
         </TabsItem>
         <TabsItem for={2}>
-          <EmptyState
-            title="Nothing here yet"
-            text="Calenar will be displayed here. If you think this is an error - contact the administrator."
-            action={
-              <Button>Contact the administrator</Button>
-            }
-          />
+          <Timeline />
         </TabsItem>
         <TabsItem for={3}>
           <EmptyState
             title="Nothing here yet"
-            text="Timeline will be displayed here. If you think this is an error - contact the administrator."
+            text="Calendar will be displayed here. If you think this is an error - contact the administrator."
             action={
               <Button>Contact the administrator</Button>
             }
