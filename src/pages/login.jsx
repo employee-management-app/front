@@ -9,7 +9,7 @@ export const Login = () => {
 
   if (isLoggedIn) {
     if (isEmployee) {
-      return <Navigate to="/anytime" />;
+      return <Navigate to="/scheduled" />;
     }
 
     return <Navigate to="/" />;
