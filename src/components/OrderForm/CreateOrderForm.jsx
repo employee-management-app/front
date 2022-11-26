@@ -40,11 +40,14 @@ export const CreateOrderForm = ({ onSuccess }) => {
     const payload = {
       ...fields,
       address: {
+        fullAddress: fields.fullAddress,
         code: fields.code,
         city: fields.city,
         street: fields.street,
         house: fields.house,
         flat: fields.flat,
+        lat: fields.lat,
+        lng: fields.lng,
       },
     };
 

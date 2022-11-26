@@ -106,7 +106,7 @@ export const GoogleMap = ({ markers, selected, offset = DEFAULT_OFFSET, onSelect
 
   return (
     <GoogleMapReact
-      bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
+      bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, libraries: 'places', language: 'pl' }}
       defaultCenter={DEFAULT_CENTER}
       zoom={zoom}
       options={{ maxZoom: 18, zoomControl: false, mapId: process.env.REACT_APP_GOOGLE_MAPS_ID }}

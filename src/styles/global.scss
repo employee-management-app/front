@@ -25,3 +25,23 @@ main {
   min-height: calc(100% - var(--header-height));
   padding: 20px 0 $page-bottom-padding;
 }
+
+.pac-container {
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.3);
+  font-family: "Montserrat", sans-serif;
+
+  &::after {
+    content: none;
+  }
+
+  .pac-item {
+    font-weight: 400;
+    color: $color-gray;
+    cursor: pointer;
+  }
+
+  .pac-matched {
+    font-weight: 600;
+  }
+}

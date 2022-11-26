@@ -121,9 +121,11 @@ export const OrderPage = ({ order }) => {
           </GridEl>
           <GridEl size="12">
             <Grid space={SPACES.S}>
-              <GridEl size="12">
-                <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{order.name} {order.surname}</Text>
-              </GridEl>
+              {(order.name || order.surname) && (
+                <GridEl size="12">
+                  <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{order.name} {order.surname}</Text>
+                </GridEl>
+              )}
               <GridEl size={{ xs: 'fluid', sm: 'auto' }}>
                 <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
               </GridEl>
@@ -131,7 +133,7 @@ export const OrderPage = ({ order }) => {
                 <Button href={`sms:${phone}`} icon={CommentIcon} width="full" />
               </GridEl>
               <GridEl size="auto">
-                <Button href={`mailto:${email}`} icon={MailIcon} width="full" />
+                <Button href={`mailto:${email}`} disabled={!email} icon={MailIcon} width="full" />
               </GridEl>
             </Grid>
           </GridEl>

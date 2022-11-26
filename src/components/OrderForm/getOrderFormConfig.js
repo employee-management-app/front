@@ -1,17 +1,21 @@
 import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal';
 
 export const getOrderFormConfig = (yup, values = {}) => ({
+  fullAddress: {
+    value: values.address.fullAddress || '',
+    validation: yup.string().max(300).required(),
+  },
   email: {
     value: values.email || '',
-    validation: yup.string().email().max(100).required(),
+    validation: yup.string().email().max(100),
   },
   name: {
     value: values.name || '',
-    validation: yup.string().max(100).required(),
+    validation: yup.string().max(100),
   },
   surname: {
     value: values.surname || '',
-    validation: yup.string().max(100).required(),
+    validation: yup.string().max(100),
   },
   phone: {
     value: values.phone || '',
@@ -19,6 +23,10 @@ export const getOrderFormConfig = (yup, values = {}) => ({
   },
   type: {
     value: values.type || null,
+    validation: yup.string().nullable().required(),
+  },
+  stage: {
+    value: values.stage || null,
     validation: yup.string().nullable().required(),
   },
   code: {
@@ -31,6 +39,14 @@ export const getOrderFormConfig = (yup, values = {}) => ({
   },
   street: {
     value: values.address ? values.address.street : '',
+    validation: yup.string().required(),
+  },
+  lat: {
+    value: values.address ? values.address.lat : '',
+    validation: yup.string().required(),
+  },
+  lng: {
+    value: values.address ? values.address.lng : '',
     validation: yup.string().required(),
   },
   house: {

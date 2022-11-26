@@ -3,7 +3,7 @@ import React from 'react';
 
 import styles from './Input.module.scss';
 
-export const Input = ({ ...props }) => {
+export const Input = React.forwardRef((props, ref) => {
   const [value, setValue] = React.useState(props.value || '');
 
   React.useEffect(() => {
@@ -32,6 +32,7 @@ export const Input = ({ ...props }) => {
     // eslint-disable-next-line jsx-a11y/label-has-associated-control
     <label className={classNames}>
       <input
+        ref={ref}
         type={props.type || 'text'}
         placeholder={props.placeholder}
         value={value}
@@ -53,4 +54,4 @@ export const Input = ({ ...props }) => {
       )}
     </label>
   );
-};
+});

@@ -74,7 +74,12 @@
   }
 
   &.disabled {
+    color: $color-gray;
     cursor: not-allowed;
+
+    &:hover {
+      border-color: $color-gray-lighten-1;
+    }
 
     * {
       pointer-events: none;

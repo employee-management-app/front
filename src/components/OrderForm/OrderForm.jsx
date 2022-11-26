@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { usePlacesWidget } from 'react-google-autocomplete';
 
 import { fetchEmployees } from '../../services/fetchEmployees';
 import { getEmployees, setEmployees } from '../../store';
@@ -10,6 +11,44 @@ import { Input } from '../Input';
 import { Select } from '../Select';
 import { Button } from '../Button';
 import { DateTimePicker } from '../DateTimePicker';
+
+const PRODUCT_TYPE_OPTIONS = [
+  {
+    label: 'Osłony wewnętrzne (rolety, żaluzje, plisy)',
+    value: 'Osłony wewnętrzne',
+  },
+  {
+    label: 'Osłony zewnętrzne (rolety, żaluzje, screeny, moskitiery)',
+    value: 'Osłony zewnętrzne',
+  },
+  {
+    label: 'Ogród (pergole, markizy)',
+    value: 'Ogród',
+  },
+  {
+    label: 'Inne (proszę opisać w polu Description)',
+    value: 'Inne',
+  },
+];
+
+const STAGE_OPTIONS = [
+  {
+    label: 'Pomiar',
+    value: 'Pomiar',
+  },
+  {
+    label: 'Montaż',
+    value: 'Montaż',
+  },
+  {
+    label: 'Reklamacja',
+    value: 'Reklamacja',
+  },
+  {
+    label: 'Serwis',
+    value: 'Serwis',
+  },
+];
 
 export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmit, onValueChange, onFieldChange }) => {
   const dispatch = useDispatch();
@@ -22,24 +61,30 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
     }))
   ), [employees]);
 
-  const serviceTypeOptions = React.useMemo(() => [
-    {
-      label: 'Osłony wewnętrzne (rolety, żaluzje, plisy)',
-      value: 'Osłony wewnętrzne',
+  const { ref } = usePlacesWidget({
+    options: {
+      types: ['address'],
     },
-    {
-      label: 'Osłony zewnętrzne (rolety, żaluzje, screeny, moskitiery)',
-      value: 'Osłony zewnętrzne',
+    onPlaceSelected: (place) => {
+      const values = Object.values(place.address_components);
+
+      // eslint-disable-next-line max-len
+      const city = values.find(({ types }) => types.includes('administrative_area_level_2') || types.includes('locality'))?.long_name;
+      const street = values.find(({ types }) => types.includes('route'))?.long_name;
+      const code = values.find(({ types }) => types.includes('postal_code'))?.long_name;
+      const house = values.find(({ types }) => types.includes('street_number'))?.long_name;
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+
+      onValueChange(city, 'city');
+      onValueChange(street, 'street');
+      onValueChange(code, 'code');
+      onValueChange(house, 'house');
+      onValueChange(lat, 'lat');
+      onValueChange(lng, 'lng');
+      onValueChange(place.formatted_address, 'fullAddress');
     },
-    {
-      label: 'Ogród (pergole, markizy)',
-      value: 'Ogród',
-    },
-    {
-      label: 'Inne (proszę opisać w polu Description)',
-      value: 'Inne',
-    },
-  ], []);
+  });
 
   React.useEffect(() => {
     fetchEmployees()
@@ -61,6 +106,37 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
       <Grid>
         <GridEl size="12">
           <Grid>
+            <GridEl size="12">
+              <Field label={editMode && 'Address'} error={errors.fullAddress}>
+                <Input
+                  ref={ref}
+                  value={fields.fullAddress}
+                  placeholder="Address"
+                  size="medium"
+                  onChange={(e) => onFieldChange(e, 'fullAddress')}
+                />
+              </Field>
+            </GridEl>
+            <GridEl size="6">
+              <Field label={editMode && 'House number'} error={errors.house}>
+                <Input
+                  value={fields.house}
+                  placeholder="House number"
+                  size="medium"
+                  onChange={(e) => onFieldChange(e, 'house')}
+                />
+              </Field>
+            </GridEl>
+            <GridEl size="6">
+              <Field label={editMode && 'Flat number'} error={errors.flat}>
+                <Input
+                  value={fields.flat}
+                  placeholder="Flat number"
+                  size="medium"
+                  onChange={(e) => onFieldChange(e, 'flat')}
+                />
+              </Field>
+            </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'Name'} error={errors.name}>
                 <Input
@@ -104,69 +180,31 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
               </Field>
             </GridEl>
             <GridEl size={{ xs: 12, sm: 6 }}>
-              <Field label={editMode && 'Service type'} error={errors.type}>
+              <Field label={editMode && 'Product type'} error={errors.type}>
                 <Select
                   value={fields.type}
-                  options={serviceTypeOptions}
-                  placeholder="Service type"
+                  options={PRODUCT_TYPE_OPTIONS}
+                  placeholder="Product type"
                   size="medium"
                   required
                   onChange={(e) => onFieldChange(e, 'type')}
                 />
               </Field>
             </GridEl>
-            <GridEl size="6">
-              <Field label={editMode && 'City'} error={errors.city}>
-                <Input
-                  value={fields.city}
-                  placeholder="City"
+            <GridEl size={{ xs: 12, sm: 6 }}>
+              <Field label={editMode && 'Stage'} error={errors.stage}>
+                <Select
+                  value={fields.stage}
+                  options={STAGE_OPTIONS}
+                  placeholder="Stage"
                   size="medium"
-                  onChange={(e) => onFieldChange(e, 'city')}
-                />
-              </Field>
-            </GridEl>
-            <GridEl size="6">
-              <Field label={editMode && 'Post code'} error={errors.code}>
-                <Input
-                  value={fields.code}
-                  placeholder="Post code"
-                  size="medium"
-                  onChange={(e) => onFieldChange(e, 'code')}
+                  required
+                  onChange={(e) => onFieldChange(e, 'stage')}
                 />
               </Field>
             </GridEl>
             <GridEl size={{ xs: 12, sm: 6 }}>
-              <Field label={editMode && 'Street'} error={errors.street}>
-                <Input
-                  value={fields.street}
-                  placeholder="Street"
-                  size="medium"
-                  onChange={(e) => onFieldChange(e, 'street')}
-                />
-              </Field>
-            </GridEl>
-            <GridEl size="6">
-              <Field label={editMode && 'House number'} error={errors.house}>
-                <Input
-                  value={fields.house}
-                  placeholder="House number"
-                  size="medium"
-                  onChange={(e) => onFieldChange(e, 'house')}
-                />
-              </Field>
-            </GridEl>
-            <GridEl size="6">
-              <Field label={editMode && 'Flat number'} error={errors.flat}>
-                <Input
-                  value={fields.flat}
-                  placeholder="Flat number"
-                  size="medium"
-                  onChange={(e) => onFieldChange(e, 'flat')}
-                />
-              </Field>
-            </GridEl>
-            <GridEl size={{ xs: 12, sm: 6 }}>
-              <Field label={editMode && 'Assign employee'} error={errors.assignedEmployee}>
+              <Field label={editMode && 'Assignee'} error={errors.assignedEmployee}>
                 <Select
                   value={fields.assignedEmployee}
                   options={employeesOptions}

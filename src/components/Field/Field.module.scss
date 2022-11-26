@@ -1,5 +1,11 @@
 @use "../../styles/variables" as *;
 
+.wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%
+}
+
 .label,
 .error {
   @include text-small;
@@ -9,10 +15,14 @@
 }
 
 .label {
+  display: block;
   font-weight: 500;
   color: $color-primary;
 }
 
 .error {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
   color: $color-danger;
 }

@@ -80,7 +80,7 @@ export const OrderCard = (props) => {
             <Button href={`sms:${phone}`} icon={CommentIcon} width="full" />
           </GridEl>
           <GridEl size={{ md: 6, xl: 2 }}>
-            <Button href={`mailto:${email}`} icon={MailIcon} width="full" />
+            <Button href={`mailto:${email}`} disabled={!email} icon={MailIcon} width="full" />
           </GridEl>
           {shortDescription && (
             <GridEl size="12">
