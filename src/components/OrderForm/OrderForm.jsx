@@ -111,7 +111,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                 <Input
                   ref={ref}
                   value={fields.fullAddress}
-                  placeholder="Address"
+                  placeholder="Address*"
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'fullAddress')}
                 />
@@ -121,7 +121,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
               <Field label={editMode && 'House number'} error={errors.house}>
                 <Input
                   value={fields.house}
-                  placeholder="House number"
+                  placeholder="House number*"
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'house')}
                 />
@@ -173,7 +173,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                 <Input
                   value={fields.phone}
                   type="phone"
-                  placeholder="Phone"
+                  placeholder="Phone*"
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'phone')}
                 />
@@ -184,7 +184,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                 <Select
                   value={fields.type}
                   options={PRODUCT_TYPE_OPTIONS}
-                  placeholder="Product type"
+                  placeholder="Product type*"
                   size="medium"
                   required
                   onChange={(e) => onFieldChange(e, 'type')}
@@ -196,7 +196,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
                 <Select
                   value={fields.stage}
                   options={STAGE_OPTIONS}
-                  placeholder="Stage"
+                  placeholder="Stage*"
                   size="medium"
                   required
                   onChange={(e) => onFieldChange(e, 'stage')}
