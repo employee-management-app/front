@@ -2,7 +2,7 @@ import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal
 
 export const getOrderFormConfig = (yup, values = {}) => ({
   fullAddress: {
-    value: values.address.fullAddress || '',
+    value: values.address?.fullAddress || '',
     validation: yup.string().max(300).required(),
   },
   email: {
@@ -30,35 +30,35 @@ export const getOrderFormConfig = (yup, values = {}) => ({
     validation: yup.string().nullable().required(),
   },
   code: {
-    value: values.address ? values.address.code : '',
+    value: values.address?.code ?? '',
     validation: yup.string().matches('^[0-9]{2}-[0-9]{3}', 'Invalid post code (xx-xxx)').required(),
   },
   city: {
-    value: values.address ? values.address.city : '',
+    value: values.address?.city ?? '',
     validation: yup.string().required(),
   },
   street: {
-    value: values.address ? values.address.street : '',
+    value: values.address?.street ?? '',
     validation: yup.string().required(),
   },
   lat: {
-    value: values.address ? values.address.lat : '',
+    value: values.address?.lat ?? '',
     validation: yup.string().required(),
   },
   lng: {
-    value: values.address ? values.address.lng : '',
+    value: values.address?.lng ?? '',
     validation: yup.string().required(),
   },
   house: {
-    value: values.address ? values.address.house : '',
+    value: values.address?.house ?? '',
     validation: yup.string().required(),
   },
   flat: {
-    value: values.address ? values.address.flat : '',
+    value: values.address?.flat ?? '',
     validation: yup.string(),
   },
   assignedEmployee: {
-    value: values.assignedEmployee ? values.assignedEmployee._id : null,
+    value: values.assignedEmployee?._id || null,
   },
   startDate: {
     value: formatDateToDateTimeLocal(values.startDate),
