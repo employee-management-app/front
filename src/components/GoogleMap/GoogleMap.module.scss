@@ -14,8 +14,8 @@
   cursor: pointer;
 
   svg {
-    height: 24px;
-    width: 24px;
+    height: 25px;
+    width: 25px;
     fill: currentColor;
   }
 
@@ -29,12 +29,11 @@
 
   &::before {
     box-shadow: 0 0 6px currentColor;
-    opacity: 0.7;
   }
 
   &.selected::after {
     box-shadow: 0 0 0 3px currentColor;
-    opacity: 0.35;
+    opacity: 0.5;
   }
 }
 
