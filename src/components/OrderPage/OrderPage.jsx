@@ -7,6 +7,8 @@ import { ReactComponent as DoneIcon } from '../../assets/icons/done.svg';
 import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
+import { ReactComponent as GearIcon } from '../../assets/icons/gear.svg';
+import { ReactComponent as MeasurementIcon } from '../../assets/icons/measurement.svg';
 
 import { useAuth } from '../../hooks/useAuth';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
@@ -25,13 +27,21 @@ import { ManagerMessageModal } from './ManagerMessageModal';
 import { EmployeeMessageModal } from './EmployeeMessageModal';
 import styles from './OrderPage.module.scss';
 
+const MARKER_ICONS = {
+  Pomiar: MeasurementIcon,
+  Montaż: GearIcon,
+};
+
 export const OrderPage = ({ order }) => {
   const {
     _id: id,
     type,
+    name,
+    surname,
     priority,
     phone,
     email,
+    stage,
     message,
     employeeMessage,
     managerMessage,
@@ -121,11 +131,9 @@ export const OrderPage = ({ order }) => {
           </GridEl>
           <GridEl size="12">
             <Grid space={SPACES.S}>
-              {(order.name || order.surname) && (
-                <GridEl size="12">
-                  <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{order.name} {order.surname}</Text>
-                </GridEl>
-              )}
+              <GridEl size="12">
+                <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{stage}: {name} {surname}</Text>
+              </GridEl>
               <GridEl size={{ xs: 'fluid', sm: 'auto' }}>
                 <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
               </GridEl>
@@ -231,6 +239,7 @@ export const OrderPage = ({ order }) => {
           markers={[{
             id,
             color: '#1352A1',
+            icon: MARKER_ICONS[stage],
             lat,
             lng,
           }]}
