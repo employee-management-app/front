@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchEmployees } from '../../services/fetchEmployees';
 import { getEmployees, setEmployees } from '../../store';
-import { Grid, GridEl, SPACES } from '../Grid';
+import { Grid, GridEl } from '../Grid';
 import { Field } from '../Field';
 import { Textarea } from '../Textarea';
 import { Input } from '../Input';
@@ -58,7 +58,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
       noValidate
       onSubmit={onSubmit}
     >
-      <Grid space={SPACES.L}>
+      <Grid>
         <GridEl size="12">
           <Grid>
             <GridEl size="6">
@@ -194,9 +194,19 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
           <Field label={editMode && 'Description for employees'} error={errors.employeeMessage}>
             <Textarea
               value={fields.employeeMessage}
-              placeholder="Type message for employees"
+              placeholder="Message for employees"
               size="medium"
               onChange={(e) => onFieldChange(e, 'employeeMessage')}
+            />
+          </Field>
+        </GridEl>
+        <GridEl size="12">
+          <Field label={editMode && 'Description for managers'} error={errors.employeeMessage}>
+            <Textarea
+              value={fields.managerMessage}
+              placeholder="Message for managers"
+              size="medium"
+              onChange={(e) => onFieldChange(e, 'managerMessage')}
             />
           </Field>
         </GridEl>

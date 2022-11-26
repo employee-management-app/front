@@ -54,4 +54,8 @@ export const getOrderFormConfig = (yup, values = {}) => ({
     value: values.employeeMessage || '',
     validation: yup.string(),
   },
+  managerMessage: {
+    value: values.managerMessage || '',
+    validation: yup.string(),
+  },
 });
