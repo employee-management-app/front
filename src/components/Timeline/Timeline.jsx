@@ -28,7 +28,7 @@ export const Timeline = () => {
       .then((data) => {
         setSlotsPerEmployee(data.reduce((acc, slot) => ({
           ...acc,
-          [slot.assignedEmployee?._id ?? '']: [...(acc[slot.assignedEmployee?._id] ?? []), slot],
+          [slot.assignedEmployee?._id]: [...(acc[slot.assignedEmployee?._id] ?? []), slot],
         }), {}));
       })
       .catch(() => {
@@ -72,7 +72,7 @@ export const Timeline = () => {
                 </div>
               ))}
             </div>
-            {Object.keys(slotsPerEmployee).map((employee) => (
+            {Object.keys(slotsPerEmployee).sort().map((employee) => (
               <div className={styles.row}>
                 <div className={styles.employee}>
                   <AvatarIcon />
