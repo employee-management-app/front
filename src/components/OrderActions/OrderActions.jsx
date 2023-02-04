@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ReactComponent as EditIcon } from '../../assets/icons/edit.svg';
+import { ReactComponent as CopyIcon } from '../../assets/icons/copy.svg';
 import { ReactComponent as TrashIcon } from '../../assets/icons/trash.svg';
 import { ReactComponent as DoneIcon } from '../../assets/icons/done.svg';
 import { ReactComponent as DotsIcon } from '../../assets/icons/dots.svg';
@@ -22,6 +23,7 @@ export const OrderActions = ({ order, className }) => {
   const { showModal: showEditModal } = useModalVisibility('EditOrder');
   const { showModal: showDeleteModal } = useModalVisibility('DeleteOrder');
   const { showModal: showCompleteModal } = useModalVisibility('CompleteOrder');
+  const { showModal: showDuplicateModal } = useModalVisibility('DuplicateOrder');
 
   const togglePopover = React.useCallback(() => {
     setIsPopoverVisible((visible) => !visible);
@@ -36,6 +38,11 @@ export const OrderActions = ({ order, className }) => {
     showEditModal();
   }, [dispatch, order, showEditModal]);
 
+  const handleDuplicateModalOpen = React.useCallback(() => {
+    dispatch(setOrder(order));
+    showDuplicateModal();
+  }, [dispatch, order, showDuplicateModal]);
+
   const handleDeleteModalOpen = React.useCallback(() => {
     dispatch(setOrder(order));
     showDeleteModal();
@@ -47,16 +54,25 @@ export const OrderActions = ({ order, className }) => {
   }, [dispatch, order, showCompleteModal]);
 
   const actions = [
-    {
-      label: 'Complete task',
-      Icon: DoneIcon,
-      handler: handleCompleteModalOpen,
-    },
-    ...(!isEmployee ? [
+    ...(order.status !== 'completed' ? [
       {
-        label: 'Edit task',
-        Icon: EditIcon,
-        handler: handleEditModalOpen,
+        label: 'Complete task',
+        Icon: DoneIcon,
+        handler: handleCompleteModalOpen,
+      },
+    ] : []),
+    ...(!isEmployee ? [
+      ...(order.status !== 'completed' ? [
+        {
+          label: 'Edit task',
+          Icon: EditIcon,
+          handler: handleEditModalOpen,
+        },
+      ] : []),
+      {
+        label: 'Duplicate task',
+        Icon: CopyIcon,
+        handler: handleDuplicateModalOpen,
       },
       {
         label: 'Remove task',

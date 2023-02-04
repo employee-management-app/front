@@ -74,4 +74,10 @@ export const getOrderFormConfig = (yup, values = {}) => ({
     value: values.managerMessage || '',
     validation: yup.string(),
   },
+  files: {
+    value: values.files || [],
+  },
+  priority: {
+    value: values.priority || [],
+  },
 });

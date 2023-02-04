@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Container } from '../components/Container';
 import { Grid, GridEl } from '../components/Grid';
@@ -9,11 +10,13 @@ import { useAuth } from '../hooks/useAuth';
 import { useNotification } from '../hooks/useNotification';
 import { fetchOrders } from '../services/fetchOrders';
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
+import { getCompletedOrders, setCompletedOrders } from '../store';
 
 export const Completed = () => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [orders, setOrders] = React.useState([]);
 
+  const dispatch = useDispatch();
+  const orders = useSelector(getCompletedOrders);
   const { user, isEmployee } = useAuth();
   const { pushNotification } = useNotification();
 
@@ -22,7 +25,7 @@ export const Completed = () => {
 
     (isEmployee ? fetchEmployeeOrders(user._id, { status: 'completed' }) : fetchOrders({ status: 'completed' }))
       .then((data) => {
-        setOrders(data);
+        dispatch(setCompletedOrders(data));
       })
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });

@@ -50,7 +50,18 @@ const STAGE_OPTIONS = [
   },
 ];
 
-export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmit, onValueChange, onFieldChange }) => {
+export const OrderForm = (props) => {
+  const {
+    editMode = false,
+    errors,
+    fields,
+    isLoading,
+    onFieldChange,
+    onSubmit,
+    onValueChange,
+    submitLabel = 'Create task',
+  } = props;
+
   const dispatch = useDispatch();
   const employees = useSelector(getEmployees);
 
@@ -250,7 +261,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
         </GridEl>
         <GridEl size="12">
           <Button type="submit" loading={isLoading}>
-            {editMode ? 'Update' : 'Create'} task
+            {submitLabel}
           </Button>
         </GridEl>
       </Grid>

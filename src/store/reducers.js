@@ -7,6 +7,11 @@ const setOrders = (state, action) => ({
   orders: action.payload,
 });
 
+const setCompletedOrders = (state, action) => ({
+  ...state,
+  completedOrders: action.payload,
+});
+
 const addOrder = (state, action) => ({
   ...state,
   orders: [action.payload, ...state.orders],
@@ -24,6 +29,7 @@ const updateOrder = (state, action) => {
 const deleteOrderById = (state, action) => ({
   ...state,
   orders: state.orders.filter(({ _id }) => _id !== action.payload),
+  completedOrders: state.completedOrders.filter(({ _id }) => _id !== action.payload),
 });
 
 // Order
@@ -104,6 +110,7 @@ const hideAllDrawers = (state) => ({
 
 export const reducers = {
   [actions.SET_ORDERS]: setOrders,
+  [actions.SET_COMPLETED_ORDERS]: setCompletedOrders,
   [actions.ADD_ORDER]: addOrder,
   [actions.UPDATE_ORDER]: updateOrder,
   [actions.DELETE_ORDER_BY_ID]: deleteOrderById,

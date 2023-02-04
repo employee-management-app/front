@@ -23,7 +23,7 @@
   transition: 0.2s padding ease-in-out;
 }
 
-.card:not(.disabled) .date {
+.card .date {
   padding-right: 30px;
 }
 
@@ -60,22 +60,22 @@
 }
 
 @include breakpoint-up("md") {
-  .card:not(.disabled) .date {
+  .card .date {
     padding-right: 0;
   }
 
-  .card:not(.disabled) .actions {
+  .card .actions {
     transform: scale(0.5) rotate(90deg);
     opacity: 0;
   }
 
-  .card:hover:not(.disabled) .actions,
-  .card:not(.disabled) .actions:global(.active) {
+  .card:hover .actions,
+  .card .actions:global(.active) {
     transform: scale(1) rotate(0);
     opacity: 1;
   }
 
-  .card:hover:not(.disabled) .date,
+  .card:hover .date,
   .actions:global(.active) + .date {
     padding-right: 30px;
   }

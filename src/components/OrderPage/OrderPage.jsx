@@ -1,6 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 
+import { ReactComponent as CopyIcon } from '../../assets/icons/copy.svg';
 import { ReactComponent as EditIcon } from '../../assets/icons/edit.svg';
 import { ReactComponent as TrashIcon } from '../../assets/icons/trash.svg';
 import { ReactComponent as DoneIcon } from '../../assets/icons/done.svg';
@@ -45,6 +46,7 @@ export const OrderPage = ({ order }) => {
   const { isManager } = useAuth();
   const { showModal: showEditModal } = useModalVisibility('EditOrder');
   const { showModal: showDeleteModal } = useModalVisibility('DeleteOrder');
+  const { showModal: showDuplicateModal } = useModalVisibility('DuplicateOrder');
   const { showModal: showCompleteModal } = useModalVisibility('CompleteOrder');
   const { showModal: showManagerMessageModal } = useModalVisibility('ManagerMessageModal');
   const { showModal: showEmployeeMessageModal } = useModalVisibility('EmployeeMessageModal');
@@ -67,20 +69,20 @@ export const OrderPage = ({ order }) => {
                       {format(new Date(order.creationDate), 'dd.MM.yyyy HH:mm')}
                     </div>
                   </GridEl>
-                  <GridEl size={{ xs: 'auto', md: 0 }}>
+                  <GridEl size={{ xs: 'auto', lg: 0 }}>
                     <OrderActions order={order} />
                   </GridEl>
                 </Grid>
               </GridEl>
             </Grid>
             <Grid space={SPACES.S} alignItems="center">
-              <GridEl size={{ xs: 12, md: 'fluid' }}>
+              <GridEl size={{ xs: 12, lg: 'fluid' }}>
                 <Text size={{ xs: 'large', md: 'h1' }} fontWeight="700">{type}</Text>
               </GridEl>
-              <GridEl size={{ xs: 0, md: 'auto' }}>
+              <GridEl size={{ xs: 0, lg: 'auto' }}>
                 <Grid space={SPACES.S} justifyContent="flex-end" alignItems="center">
                   {!isCompleted && (
-                    <GridEl size={{ xs: 0, md: 'auto' }}>
+                    <GridEl size={{ xs: 0, lg: 'auto' }}>
                       <Button
                         icon={DoneIcon}
                         theme="success"
@@ -91,18 +93,28 @@ export const OrderPage = ({ order }) => {
                     </GridEl>
                   )}
                   {isManager && (
-                    <GridEl size={{ xs: 0, md: 'auto' }}>
-                      <Button
-                        icon={TrashIcon}
-                        theme="danger"
-                        onClick={showDeleteModal}
-                      >
-                        Remove
-                      </Button>
-                    </GridEl>
+                    <>
+                      <GridEl size={{ xs: 0, lg: 'auto' }}>
+                        <Button
+                          icon={TrashIcon}
+                          theme="danger"
+                          onClick={showDeleteModal}
+                        >
+                          Remove
+                        </Button>
+                      </GridEl>
+                      <GridEl size={{ xs: 0, lg: 'auto' }}>
+                        <Button
+                          icon={CopyIcon}
+                          onClick={showDuplicateModal}
+                        >
+                          Duplicate
+                        </Button>
+                      </GridEl>
+                    </>
                   )}
                   {(!isCompleted && isManager) && (
-                    <GridEl size={{ xs: 0, md: 'auto' }}>
+                    <GridEl size={{ xs: 0, lg: 'auto' }}>
                       <Button
                         icon={EditIcon}
                         onClick={showEditModal}

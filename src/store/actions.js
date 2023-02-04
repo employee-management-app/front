@@ -1,4 +1,5 @@
 export const SET_ORDERS = 'SET_ORDERS';
+export const SET_COMPLETED_ORDERS = 'SET_COMPLETED_ORDERS';
 export const ADD_ORDER = 'ADD_ORDER';
 export const SET_EMPLOYEES = 'SET_EMPLOYEES';
 export const UPDATE_EMPLOYEE = 'UPDATE_EMPLOYEE';
@@ -18,6 +19,11 @@ export const HIDE_ALL_DRAWERS = 'HIDE_ALL_DRAWERS';
 export const setOrders = (orders) => ({
   type: SET_ORDERS,
   payload: orders,
+});
+
+export const setCompletedOrders = (completedOrders) => ({
+  type: SET_COMPLETED_ORDERS,
+  payload: completedOrders,
 });
 
 export const addOrder = (order) => ({

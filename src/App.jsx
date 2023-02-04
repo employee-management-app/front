@@ -5,6 +5,7 @@ import { AuthProvider } from './AuthContext';
 import { Header } from './components/Header';
 import { CreateOrderDrawer } from './components/CreateOrderDrawer';
 import { EditOrderModal } from './components/EditOrderModal';
+import { DuplicateOrderModal } from './components/DuplicateOrderModal';
 import { AddEmployeeModal } from './components/AddEmployeeModal';
 import { EditEmployeeModal } from './components/EditEmployeeModal';
 import { CompleteOrderModal } from './components/CompleteOrderModal';
@@ -185,6 +186,7 @@ const App = () => (
       </main>
       <CreateOrderDrawer />
       <EditOrderModal />
+      <DuplicateOrderModal />
       <AddEmployeeModal />
       <EditEmployeeModal />
       <CompleteOrderModal />

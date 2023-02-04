@@ -4,21 +4,20 @@ import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
-import { updateOrder } from '../../services/updateOrder';
+import { createOrder } from '../../services/createOrder';
 
-import { setOrder, updateOrder as updateOrderInStore } from '../../store';
+import { addOrder } from '../../store';
 
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
 
-export const EditOrderForm = ({ values, onSuccess }) => {
+export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { hideModal } = useModalVisibility('EditOrder');
+  const { hideModal } = useModalVisibility('DuplicateOrder');
   const {
     fields,
     errors,
-    isTouched,
     isValid,
     isLoading,
     setIsLoading,
@@ -29,11 +28,6 @@ export const EditOrderForm = ({ values, onSuccess }) => {
 
   const handleSubmit = (e) => {
     onSubmit(e);
-
-    if (!isTouched) {
-      onSuccess?.();
-      return;
-    }
 
     if (!isValid) {
       pushNotification({ theme: 'warning', content: 'Please fill in all required fields!' });
@@ -56,19 +50,24 @@ export const EditOrderForm = ({ values, onSuccess }) => {
       },
     };
 
-    updateOrder(values._id, payload)
+    createOrder(payload)
       .then((data) => {
         onSuccess?.();
-        dispatch(updateOrderInStore(data));
-        dispatch(setOrder(data));
-        pushNotification({ theme: 'success', content: 'Task was successfully updated!' });
+        dispatch(addOrder(data));
+
+        const action = {
+          to: `/orders/${data._id}`,
+          label: 'Open task',
+        };
+
+        pushNotification({ theme: 'success', content: 'Task was successfully duplicated!', action });
       })
       .catch((error) => {
         const content = error.response?.data.message ?? 'Something went wrong';
         const action = !!error.response?.data.value && {
           to: `/orders/${error.response?.data.value}`,
           onClick: hideModal,
-          label: 'See order',
+          label: 'Open task',
         };
 
         pushNotification({ theme: 'error', content, action });
@@ -84,7 +83,7 @@ export const EditOrderForm = ({ values, onSuccess }) => {
       isLoading={isLoading}
       fields={fields}
       errors={errors}
-      submitLabel="Edit task"
+      submitLabel="Duplicate task"
       onFieldChange={onFieldChange}
       onValueChange={onValueChange}
       onSubmit={handleSubmit}

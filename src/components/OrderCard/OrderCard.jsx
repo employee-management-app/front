@@ -56,7 +56,7 @@ export const OrderCard = (props) => {
     <Card className={cx(styles.card, { [styles.disabled]: disabled })}>
       <div className={styles.header}>
         <OrderPriority id={_id} priority={priority} disabled={disabled} />
-        {!disabled && <OrderActions order={props} className={styles.actions} />}
+        <OrderActions order={props} className={styles.actions} />
         <div className={styles.date}>{formatDistanceToNow(new Date(creationDate))} ago</div>
       </div>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/interactive-supports-focus */}
