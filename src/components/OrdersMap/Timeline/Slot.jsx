@@ -10,7 +10,7 @@ import { Text } from '../../Text';
 import styles from './Timeline.module.scss';
 
 export const Slot = ({ color, order, selected, onClick }) => {
-  const { address, priority, startDate, endDate } = order;
+  const { address, priority, startDate, status, endDate } = order;
 
   const time = React.useMemo(() => (
     `${format(new Date(startDate), 'HH:mm')}-${format(new Date(endDate), 'HH:mm')}`
@@ -30,20 +30,30 @@ export const Slot = ({ color, order, selected, onClick }) => {
     };
   }, [selected, color, startDate, endDate]);
 
-  const tooltipContent = React.useMemo(() => (
-    <Grid space={SPACES.S}>
-      <GridEl>
+  const tooltipContent = React.useMemo(() => {
+    if (status === 'completed') {
+      return (
         <Text fontWeight={500}>
-          {address.street} {address.house}
-          <br />
-          {address.code} {address.city}
+          This order was completed
         </Text>
-      </GridEl>
-      <GridEl>
-        <Text size="small">{time}</Text>
-      </GridEl>
-    </Grid>
-  ), [address, time]);
+      );
+    }
+
+    return (
+      <Grid space={SPACES.S}>
+        <GridEl>
+          <Text fontWeight={500}>
+            {address.street} {address.house}
+            <br />
+            {address.code} {address.city}
+          </Text>
+        </GridEl>
+        <GridEl>
+          <Text size="small">{time}</Text>
+        </GridEl>
+      </Grid>
+    );
+  }, [address, status, time]);
 
   return (
     <Tooltip content={tooltipContent} placement="top-start">
@@ -51,7 +61,7 @@ export const Slot = ({ color, order, selected, onClick }) => {
         type="button"
         className={styles.slot}
         style={style}
-        onClick={onClick}
+        onClick={status === 'completed' ? () => null : onClick}
       >
         <span className={cx(styles.slotPriority, styles[`priority-${priority}`])}>
           <Icon />
