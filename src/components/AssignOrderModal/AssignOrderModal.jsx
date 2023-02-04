@@ -18,7 +18,7 @@ export const AssignOrderModal = () => {
 
   return (
     <Modal
-      title="Assign employee to measurement"
+      title="Assign employee to task"
       isOpen={isVisible}
       onClose={hideModal}
     >

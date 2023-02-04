@@ -97,7 +97,7 @@ export const OrderPage = ({ order }) => {
                         theme="danger"
                         onClick={showDeleteModal}
                       >
-                        Delete
+                        Remove
                       </Button>
                     </GridEl>
                   )}

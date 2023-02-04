@@ -36,7 +36,7 @@ export const Completed = () => {
     <Container>
       <Grid>
         <GridEl size="12">
-          <Text size="h2">Completed measurements</Text>
+          <Text size="h2">Completed tasks</Text>
         </GridEl>
         <GridEl size="12">
           {isLoading ? <Spinner /> : <OrdersList disabled orders={orders} />}

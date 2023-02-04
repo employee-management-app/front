@@ -12,7 +12,7 @@ export const ScheduleOrderModal = () => {
 
   return (
     <Modal
-      title="Schedule an appointment for measurement"
+      title="Schedule an appointment for task"
       isOpen={isVisible}
       onClose={hideModal}
     >

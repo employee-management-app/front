@@ -66,9 +66,9 @@ export const AssignForm = ({ order, onSuccess }) => {
           theme: 'success',
           content: data.assignedEmployee
             // eslint-disable-next-line max-len
-            ? `${data.assignedEmployee.name} ${data.assignedEmployee.surname} was successfully assigned to this measurement!`
+            ? `${data.assignedEmployee.name} ${data.assignedEmployee.surname} was successfully assigned to this task!`
             // eslint-disable-next-line max-len
-            : `${order.assignedEmployee.name} ${order.assignedEmployee.surname} was successfully removed from this measurement!`,
+            : `${order.assignedEmployee.name} ${order.assignedEmployee.surname} was successfully removed from this task!`,
         });
 
         dispatch(updateOrderInStore(data));

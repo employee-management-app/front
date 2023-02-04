@@ -250,7 +250,7 @@ export const OrderForm = ({ editMode = false, isLoading, fields, errors, onSubmi
         </GridEl>
         <GridEl size="12">
           <Button type="submit" loading={isLoading}>
-            {editMode ? 'Update' : 'Create'} measurement
+            {editMode ? 'Update' : 'Create'} task
           </Button>
         </GridEl>
       </Grid>

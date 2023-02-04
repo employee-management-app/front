@@ -14,7 +14,7 @@ export const EditOrderModal = () => {
     <Modal
       isOpen={isVisible}
       size="medium"
-      title="Edit measurement"
+      title="Edit task"
       onClose={hideModal}
     >
       <EditOrderForm values={order} onSuccess={hideModal} />

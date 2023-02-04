@@ -7,7 +7,7 @@ import { getOrder } from '../../store';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { useNotification } from '../../hooks/useNotification';
 import { Modal } from '../Modal';
-import { Grid, GridEl } from '../Grid';
+import { Grid, GridEl, SPACES } from '../Grid';
 import { Button } from '../Button';
 
 export const CompleteOrderModal = () => {
@@ -23,7 +23,7 @@ export const CompleteOrderModal = () => {
 
     updateOrder(order._id, { status: 'completed' })
       .then(() => {
-        pushNotification({ theme: 'success', content: 'Measurement completed!' });
+        pushNotification({ theme: 'success', content: 'Task marked as completed!' });
         navigate('/completed');
         hideModal();
       })
@@ -35,10 +35,10 @@ export const CompleteOrderModal = () => {
   return (
     <Modal
       isOpen={isVisible}
-      title="Are you sure you want to complete this measurement"
+      title="Are you sure you want to complete this task?"
       onClose={hideModal}
     >
-      <Grid>
+      <Grid space={SPACES.S}>
         <GridEl size="auto">
           <Button disabled={isLoading} size="medium" onClick={hideModal}>
             Cancel
@@ -46,7 +46,7 @@ export const CompleteOrderModal = () => {
         </GridEl>
         <GridEl size="auto">
           <Button isLoading={isLoading} size="medium" theme="success" onClick={handleCompleteOrder}>
-            Complete measurement
+            Complete task
           </Button>
         </GridEl>
       </Grid>

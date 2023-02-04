@@ -16,7 +16,7 @@ export const OrdersList = ({ orders, disabled = false }) => (orders.length ? (
 ) : (
   <EmptyState
     title="Nothing here yet"
-    text="Measurements will be displayed here. If you think this is an error - contact the administrator."
+    text="Tasks will be displayed here. If you think this is an error - contact the administrator."
     action={
       <Button>Contact the administrator</Button>
     }

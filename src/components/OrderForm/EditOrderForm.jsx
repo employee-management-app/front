@@ -61,7 +61,7 @@ export const EditOrderForm = ({ values, onSuccess }) => {
         onSuccess?.();
         dispatch(updateOrderInStore(data));
         dispatch(setOrder(data));
-        pushNotification({ theme: 'success', content: 'Measurement was successfully updated!' });
+        pushNotification({ theme: 'success', content: 'Task was successfully updated!' });
       })
       .catch((error) => {
         const content = error.response?.data.message ?? 'Something went wrong';

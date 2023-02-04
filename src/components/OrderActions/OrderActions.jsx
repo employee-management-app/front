@@ -48,18 +48,18 @@ export const OrderActions = ({ order, className }) => {
 
   const actions = [
     {
-      label: 'Complete measurement',
+      label: 'Complete task',
       Icon: DoneIcon,
       handler: handleCompleteModalOpen,
     },
     ...(!isEmployee ? [
       {
-        label: 'Edit measurement',
+        label: 'Edit task',
         Icon: EditIcon,
         handler: handleEditModalOpen,
       },
       {
-        label: 'Delete measurement',
+        label: 'Remove task',
         Icon: TrashIcon,
         theme: 'danger',
         handler: handleDeleteModalOpen,

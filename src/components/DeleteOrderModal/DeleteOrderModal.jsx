@@ -6,7 +6,7 @@ import { deleteOrderById, getOrder } from '../../store';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { useNotification } from '../../hooks/useNotification';
 import { Modal } from '../Modal';
-import { Grid, GridEl } from '../Grid';
+import { Grid, GridEl, SPACES } from '../Grid';
 import { Button } from '../Button';
 
 export const DeleteOrderModal = () => {
@@ -23,7 +23,7 @@ export const DeleteOrderModal = () => {
 
     deleteOrder(order._id)
       .then(() => {
-        pushNotification({ theme: 'success', content: 'Measurement was successfully removed!' });
+        pushNotification({ theme: 'success', content: 'Task was successfully removed!' });
         dispatch(deleteOrderById(order._id));
       })
       .catch(() => {
@@ -37,10 +37,10 @@ export const DeleteOrderModal = () => {
   return (
     <Modal
       isOpen={isVisible}
-      title="Are you sure you want to delete this measurement"
+      title="Are you sure you want to remove this task?"
       onClose={hideModal}
     >
-      <Grid>
+      <Grid space={SPACES.S}>
         <GridEl size="auto">
           <Button disabled={isLoading} size="medium" onClick={hideModal}>
             Cancel
@@ -48,7 +48,7 @@ export const DeleteOrderModal = () => {
         </GridEl>
         <GridEl size="auto">
           <Button isLoading={isLoading} size="medium" theme="danger" onClick={handleDeleteOrder}>
-            Delete measurement
+            Remove task
           </Button>
         </GridEl>
       </Grid>

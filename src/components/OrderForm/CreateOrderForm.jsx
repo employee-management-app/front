@@ -55,7 +55,7 @@ export const CreateOrderForm = ({ onSuccess }) => {
       .then((data) => {
         onSuccess?.();
         dispatch(addOrder(data));
-        pushNotification({ theme: 'success', content: 'Measurement was successfully created!' });
+        pushNotification({ theme: 'success', content: 'Task was successfully created!' });
       })
       .catch((error) => {
         const content = error.response?.data.message ?? 'Something went wrong';
