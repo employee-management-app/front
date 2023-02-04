@@ -7,6 +7,7 @@ const initialStore = {
   order: null,
   notifications: [],
   employees: [],
+  visibleDrawers: [],
   visibleModals: [],
 };
 

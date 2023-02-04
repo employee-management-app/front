@@ -87,6 +87,21 @@ const hideAllModals = (state) => ({
   visibleModals: [],
 });
 
+const showDrawer = (state, action) => ({
+  ...state,
+  visibleDrawers: [...state.visibleDrawers, action.payload],
+});
+
+const hideDrawer = (state, action) => ({
+  ...state,
+  visibleDrawers: state.visibleDrawers.filter((drawer) => drawer !== action.payload),
+});
+
+const hideAllDrawers = (state) => ({
+  ...state,
+  visibleDrawers: [],
+});
+
 export const reducers = {
   [actions.SET_ORDERS]: setOrders,
   [actions.ADD_ORDER]: addOrder,
@@ -101,4 +116,7 @@ export const reducers = {
   [actions.SHOW_MODAL]: showModal,
   [actions.HIDE_MODAL]: hideModal,
   [actions.HIDE_ALL_MODALS]: hideAllModals,
+  [actions.SHOW_DRAWER]: showDrawer,
+  [actions.HIDE_DRAWER]: hideDrawer,
+  [actions.HIDE_ALL_DRAWERS]: hideAllDrawers,
 };

@@ -11,6 +11,9 @@ export const REMOVE_NOTIFICATION_BY_ID = 'REMOVE_NOTIFICATION_BY_ID';
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
 export const HIDE_ALL_MODALS = 'HIDE_ALL_MODALS';
+export const SHOW_DRAWER = 'SHOW_DRAWER';
+export const HIDE_DRAWER = 'HIDE_DRAWER';
+export const HIDE_ALL_DRAWERS = 'HIDE_ALL_DRAWERS';
 
 export const setOrders = (orders) => ({
   type: SET_ORDERS,
@@ -74,4 +77,18 @@ export const hideModal = (modal) => ({
 
 export const hideAllModals = () => ({
   type: HIDE_ALL_MODALS,
+});
+
+export const showDrawer = (drawer) => ({
+  type: SHOW_DRAWER,
+  payload: drawer,
+});
+
+export const hideDrawer = (drawer) => ({
+  type: HIDE_DRAWER,
+  payload: drawer,
+});
+
+export const hideAllDrawers = () => ({
+  type: HIDE_ALL_DRAWERS,
 });
