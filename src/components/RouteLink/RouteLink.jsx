@@ -4,14 +4,14 @@ import { ReactComponent as DirectionIcon } from '../../assets/icons/direction.sv
 
 import styles from './RouteLink.module.scss';
 
-export const RouteLink = ({ href }) => (
+export const RouteLink = ({ href, label = 'Show route', icon: Icon = DirectionIcon }) => (
   <a
     href={href}
     target="_blank"
-    rel="noreferrer"
+    rel="noopener noreferrer"
     className={styles.routeLink}
   >
-    <span>Show route</span>
-    <DirectionIcon />
+    <span>{label}</span>
+    <Icon />
   </a>
 );

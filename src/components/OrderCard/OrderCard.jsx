@@ -38,7 +38,7 @@ export const OrderCard = (props) => {
     type,
   } = props;
 
-  const { isManager } = useAuth();
+  const { isManager, isEmployee } = useAuth();
 
   const handleClick = React.useCallback((e) => {
     onClick?.(e);
@@ -68,7 +68,21 @@ export const OrderCard = (props) => {
           {street} {house}{flat ? `, lokal ${flat}` : ''}<br />
           {code} {city}
         </Text>
-        <RouteLink href={`https://maps.google.com/?q=${lat},${lng}`} />
+        <Grid space={SPACES.S}>
+          <GridEl size="fluid">
+            <RouteLink href={`https://maps.google.com/?q=${lat},${lng}`} />
+          </GridEl>
+          {isEmployee && (
+            <>
+              <GridEl size={{ xs: 'auto', md: 0 }}>
+                <RouteLink href={`sms:${phone}`} label="Message" icon={CommentIcon} />
+              </GridEl>
+              <GridEl size={{ xs: 'auto', md: 0 }}>
+                <RouteLink href={`tel:${phone}`} label="Phone" icon={PhoneIcon} />
+              </GridEl>
+            </>
+          )}
+        </Grid>
         <hr className={styles.hr} />
         <Grid space={SPACES.S}>
           <GridEl size="12">
