@@ -57,6 +57,30 @@ const AppRoutes = () => {
         )}
       />
       <Route
+        path="/list"
+        element={(
+          <ProtectedRoute>
+            <Inbox />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/timeline"
+        element={(
+          <ProtectedRoute>
+            <Inbox />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/calendar"
+        element={(
+          <ProtectedRoute>
+            <Inbox />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
         path="/orders/:id"
         element={(
           <ProtectedRoute>
@@ -93,7 +117,55 @@ const AppRoutes = () => {
         )}
       />
       <Route
+        path="/anytime/list"
+        element={(
+          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
+            <Anytime />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/anytime/timeline"
+        element={(
+          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
+            <Anytime />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/anytime/calendar"
+        element={(
+          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
+            <Anytime />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
         path="/scheduled"
+        element={(
+          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
+            <Scheduled />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/scheduled/list"
+        element={(
+          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
+            <Scheduled />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/scheduled/timeline"
+        element={(
+          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
+            <Scheduled />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/scheduled/calendar"
         element={(
           <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
             <Scheduled />

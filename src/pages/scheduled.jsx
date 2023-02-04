@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
 import { Container } from '../components/Container';
@@ -22,14 +22,36 @@ import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg'
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
 
+const URL_TABS = {
+  '/scheduled/list': 0,
+  '/scheduled': 1,
+  '/scheduled/timeline': 2,
+  '/scheduled/calendar': 3,
+};
+
+const TAB_URLS = {
+  0: '/scheduled/list',
+  1: '/scheduled',
+  2: '/scheduled/timeline',
+  3: '/scheduled/calendar',
+};
+
 export const Scheduled = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [orders, setOrders] = React.useState([]);
-  const [activeTab, setActiveTab] = React.useState(1);
-  const [search, setSearch] = React.useState('');
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { pushNotification } = useNotification();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = `${location.pathname}/`.slice(0, `${location.pathname}/`.lastIndexOf('/'));
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [orders, setOrders] = React.useState([]);
+  const [activeTab, setActiveTab] = React.useState(URL_TABS[pathname]);
+  const [search, setSearch] = React.useState('');
+
+  React.useEffect(() => {
+    setActiveTab(URL_TABS[pathname]);
+  }, [pathname]);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -47,6 +69,13 @@ export const Scheduled = () => {
         setIsLoading(false);
       });
   }, [searchParams]);
+
+  const handleTabChange = React.useCallback((tabIndex) => {
+    if (activeTab + tabIndex !== 1) {
+      setSearchParams([]);
+    }
+    navigate(TAB_URLS[tabIndex], { replace: true });
+  }, [activeTab, navigate, setSearchParams]);
 
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
@@ -75,11 +104,11 @@ export const Scheduled = () => {
                 <Filters />
               </GridEl>
               <GridEl size={{ xs: 12, md: 'fluid' }}>
-                <Tabs active={activeTab} onChange={setActiveTab}>
+                <Tabs active={activeTab} onChange={handleTabChange}>
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
-                  <Tab id={2} icon={CalendarIcon}>Calendar</Tab>
-                  <Tab id={3} icon={TimelineIcon}>Timeline</Tab>
+                  <Tab id={2} icon={TimelineIcon}>Timeline</Tab>
+                  <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
               <GridEl size={{ xs: 0, md: 'auto' }}>

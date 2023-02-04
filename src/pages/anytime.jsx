@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
 import { Container } from '../components/Container';
@@ -20,14 +21,35 @@ import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg'
 import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
 
+const URL_TABS = {
+  '/anytime/list': 0,
+  '/anytime': 1,
+  '/anytime/timeline': 2,
+  '/anytime/calendar': 3,
+};
+
+const TAB_URLS = {
+  0: '/anytime/list',
+  1: '/anytime',
+  2: '/anytime/timeline',
+  3: '/anytime/calendar',
+};
+
 export const Anytime = () => {
+  const { user } = useAuth();
+  const { pushNotification } = useNotification();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = `${location.pathname}/`.slice(0, `${location.pathname}/`.lastIndexOf('/'));
+
   const [isLoading, setIsLoading] = React.useState(false);
   const [orders, setOrders] = React.useState([]);
-  const [activeTab, setActiveTab] = React.useState(1);
+  const [activeTab, setActiveTab] = React.useState(URL_TABS[pathname]);
   const [search, setSearch] = React.useState('');
 
-  const { pushNotification } = useNotification();
-  const { user } = useAuth();
+  React.useEffect(() => {
+    setActiveTab(URL_TABS[pathname]);
+  }, [pathname]);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -47,6 +69,10 @@ export const Anytime = () => {
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
   }, []);
+
+  const handleTabChange = React.useCallback((tabIndex) => {
+    navigate(TAB_URLS[tabIndex], { replace: true });
+  }, [navigate]);
 
   // Temporary solution on front part for the search
   const filteredOrders = React.useMemo(() => (
@@ -68,11 +94,11 @@ export const Anytime = () => {
                 />
               </GridEl>
               <GridEl size={{ xs: 12, md: 'fluid' }}>
-                <Tabs active={activeTab} onChange={setActiveTab}>
+                <Tabs active={activeTab} onChange={handleTabChange}>
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
-                  <Tab id={2} icon={CalendarIcon}>Calendar</Tab>
-                  <Tab id={3} icon={TimelineIcon}>Timeline</Tab>
+                  <Tab id={2} icon={TimelineIcon}>Timeline</Tab>
+                  <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
             </Grid>

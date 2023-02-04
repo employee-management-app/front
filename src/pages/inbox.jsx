@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
@@ -26,6 +26,20 @@ import { Input } from '../components/Input';
 import { Filters } from '../components/Filters';
 import { Timeline } from '../components/Timeline';
 
+const URL_TABS = {
+  '/list': 0,
+  '/': 1,
+  '/timeline': 2,
+  '/calendar': 3,
+};
+
+const TAB_URLS = {
+  0: '/list',
+  1: '/',
+  2: '/timeline',
+  3: '/calendar',
+};
+
 export const Inbox = () => {
   const dispatch = useDispatch();
 
@@ -34,10 +48,16 @@ export const Inbox = () => {
   const { isEmployee } = useAuth();
   const { pushNotification } = useNotification();
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = `${location.pathname}/`.slice(0, `${location.pathname}/`.lastIndexOf('/'));
 
-  const [activeTab, setActiveTab] = React.useState(1);
+  const [activeTab, setActiveTab] = React.useState(URL_TABS[pathname]);
   const [search, setSearch] = React.useState('');
   const [searchParams, setSearchParams] = useSearchParams();
+
+  React.useEffect(() => {
+    setActiveTab(URL_TABS[pathname]);
+  }, [pathname]);
 
   React.useEffect(() => {
     if (isEmployee) {
@@ -76,13 +96,12 @@ export const Inbox = () => {
     filterOrdersByQuery(orders, search)
   ), [orders, search]);
 
-  const handleTabChange = React.useCallback((tabId) => {
-    if (activeTab + tabId !== 1) {
+  const handleTabChange = React.useCallback((tabIndex) => {
+    if (activeTab + tabIndex !== 1) {
       setSearchParams([]);
     }
-
-    setActiveTab(tabId);
-  }, [activeTab, setSearchParams]);
+    navigate(TAB_URLS[tabIndex], { replace: true });
+  }, [activeTab, navigate, setSearchParams]);
 
   if (isEmployee) {
     return null;

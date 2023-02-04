@@ -11,12 +11,20 @@ export const Tabs = ({ children, onChange, ...props }) => {
   const [active, setActive] = React.useState(props.active);
 
   React.useEffect(() => {
-    onChange(active);
-  }, [active]);
+    setActive(props.active);
+  }, [props.active]);
+
+  const handleSetActive = React.useCallback((newActive) => {
+    setActive(newActive);
+
+    if (newActive !== active) {
+      onChange(newActive);
+    }
+  }, [active, onChange]);
 
   return (
     <div className={styles.tabs}>
-      <TabsContext.Provider value={{ active, setActive }}>
+      <TabsContext.Provider value={{ active, setActive: handleSetActive }}>
         {children}
       </TabsContext.Provider>
     </div>
