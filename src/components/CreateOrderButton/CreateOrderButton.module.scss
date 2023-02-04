@@ -13,7 +13,7 @@
   border-radius: 50%;
   background-color: $color-white;
   box-shadow: 0 0 5px rgba($color-black, 0.3);
-  transition: 0.15s box-shadow ease-in-out;
+  transition: 0.15s box-shadow ease-in-out, 0.5s opacity ease-in-out;
   cursor: pointer;
 
   &:hover {
@@ -28,6 +28,10 @@
     width: 60%;
     height: 60%;
     fill: $color-primary;
+  }
+
+  &.hidden {
+    opacity: 0;
   }
 }
 

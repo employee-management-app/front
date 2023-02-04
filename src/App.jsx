@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { AuthProvider } from './AuthContext';
 import { Header } from './components/Header';
-import { CreateOrderModal } from './components/CreateOrderModal';
+import { CreateOrderDrawer } from './components/CreateOrderDrawer';
 import { EditOrderModal } from './components/EditOrderModal';
 import { AddEmployeeModal } from './components/AddEmployeeModal';
 import { EditEmployeeModal } from './components/EditEmployeeModal';
@@ -183,7 +183,7 @@ const App = () => (
       <main>
         <AppRoutes />
       </main>
-      <CreateOrderModal />
+      <CreateOrderDrawer />
       <EditOrderModal />
       <AddEmployeeModal />
       <EditEmployeeModal />
