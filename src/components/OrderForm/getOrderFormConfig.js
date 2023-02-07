@@ -78,6 +78,6 @@ export const getOrderFormConfig = (yup, values = {}) => ({
     value: values.files || [],
   },
   priority: {
-    value: values.priority || [],
+    value: values.priority || 1,
   },
 });
