@@ -6,6 +6,8 @@ export const UPDATE_EMPLOYEE = 'UPDATE_EMPLOYEE';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const DELETE_ORDER_BY_ID = 'DELETE_ORDER_BY_ID';
 export const SET_ORDER = 'SET_ORDER';
+export const SET_ORDER_TO_EDIT = 'SET_ORDER_TO_EDIT';
+export const SET_ORDER_TO_DUPLICATE = 'SET_ORDER_TO_DUPLICATE';
 export const SET_EMPLOYEE = 'SET_EMPLOYEE';
 export const PUSH_NOTIFICATION = 'PUSH_NOTIFICATION';
 export const REMOVE_NOTIFICATION_BY_ID = 'REMOVE_NOTIFICATION_BY_ID';
@@ -43,6 +45,16 @@ export const deleteOrderById = (order) => ({
 
 export const setOrder = (order) => ({
   type: SET_ORDER,
+  payload: order,
+});
+
+export const setOrderToEdit = (order) => ({
+  type: SET_ORDER_TO_EDIT,
+  payload: order,
+});
+
+export const setOrderToDuplicate = (order) => ({
+  type: SET_ORDER_TO_DUPLICATE,
   payload: order,
 });
 

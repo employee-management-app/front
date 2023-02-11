@@ -6,6 +6,8 @@ const initialStore = {
   orders: [],
   completedOrders: [],
   order: null,
+  orderToEdit: null,
+  orderToDuplicate: null,
   notifications: [],
   employees: [],
   visibleDrawers: [],

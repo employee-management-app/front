@@ -20,11 +20,21 @@ export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, 
     errors,
     isValid,
     isLoading,
+    setFields,
+    setErrors,
     setIsLoading,
     onValueChange,
     onFieldChange,
     onSubmit,
   } = useForm((yup) => getOrderFormConfig(yup, values));
+
+  React.useEffect(() => {
+    const config = getOrderFormConfig(null, values);
+    const defaultFields = Object.keys(config).reduce((acc, key) => ({ ...acc, [key]: config[key].value }), {});
+
+    setFields(defaultFields);
+    setErrors({});
+  }, [values]);
 
   const handleSubmit = (e) => {
     onSubmit(e);

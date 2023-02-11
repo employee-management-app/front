@@ -1,6 +1,8 @@
 export const getOrders = (state) => state.orders;
 export const getCompletedOrders = (state) => state.completedOrders;
 export const getOrder = (state) => state.order;
+export const getOrderToEdit = (state) => state.orderToEdit;
+export const getOrderToDuplicate = (state) => state.orderToDuplicate;
 export const getEmployees = (state) => state.employees;
 export const getEmployee = (state) => state.employee;
 export const getNotifications = (state) => state.notifications;

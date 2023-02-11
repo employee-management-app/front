@@ -21,11 +21,21 @@ export const EditOrderForm = ({ values, onSuccess }) => {
     isTouched,
     isValid,
     isLoading,
+    setFields,
+    setErrors,
     setIsLoading,
     onValueChange,
     onFieldChange,
     onSubmit,
   } = useForm((yup) => getOrderFormConfig(yup, values));
+
+  React.useEffect(() => {
+    const config = getOrderFormConfig(null, values);
+    const defaultFields = Object.keys(config).reduce((acc, key) => ({ ...acc, [key]: config[key].value }), {});
+
+    setFields(defaultFields);
+    setErrors({});
+  }, [values]);
 
   const handleSubmit = (e) => {
     onSubmit(e);
@@ -84,7 +94,7 @@ export const EditOrderForm = ({ values, onSuccess }) => {
       isLoading={isLoading}
       fields={fields}
       errors={errors}
-      submitLabel="Edit task"
+      submitLabel="Save changes"
       onFieldChange={onFieldChange}
       onValueChange={onValueChange}
       onSubmit={handleSubmit}

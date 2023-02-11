@@ -7,7 +7,7 @@ import { ReactComponent as CopyIcon } from '../../assets/icons/copy.svg';
 import { ReactComponent as TrashIcon } from '../../assets/icons/trash.svg';
 import { ReactComponent as DoneIcon } from '../../assets/icons/done.svg';
 import { ReactComponent as DotsIcon } from '../../assets/icons/dots.svg';
-import { setOrder } from '../../store';
+import { setOrder, setOrderToDuplicate, setOrderToEdit } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
@@ -34,13 +34,13 @@ export const OrderActions = ({ order, className }) => {
     setIsPopoverVisible(false);
   }, []);
 
-  const handleEditModalOpen = React.useCallback(() => {
-    dispatch(setOrder(order));
+  const handleEditDrawerOpen = React.useCallback(() => {
+    dispatch(setOrderToEdit(order));
     showEditDrawer();
   }, [dispatch, order, showEditDrawer]);
 
-  const handleDuplicateModalOpen = React.useCallback(() => {
-    dispatch(setOrder(order));
+  const handleDuplicateDrawerOpen = React.useCallback(() => {
+    dispatch(setOrderToDuplicate(order));
     showDuplicateDrawer();
   }, [dispatch, order, showDuplicateDrawer]);
 
@@ -67,13 +67,13 @@ export const OrderActions = ({ order, className }) => {
         {
           label: 'Edit task',
           Icon: EditIcon,
-          handler: handleEditModalOpen,
+          handler: handleEditDrawerOpen,
         },
       ] : []),
       {
         label: 'Duplicate task',
         Icon: CopyIcon,
-        handler: handleDuplicateModalOpen,
+        handler: handleDuplicateDrawerOpen,
       },
       {
         label: 'Remove task',

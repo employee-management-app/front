@@ -6,7 +6,7 @@ import { Container } from '../components/Container';
 import { Spinner } from '../components/Spinner';
 import { OrderPage } from '../components/OrderPage';
 import { fetchOrder } from '../services/fetchOrder';
-import { getOrder, setOrder } from '../store';
+import { getOrder, setOrder, setOrderToDuplicate, setOrderToEdit } from '../store';
 
 export const Order = () => {
   const dispatch = useDispatch();
@@ -22,6 +22,8 @@ export const Order = () => {
     fetchOrder(id)
       .then((data) => {
         dispatch(setOrder(data));
+        dispatch(setOrderToEdit(data));
+        dispatch(setOrderToDuplicate(data));
       })
       .catch(() => {
         navigate('/404');

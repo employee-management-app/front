@@ -39,6 +39,16 @@ const setOrder = (state, action) => ({
   order: action.payload,
 });
 
+const setOrderToEdit = (state, action) => ({
+  ...state,
+  orderToEdit: action.payload,
+});
+
+const setOrderToDuplicate = (state, action) => ({
+  ...state,
+  orderToDuplicate: action.payload,
+});
+
 // Employees
 
 const setEmployees = (state, action) => ({
@@ -115,6 +125,8 @@ export const reducers = {
   [actions.UPDATE_ORDER]: updateOrder,
   [actions.DELETE_ORDER_BY_ID]: deleteOrderById,
   [actions.SET_ORDER]: setOrder,
+  [actions.SET_ORDER_TO_EDIT]: setOrderToEdit,
+  [actions.SET_ORDER_TO_DUPLICATE]: setOrderToDuplicate,
   [actions.SET_EMPLOYEE]: setEmployee,
   [actions.SET_EMPLOYEES]: setEmployees,
   [actions.UPDATE_EMPLOYEE]: updateEmployee,
