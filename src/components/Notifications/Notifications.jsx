@@ -29,6 +29,11 @@ export const Notifications = () => {
     dispatch(removeNotificationById(id));
   }, [dispatch]);
 
+  const handleActionClick = (notification) => () => {
+    notification.action?.onClick?.();
+    dispatch(removeNotificationById(notification.id));
+  };
+
   return (
     <div className={styles.notifications}>
       <TransitionGroup>
@@ -46,7 +51,7 @@ export const Notifications = () => {
                   {notification.content}
                   {notification.action && (
                     <div className={styles.action}>
-                      <Button to={notification.action.to} onClick={notification.action.onClick}>
+                      <Button to={notification.action.to} onClick={handleActionClick(notification)}>
                         {notification.action.label}
                       </Button>
                     </div>

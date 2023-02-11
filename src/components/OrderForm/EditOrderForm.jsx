@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
-import { useModalVisibility } from '../../hooks/useModalVisibility';
+import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import { updateOrder } from '../../services/updateOrder';
 
 import { setOrder, updateOrder as updateOrderInStore } from '../../store';
@@ -14,7 +14,7 @@ import { getOrderFormConfig } from './getOrderFormConfig';
 export const EditOrderForm = ({ values, onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { hideModal } = useModalVisibility('EditOrder');
+  const { hideDrawer } = useDrawerVisibility('EditOrder');
   const {
     fields,
     errors,
@@ -67,7 +67,7 @@ export const EditOrderForm = ({ values, onSuccess }) => {
         const content = error.response?.data.message ?? 'Something went wrong';
         const action = !!error.response?.data.value && {
           to: `/orders/${error.response?.data.value}`,
-          onClick: hideModal,
+          onClick: hideDrawer,
           label: 'See order',
         };
 

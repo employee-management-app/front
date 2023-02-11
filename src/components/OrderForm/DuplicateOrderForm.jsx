@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
-import { useModalVisibility } from '../../hooks/useModalVisibility';
+import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import { createOrder } from '../../services/createOrder';
 
 import { addOrder } from '../../store';
@@ -14,7 +14,7 @@ import { getOrderFormConfig } from './getOrderFormConfig';
 export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { hideModal } = useModalVisibility('DuplicateOrder');
+  const { hideDrawer } = useDrawerVisibility('DuplicateOrder');
   const {
     fields,
     errors,
@@ -66,7 +66,7 @@ export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, 
         const content = error.response?.data.message ?? 'Something went wrong';
         const action = !!error.response?.data.value && {
           to: `/orders/${error.response?.data.value}`,
-          onClick: hideModal,
+          onClick: hideDrawer,
           label: 'Open task',
         };
 

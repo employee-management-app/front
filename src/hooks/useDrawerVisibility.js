@@ -19,10 +19,20 @@ export const useDrawerVisibility = (drawer) => {
     dispatch(hideAllDrawers());
   }, [dispatch]);
 
+  const toggleDrawer = React.useCallback(() => {
+    if (isVisible) {
+      hideDrawerHandler();
+      return;
+    }
+
+    showDrawerHandler();
+  }, [hideDrawerHandler, isVisible, showDrawerHandler]);
+
   return {
     isVisible,
     showDrawer: showDrawerHandler,
     hideDrawer: hideDrawerHandler,
+    toggleDrawer,
     hideAllDrawers: hideAllDrawersHandler,
   };
 };

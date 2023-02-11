@@ -4,8 +4,8 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import { Header } from './components/Header';
 import { CreateOrderDrawer } from './components/CreateOrderDrawer';
-import { EditOrderModal } from './components/EditOrderModal';
-import { DuplicateOrderModal } from './components/DuplicateOrderModal';
+import { EditOrderDrawer } from './components/EditOrderDrawer';
+import { DuplicateOrderDrawer } from './components/DuplicateOrderDrawer';
 import { AddEmployeeModal } from './components/AddEmployeeModal';
 import { EditEmployeeModal } from './components/EditEmployeeModal';
 import { CompleteOrderModal } from './components/CompleteOrderModal';
@@ -185,8 +185,8 @@ const App = () => (
         <AppRoutes />
       </main>
       <CreateOrderDrawer />
-      <EditOrderModal />
-      <DuplicateOrderModal />
+      <EditOrderDrawer />
+      <DuplicateOrderDrawer />
       <AddEmployeeModal />
       <EditEmployeeModal />
       <CompleteOrderModal />

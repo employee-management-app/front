@@ -11,6 +11,7 @@ export const CreateOrderDrawer = () => {
     <Drawer
       isOpen={isVisible}
       title="Create new task"
+      closeOnRouteChange={false}
       onClose={hideDrawer}
     >
       <CreateOrderForm onSuccess={hideDrawer} />

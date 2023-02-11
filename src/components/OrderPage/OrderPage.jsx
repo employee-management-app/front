@@ -11,6 +11,7 @@ import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 
 import { useAuth } from '../../hooks/useAuth';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
+import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import { OrderButtons } from '../OrderButtons';
 import { GoogleMap } from '../GoogleMap';
 import { Grid, GridEl, SPACES } from '../Grid';
@@ -44,9 +45,9 @@ export const OrderPage = ({ order }) => {
   } = order;
 
   const { isManager } = useAuth();
-  const { showModal: showEditModal } = useModalVisibility('EditOrder');
+  const { showDrawer: showEditDrawer } = useDrawerVisibility('EditOrder');
   const { showModal: showDeleteModal } = useModalVisibility('DeleteOrder');
-  const { showModal: showDuplicateModal } = useModalVisibility('DuplicateOrder');
+  const { showDrawer: showDuplicateDrawer } = useDrawerVisibility('DuplicateOrder');
   const { showModal: showCompleteModal } = useModalVisibility('CompleteOrder');
   const { showModal: showManagerMessageModal } = useModalVisibility('ManagerMessageModal');
   const { showModal: showEmployeeMessageModal } = useModalVisibility('EmployeeMessageModal');
@@ -106,7 +107,7 @@ export const OrderPage = ({ order }) => {
                       <GridEl size={{ xs: 0, lg: 'auto' }}>
                         <Button
                           icon={CopyIcon}
-                          onClick={showDuplicateModal}
+                          onClick={showDuplicateDrawer}
                         >
                           Duplicate
                         </Button>
@@ -117,7 +118,7 @@ export const OrderPage = ({ order }) => {
                     <GridEl size={{ xs: 0, lg: 'auto' }}>
                       <Button
                         icon={EditIcon}
-                        onClick={showEditModal}
+                        onClick={showEditDrawer}
                       >
                         Edit
                       </Button>

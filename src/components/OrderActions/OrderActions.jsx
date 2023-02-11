@@ -10,6 +10,7 @@ import { ReactComponent as DotsIcon } from '../../assets/icons/dots.svg';
 import { setOrder } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
+import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 
 import { PopoverMenu } from '../PopoverMenu';
 
@@ -20,10 +21,10 @@ export const OrderActions = ({ order, className }) => {
 
   const dispatch = useDispatch();
   const { isEmployee } = useAuth();
-  const { showModal: showEditModal } = useModalVisibility('EditOrder');
+  const { showDrawer: showEditDrawer } = useDrawerVisibility('EditOrder');
   const { showModal: showDeleteModal } = useModalVisibility('DeleteOrder');
   const { showModal: showCompleteModal } = useModalVisibility('CompleteOrder');
-  const { showModal: showDuplicateModal } = useModalVisibility('DuplicateOrder');
+  const { showDrawer: showDuplicateDrawer } = useDrawerVisibility('DuplicateOrder');
 
   const togglePopover = React.useCallback(() => {
     setIsPopoverVisible((visible) => !visible);
@@ -35,13 +36,13 @@ export const OrderActions = ({ order, className }) => {
 
   const handleEditModalOpen = React.useCallback(() => {
     dispatch(setOrder(order));
-    showEditModal();
-  }, [dispatch, order, showEditModal]);
+    showEditDrawer();
+  }, [dispatch, order, showEditDrawer]);
 
   const handleDuplicateModalOpen = React.useCallback(() => {
     dispatch(setOrder(order));
-    showDuplicateModal();
-  }, [dispatch, order, showDuplicateModal]);
+    showDuplicateDrawer();
+  }, [dispatch, order, showDuplicateDrawer]);
 
   const handleDeleteModalOpen = React.useCallback(() => {
     dispatch(setOrder(order));

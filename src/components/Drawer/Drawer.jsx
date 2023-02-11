@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { Text } from '../Text';
@@ -9,12 +10,25 @@ import { ReactComponent as ExpandIcon } from '../../assets/icons/expand.svg';
 import styles from './Drawer.module.scss';
 import { Grid, GridEl, SPACES } from '../Grid';
 
-export const Drawer = ({ children, title, onClose, ...props }) => {
+export const Drawer = ({ children, title, onClose, closeOnRouteChange = true, ...props }) => {
   const [isOpen, setIsOpen] = React.useState(props.isOpen);
   const [isCollapsed, setIsCollapsed] = React.useState(false);
 
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (closeOnRouteChange) {
+      setIsOpen(false);
+      onClose?.();
+    } else {
+      setIsCollapsed(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
   React.useEffect(() => {
     setIsOpen(props.isOpen);
+    setIsCollapsed(false);
   }, [props.isOpen]);
 
   const closeDrawer = React.useCallback(() => {
