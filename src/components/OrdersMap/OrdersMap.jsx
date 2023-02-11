@@ -3,6 +3,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
 
+import { ReactComponent as GearIcon } from '../../assets/icons/gear.svg';
+import { ReactComponent as MeasurementIcon } from '../../assets/icons/measurement.svg';
 import { useWindowSize } from '../../hooks/useWindowSize';
 import { getEmployees } from '../../store';
 import { useAuth } from '../../hooks/useAuth';
@@ -14,6 +16,11 @@ import { DateFilter } from '../DateFilter';
 import { Timeline } from './Timeline';
 
 import styles from './OrdersMap.module.scss';
+
+const MARKER_ICONS = {
+  Pomiar: MeasurementIcon,
+  Montaż: GearIcon,
+};
 
 export const OrdersMap = ({ orders, showDateFilter = true }) => {
   const employees = useSelector(getEmployees);
@@ -98,6 +105,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
   const markers = React.useMemo(() => orders.map((order) => ({
     id: order._id,
     color: getEmployeeColor(order),
+    icon: MARKER_ICONS[order.stage],
     showWarning: order.status === 'inbox',
     lat: order.address.lat,
     lng: order.address.lng,

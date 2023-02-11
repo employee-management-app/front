@@ -8,6 +8,8 @@ import { ReactComponent as DoneIcon } from '../../assets/icons/done.svg';
 import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
 import { ReactComponent as CommentIcon } from '../../assets/icons/comment.svg';
 import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
+import { ReactComponent as GearIcon } from '../../assets/icons/gear.svg';
+import { ReactComponent as MeasurementIcon } from '../../assets/icons/measurement.svg';
 
 import { useAuth } from '../../hooks/useAuth';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
@@ -26,6 +28,11 @@ import { Container } from '../Container';
 import { ManagerMessageModal } from './ManagerMessageModal';
 import { EmployeeMessageModal } from './EmployeeMessageModal';
 import styles from './OrderPage.module.scss';
+
+const MARKER_ICONS = {
+  Pomiar: MeasurementIcon,
+  Montaż: GearIcon,
+};
 
 export const OrderPage = ({ order }) => {
   const {
@@ -245,6 +252,7 @@ export const OrderPage = ({ order }) => {
           markers={[{
             id,
             color: '#1352A1',
+            icon: MARKER_ICONS[stage],
             lat,
             lng,
           }]}
