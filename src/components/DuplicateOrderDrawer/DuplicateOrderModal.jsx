@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getOrder } from '../../store';
+import { getOrderToDuplicate } from '../../store';
 import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import { Drawer } from '../Drawer';
 import { DuplicateOrderForm } from '../OrderForm';
 
 export const DuplicateOrderDrawer = () => {
   const { isVisible, hideDrawer } = useDrawerVisibility('DuplicateOrder');
-  const order = useSelector(getOrder);
+  const order = useSelector(getOrderToDuplicate);
 
   return (
     <Drawer
