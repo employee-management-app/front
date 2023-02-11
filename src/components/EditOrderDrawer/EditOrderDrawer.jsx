@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getOrder } from '../../store';
+import { getOrderToEdit } from '../../store';
 import { Drawer } from '../Drawer';
 import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import { EditOrderForm } from '../OrderForm';
 
 export const EditOrderDrawer = () => {
   const { isVisible, hideDrawer } = useDrawerVisibility('EditOrder');
-  const order = useSelector(getOrder);
+  const order = useSelector(getOrderToEdit);
 
   return (
     <Drawer
