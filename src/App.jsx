@@ -185,10 +185,10 @@ const App = () => (
       <main>
         <AppRoutes />
       </main>
+      <FiltersDrawer />
       <CreateOrderDrawer />
       <EditOrderDrawer />
       <DuplicateOrderDrawer />
-      <FiltersDrawer />
       <AddEmployeeModal />
       <EditEmployeeModal />
       <CompleteOrderModal />

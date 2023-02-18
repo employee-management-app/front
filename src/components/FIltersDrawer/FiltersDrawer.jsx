@@ -78,7 +78,7 @@ export const FiltersDrawer = () => {
   const drawerTitle = `Filters${filtersCount ? ` (${filtersCount})` : ''}`;
 
   return (
-    <Drawer title={drawerTitle} isOpen={isVisible} onClose={hideDrawer}>
+    <Drawer size="small" title={drawerTitle} isOpen={isVisible} onClose={hideDrawer}>
       <Grid space={SPACES.L}>
         <GridEl size="12">
           <Field label="Scheduled time">

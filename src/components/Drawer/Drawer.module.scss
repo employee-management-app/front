@@ -45,6 +45,12 @@
   }
 }
 
+@include breakpoint-up("sm") {
+  .drawer.small {
+    width: 60%;
+  }
+}
+
 @include breakpoint-up("md") {
   .drawer {
     padding: 40px;
@@ -53,11 +59,19 @@
     &.collapsed {
       padding: 15px 25px;
     }
+
+    &.small {
+      width: 58%;
+    }
   }
 }
 
 @include breakpoint-up("lg") {
   .drawer {
     width: 570px;
+
+    &.small {
+      width: 450px;
+    }
   }
 }

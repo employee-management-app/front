@@ -10,7 +10,7 @@ import { ReactComponent as ExpandIcon } from '../../assets/icons/expand.svg';
 import styles from './Drawer.module.scss';
 import { Grid, GridEl, SPACES } from '../Grid';
 
-export const Drawer = ({ children, title, onClose, closeOnRouteChange = true, ...props }) => {
+export const Drawer = ({ children, title, size, onClose, closeOnRouteChange = true, ...props }) => {
   const [isOpen, setIsOpen] = React.useState(props.isOpen);
   const [isCollapsed, setIsCollapsed] = React.useState(false);
 
@@ -45,7 +45,7 @@ export const Drawer = ({ children, title, onClose, closeOnRouteChange = true, ..
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className={cx(styles.drawer, { [styles.collapsed]: isCollapsed })}
+          className={cx(styles.drawer, { [styles.collapsed]: isCollapsed, [styles[size]]: size })}
           initial={{ x: '100%' }}
           transition={{ duration: 0.5, type: 'spring' }}
           animate={{ x: 0, top: isCollapsed ? 'calc(100% - 70px)' : 0 }}
