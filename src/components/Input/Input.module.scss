@@ -23,6 +23,10 @@
   &.withIcon .input {
     padding-left: 38px;
   }
+
+  &.clearable .input {
+    padding-right: 30px;
+  }
 }
 
 .input {
@@ -114,6 +118,10 @@
 
     &.withIcon .input {
       padding-left: 44px;
+    }
+
+    &.clearable .input {
+      padding-right: 30px;
     }
   }
 

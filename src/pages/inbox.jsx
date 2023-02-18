@@ -76,7 +76,16 @@ export const Inbox = () => {
       return;
     }
 
-    const filters = Object.fromEntries([...searchParams]);
+    const filterKeys = Object.keys(Object.fromEntries([...searchParams]));
+
+    const filters = filterKeys.reduce((acc, key) => {
+      const values = searchParams.getAll(key);
+
+      return {
+        ...acc,
+        [key]: values.length === 1 ? values[0] : values,
+      };
+    }, { unassigned: true, unscheduled: true });
 
     fetchOrders(filters)
       .then((data) => {
@@ -91,6 +100,10 @@ export const Inbox = () => {
     setSearch(e.target.value);
   }, []);
 
+  const handleSearchClear = () => {
+    setSearch('');
+  };
+
   // Temporary solution on front part for the search
   const filteredOrders = React.useMemo(() => (
     filterOrdersByQuery(orders, search)
@@ -100,8 +113,8 @@ export const Inbox = () => {
     if (activeTab + tabIndex !== 1) {
       setSearchParams([]);
     }
-    navigate(TAB_URLS[tabIndex], { replace: true });
-  }, [activeTab, navigate, setSearchParams]);
+    navigate(`${TAB_URLS[tabIndex]}${location.search}`, { replace: true });
+  }, [activeTab, location.search, navigate, setSearchParams]);
 
   if (isEmployee) {
     return null;
@@ -117,7 +130,9 @@ export const Inbox = () => {
                 <Input
                   value={search}
                   icon={SearchIcon}
+                  clearable
                   placeholder="Search"
+                  onClear={handleSearchClear}
                   onChange={handleSearchChange}
                 />
               </GridEl>
@@ -134,7 +149,7 @@ export const Inbox = () => {
                   <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
-              {activeTab !== 2 && (
+              {activeTab < 2 && (
                 <GridEl size={{ xs: 0, md: 'auto' }}>
                   <Filters />
                 </GridEl>

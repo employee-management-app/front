@@ -4,6 +4,7 @@ import { usePlacesWidget } from 'react-google-autocomplete';
 
 import { fetchEmployees } from '../../services/fetchEmployees';
 import { getEmployees, setEmployees } from '../../store';
+import { STAGE_OPTIONS, PRODUCT_TYPE_OPTIONS } from '../../consts/order';
 import { Grid, GridEl } from '../Grid';
 import { Field } from '../Field';
 import { Textarea } from '../Textarea';
@@ -11,44 +12,6 @@ import { Input } from '../Input';
 import { Select } from '../Select';
 import { Button } from '../Button';
 import { DateTimePicker } from '../DateTimePicker';
-
-const PRODUCT_TYPE_OPTIONS = [
-  {
-    label: 'Osłony wewnętrzne (rolety, żaluzje, plisy)',
-    value: 'Osłony wewnętrzne',
-  },
-  {
-    label: 'Osłony zewnętrzne (rolety, żaluzje, screeny, moskitiery)',
-    value: 'Osłony zewnętrzne',
-  },
-  {
-    label: 'Ogród (pergole, markizy)',
-    value: 'Ogród',
-  },
-  {
-    label: 'Inne (proszę opisać w polu Description)',
-    value: 'Inne',
-  },
-];
-
-const STAGE_OPTIONS = [
-  {
-    label: 'Pomiar',
-    value: 'Pomiar',
-  },
-  {
-    label: 'Montaż',
-    value: 'Montaż',
-  },
-  {
-    label: 'Reklamacja',
-    value: 'Reklamacja',
-  },
-  {
-    label: 'Serwis',
-    value: 'Serwis',
-  },
-];
 
 export const OrderForm = (props) => {
   const {

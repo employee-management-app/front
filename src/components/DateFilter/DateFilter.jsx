@@ -23,8 +23,8 @@ export const DateFilter = ({ theme, defaultValue, required, dayRange }) => {
       return;
     }
 
-    const start = searchParams.get('dateStart') || null;
-    const end = searchParams.get('dateEnd') || null;
+    const start = searchParams.get('startDate') || null;
+    const end = searchParams.get('endDate') || null;
 
     setValue([stringToDate(start), stringToDate(end)]);
   }, [defaultValue, searchParams]);
@@ -37,15 +37,15 @@ export const DateFilter = ({ theme, defaultValue, required, dayRange }) => {
 
     if (!start || end) {
       if (start) {
-        searchParams.set('dateStart', startString);
+        searchParams.set('startDate', startString);
       } else {
-        searchParams.delete('dateStart');
+        searchParams.delete('startDate');
       }
 
       if (end) {
-        searchParams.set('dateEnd', endString);
+        searchParams.set('endDate', endString);
       } else {
-        searchParams.delete('dateEnd');
+        searchParams.delete('endDate');
       }
       setSearchParams(searchParams);
     }

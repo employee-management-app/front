@@ -3,7 +3,6 @@ import React from 'react';
 import { Grid, GridEl } from '../Grid';
 import { OrderCard } from '../OrderCard';
 import { EmptyState } from '../EmptyState';
-import { Button } from '../Button';
 
 export const OrdersList = ({ orders, disabled = false }) => (orders.length ? (
   <Grid>
@@ -15,10 +14,7 @@ export const OrdersList = ({ orders, disabled = false }) => (orders.length ? (
   </Grid>
 ) : (
   <EmptyState
-    title="Nothing here yet"
-    text="Tasks will be displayed here. If you think this is an error - contact the administrator."
-    action={
-      <Button>Contact the administrator</Button>
-    }
+    title="No results"
+    text="If you have filters applied, try resetting them or changing your search criteria."
   />
 ));

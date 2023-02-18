@@ -26,6 +26,7 @@ export const Input = React.forwardRef((props, ref) => {
     [styles[props.size]]: props.size,
     [styles.invalid]: props.invalid,
     [styles.withIcon]: props.icon,
+    [styles.clearable]: props.clearable,
   });
 
   return (

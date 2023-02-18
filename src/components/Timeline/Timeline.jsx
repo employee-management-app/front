@@ -19,12 +19,12 @@ export const Timeline = () => {
   const [slotsPerEmployee, setSlotsPerEmployee] = React.useState({});
   const { pushNotification } = useNotification();
   const [searchParams] = useSearchParams({
-    dateStart: format(new Date(), 'dd-MM-yyyy'),
-    dateEnd: format(new Date(), 'dd-MM-yyyy'),
+    startDate: format(new Date(), 'dd-MM-yyyy'),
+    endDate: format(new Date(), 'dd-MM-yyyy'),
   });
 
   React.useEffect(() => {
-    fetchSlots({ startDate: searchParams.get('dateStart'), endDate: searchParams.get('dateEnd') })
+    fetchSlots({ startDate: searchParams.get('startDate'), endDate: searchParams.get('endDate') })
       .then((data) => {
         setSlotsPerEmployee(data.reduce((acc, slot) => ({
           ...acc,

@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import { Header } from './components/Header';
 import { CreateOrderDrawer } from './components/CreateOrderDrawer';
+import { FiltersDrawer } from './components/FIltersDrawer';
 import { EditOrderDrawer } from './components/EditOrderDrawer';
 import { DuplicateOrderDrawer } from './components/DuplicateOrderDrawer';
 import { AddEmployeeModal } from './components/AddEmployeeModal';
@@ -187,6 +188,7 @@ const App = () => (
       <CreateOrderDrawer />
       <EditOrderDrawer />
       <DuplicateOrderDrawer />
+      <FiltersDrawer />
       <AddEmployeeModal />
       <EditEmployeeModal />
       <CompleteOrderModal />
