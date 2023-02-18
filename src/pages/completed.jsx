@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 import { Container } from '../components/Container';
 import { Grid, GridEl } from '../components/Grid';
@@ -11,6 +12,7 @@ import { useNotification } from '../hooks/useNotification';
 import { fetchOrders } from '../services/fetchOrders';
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
 import { getCompletedOrders, setCompletedOrders } from '../store';
+import { Filters } from '../components/Filters';
 
 export const Completed = () => {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -19,11 +21,26 @@ export const Completed = () => {
   const orders = useSelector(getCompletedOrders);
   const { user, isEmployee } = useAuth();
   const { pushNotification } = useNotification();
+  const [searchParams] = useSearchParams();
 
   React.useEffect(() => {
     setIsLoading(true);
 
-    (isEmployee ? fetchEmployeeOrders(user._id, { status: 'completed' }) : fetchOrders({ status: 'completed' }))
+    const filterKeys = Object.keys(Object.fromEntries([...searchParams]));
+
+    const filters = filterKeys.reduce((acc, key) => {
+      const values = searchParams.getAll(key);
+
+      return {
+        ...acc,
+        [key]: values.length === 1 ? values[0] : values,
+      };
+    }, { unassigned: true, unscheduled: true });
+
+    (isEmployee
+      ? fetchEmployeeOrders(user._id, { status: 'completed' })
+      : fetchOrders({ status: 'completed', ...filters })
+    )
       .then((data) => {
         dispatch(setCompletedOrders(data));
       })
@@ -33,13 +50,16 @@ export const Completed = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [searchParams]);
 
   return (
     <Container>
-      <Grid>
-        <GridEl size="12">
+      <Grid alignItems="center">
+        <GridEl size="fluid">
           <Text size="h2">Completed tasks</Text>
+        </GridEl>
+        <GridEl size="auto">
+          <Filters />
         </GridEl>
         <GridEl size="12">
           {isLoading ? <Spinner /> : <OrdersList disabled orders={orders} />}

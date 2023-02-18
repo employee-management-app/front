@@ -72,7 +72,7 @@ export const Inbox = () => {
   }, []);
 
   React.useEffect(() => {
-    if (isEmployee || activeTab === 2) {
+    if (isEmployee || activeTab > 2) {
       return;
     }
 
