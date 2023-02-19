@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
@@ -11,6 +11,7 @@ import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
 import { setOrders, getOrders, setEmployees } from '../store';
 import { useAuth } from '../hooks/useAuth';
 import { useNotification } from '../hooks/useNotification';
+import { useFilters } from '../hooks/useFilters';
 import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
 import { fetchOrders } from '../services/fetchOrders';
 import { fetchEmployees } from '../services/fetchEmployees';
@@ -49,11 +50,11 @@ export const Inbox = () => {
   const { pushNotification } = useNotification();
   const navigate = useNavigate();
   const location = useLocation();
+  const { filters } = useFilters();
   const pathname = `${location.pathname}/`.slice(0, `${location.pathname}/`.lastIndexOf('/'));
 
   const [activeTab, setActiveTab] = React.useState(URL_TABS[pathname]);
   const [search, setSearch] = React.useState('');
-  const [searchParams, setSearchParams] = useSearchParams();
 
   React.useEffect(() => {
     setActiveTab(URL_TABS[pathname]);
@@ -72,20 +73,9 @@ export const Inbox = () => {
   }, []);
 
   React.useEffect(() => {
-    if (isEmployee || activeTab > 2) {
+    if (isEmployee) {
       return;
     }
-
-    const filterKeys = Object.keys(Object.fromEntries([...searchParams]));
-
-    const filters = filterKeys.reduce((acc, key) => {
-      const values = searchParams.getAll(key);
-
-      return {
-        ...acc,
-        [key]: values.length === 1 ? values[0] : values,
-      };
-    }, { unassigned: true, unscheduled: true });
 
     fetchOrders(filters)
       .then((data) => {
@@ -94,7 +84,7 @@ export const Inbox = () => {
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
       });
-  }, [searchParams]);
+  }, [filters]);
 
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
@@ -110,11 +100,8 @@ export const Inbox = () => {
   ), [orders, search]);
 
   const handleTabChange = React.useCallback((tabIndex) => {
-    if (activeTab + tabIndex !== 1) {
-      setSearchParams([]);
-    }
     navigate(`${TAB_URLS[tabIndex]}${location.search}`, { replace: true });
-  }, [activeTab, location.search, navigate, setSearchParams]);
+  }, [location.search, navigate]);
 
   if (isEmployee) {
     return null;
@@ -136,7 +123,7 @@ export const Inbox = () => {
                   onChange={handleSearchChange}
                 />
               </GridEl>
-              {activeTab !== 2 && (
+              {activeTab < 2 && (
                 <GridEl size={{ xs: 'auto', md: 0 }}>
                   <Filters />
                 </GridEl>

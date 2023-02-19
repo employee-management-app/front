@@ -18,14 +18,14 @@ export const SHOW_DRAWER = 'SHOW_DRAWER';
 export const HIDE_DRAWER = 'HIDE_DRAWER';
 export const HIDE_ALL_DRAWERS = 'HIDE_ALL_DRAWERS';
 
-export const setOrders = (orders) => ({
+export const setOrders = (payload) => ({
   type: SET_ORDERS,
-  payload: orders,
+  payload,
 });
 
-export const setCompletedOrders = (completedOrders) => ({
+export const setCompletedOrders = (payload) => ({
   type: SET_COMPLETED_ORDERS,
-  payload: completedOrders,
+  payload,
 });
 
 export const addOrder = (order) => ({

@@ -1,4 +1,5 @@
 export const getOrders = (state) => state.orders;
+export const getOrdersTotal = (state) => state.ordersTotal;
 export const getCompletedOrders = (state) => state.completedOrders;
 export const getOrder = (state) => state.order;
 export const getOrderToEdit = (state) => state.orderToEdit;

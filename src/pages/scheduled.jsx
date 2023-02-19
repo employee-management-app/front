@@ -1,7 +1,9 @@
 import React from 'react';
-import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
+import { setOrders, getOrders } from '../store';
 import { Container } from '../components/Container';
 import { EmptyState } from '../components/EmptyState';
 import { Button } from '../components/Button';
@@ -14,6 +16,7 @@ import { OrdersList } from '../components/OrdersList';
 import { Filters } from '../components/Filters';
 import { useNotification } from '../hooks/useNotification';
 import { useAuth } from '../hooks/useAuth';
+import { useFilters } from '../hooks/useFilters';
 import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
@@ -37,15 +40,16 @@ const TAB_URLS = {
 };
 
 export const Scheduled = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
+  const orders = useSelector(getOrders);
   const { pushNotification } = useNotification();
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { filters } = useFilters();
   const pathname = `${location.pathname}/`.slice(0, `${location.pathname}/`.lastIndexOf('/'));
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const [orders, setOrders] = React.useState([]);
   const [activeTab, setActiveTab] = React.useState(URL_TABS[pathname]);
   const [search, setSearch] = React.useState('');
 
@@ -56,11 +60,9 @@ export const Scheduled = () => {
   React.useEffect(() => {
     setIsLoading(true);
 
-    const filters = Object.fromEntries([...searchParams]);
-
-    fetchEmployeeOrders(user._id, { startDate: true, sortBy: 'startDate', orderBy: 'asc', ...filters })
+    fetchEmployeeOrders(user._id, { scheduledOnly: true, sortBy: 'startDate', orderBy: 'asc', ...filters })
       .then((data) => {
-        setOrders(data);
+        dispatch(setOrders(data));
       })
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
@@ -68,14 +70,11 @@ export const Scheduled = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [searchParams]);
+  }, [filters]);
 
   const handleTabChange = React.useCallback((tabIndex) => {
-    if (activeTab + tabIndex !== 1) {
-      setSearchParams([]);
-    }
-    navigate(TAB_URLS[tabIndex], { replace: true });
-  }, [activeTab, navigate, setSearchParams]);
+    navigate(`${TAB_URLS[tabIndex]}${location.search}`, { replace: true });
+  }, [location.search, navigate]);
 
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
@@ -100,9 +99,11 @@ export const Scheduled = () => {
                   onChange={handleSearchChange}
                 />
               </GridEl>
-              <GridEl size={{ xs: 'auto', md: 0 }}>
-                <Filters />
-              </GridEl>
+              {activeTab < 2 && (
+                <GridEl size={{ xs: 'auto', md: 0 }}>
+                  <Filters />
+                </GridEl>
+              )}
               <GridEl size={{ xs: 12, md: 'fluid' }}>
                 <Tabs active={activeTab} onChange={handleTabChange}>
                   <Tab id={0} icon={ListIcon}>List</Tab>
@@ -111,9 +112,11 @@ export const Scheduled = () => {
                   <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
-              <GridEl size={{ xs: 0, md: 'auto' }}>
-                <Filters />
-              </GridEl>
+              {activeTab < 2 && (
+                <GridEl size={{ xs: 0, md: 'auto' }}>
+                  <Filters />
+                </GridEl>
+              )}
             </Grid>
           </Container>
         </GridEl>

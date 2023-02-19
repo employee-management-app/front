@@ -34,7 +34,7 @@ export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, 
 
     setFields(defaultFields);
     setErrors({});
-  }, [values]);
+  }, [values?._id]);
 
   const handleSubmit = (e) => {
     onSubmit(e);

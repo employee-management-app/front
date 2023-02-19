@@ -5,6 +5,7 @@ import { reducers } from './reducers';
 const initialStore = {
   orders: [],
   completedOrders: [],
+  ordersTotal: 0,
   order: null,
   orderToEdit: null,
   orderToDuplicate: null,

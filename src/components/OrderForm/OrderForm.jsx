@@ -72,6 +72,10 @@ export const OrderForm = (props) => {
     onValueChange(endDate, 'endDate');
   }, [onValueChange]);
 
+  const dateTimePickerValue = React.useMemo(() => (
+    [fields.startDate, fields.endDate]
+  ), [fields.endDate, fields.startDate]);
+
   return (
     <form
       noValidate
@@ -192,7 +196,7 @@ export const OrderForm = (props) => {
             <GridEl size={{ xs: 12, sm: 6 }}>
               <Field label={editMode && 'Schedule time'} error={errors.startDate || errors.endDate}>
                 <DateTimePicker
-                  value={[fields.startDate, fields.endDate]}
+                  value={dateTimePickerValue}
                   placeholder="Schedule time"
                   size="medium"
                   rangeMode="time"

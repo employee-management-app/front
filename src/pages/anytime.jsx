@@ -1,7 +1,9 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
+import { setOrders, getOrders } from '../store';
 import { Container } from '../components/Container';
 import { EmptyState } from '../components/EmptyState';
 import { Button } from '../components/Button';
@@ -11,9 +13,11 @@ import { Grid, GridEl, SPACES } from '../components/Grid';
 import { Spinner } from '../components/Spinner';
 import { OrdersMap } from '../components/OrdersMap';
 import { OrdersList } from '../components/OrdersList';
+import { Filters } from '../components/Filters';
 import { useNotification } from '../hooks/useNotification';
 import { useAuth } from '../hooks/useAuth';
 import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
+import { useFilters } from '../hooks/useFilters';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
@@ -36,14 +40,16 @@ const TAB_URLS = {
 };
 
 export const Anytime = () => {
+  const dispatch = useDispatch();
+  const orders = useSelector(getOrders);
   const { user } = useAuth();
   const { pushNotification } = useNotification();
   const navigate = useNavigate();
   const location = useLocation();
+  const { filters } = useFilters();
   const pathname = `${location.pathname}/`.slice(0, `${location.pathname}/`.lastIndexOf('/'));
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const [orders, setOrders] = React.useState([]);
   const [activeTab, setActiveTab] = React.useState(URL_TABS[pathname]);
   const [search, setSearch] = React.useState('');
 
@@ -54,9 +60,9 @@ export const Anytime = () => {
   React.useEffect(() => {
     setIsLoading(true);
 
-    fetchEmployeeOrders(user._id, { startDate: false, sortBy: 'priority' })
+    fetchEmployeeOrders(user._id, { sortBy: 'priority', ...filters })
       .then((data) => {
-        setOrders(data);
+        dispatch(setOrders(data));
       })
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong.. Please reload the page.' });
@@ -64,15 +70,15 @@ export const Anytime = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [filters]);
 
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
   }, []);
 
   const handleTabChange = React.useCallback((tabIndex) => {
-    navigate(TAB_URLS[tabIndex], { replace: true });
-  }, [navigate]);
+    navigate(`${TAB_URLS[tabIndex]}${location.search}`, { replace: true });
+  }, [location.search, navigate]);
 
   // Temporary solution on front part for the search
   const filteredOrders = React.useMemo(() => (
@@ -85,7 +91,7 @@ export const Anytime = () => {
         <GridEl size="12">
           <Container withoutPaddings>
             <Grid space={SPACES.S} alignItems="flex-end">
-              <GridEl size={{ xs: 12, md: 5, lg: 3 }}>
+              <GridEl size={{ xs: 'fluid', md: 5, lg: 3 }}>
                 <Input
                   value={search}
                   icon={SearchIcon}
@@ -93,6 +99,11 @@ export const Anytime = () => {
                   onChange={handleSearchChange}
                 />
               </GridEl>
+              {activeTab < 2 && (
+                <GridEl size={{ xs: 'auto', md: 0 }}>
+                  <Filters />
+                </GridEl>
+              )}
               <GridEl size={{ xs: 12, md: 'fluid' }}>
                 <Tabs active={activeTab} onChange={handleTabChange}>
                   <Tab id={0} icon={ListIcon}>List</Tab>
@@ -101,6 +112,11 @@ export const Anytime = () => {
                   <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
+              {activeTab < 2 && (
+                <GridEl size={{ xs: 0, md: 'auto' }}>
+                  <Filters />
+                </GridEl>
+              )}
             </Grid>
           </Container>
         </GridEl>

@@ -2,14 +2,16 @@ import * as actions from './actions';
 
 // Orders
 
-const setOrders = (state, action) => ({
+const setOrders = (state, { payload }) => ({
   ...state,
-  orders: action.payload,
+  orders: payload.orders,
+  ordersTotal: payload.total,
 });
 
-const setCompletedOrders = (state, action) => ({
+const setCompletedOrders = (state, { payload }) => ({
   ...state,
-  completedOrders: action.payload,
+  completedOrders: payload.orders,
+  ordersTotal: payload.total,
 });
 
 const addOrder = (state, action) => ({
