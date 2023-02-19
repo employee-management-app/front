@@ -47,7 +47,7 @@ export const DeleteOrderModal = () => {
           </Button>
         </GridEl>
         <GridEl size="auto">
-          <Button isLoading={isLoading} size="medium" theme="danger" onClick={handleDeleteOrder}>
+          <Button loading={isLoading} size="medium" theme="danger" onClick={handleDeleteOrder}>
             Remove task
           </Button>
         </GridEl>
