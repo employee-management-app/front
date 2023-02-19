@@ -10,37 +10,44 @@ const range = (start, end) => {
   return Array.from({ length }, (_, index) => index + start);
 };
 
-const DOTS = '...';
+const DOTS_LEFT = { id: 'dots_left' };
+const DOTS_RIGHT = { id: 'dots_right' };
+const SIBLING_COUNT = 2;
 
-export const Pagination = ({ limit = 9, total = 120, offset = 1, onChange }) => {
-  const currentPage = Math.floor(offset / limit);
+export const Pagination = ({ limit = 9, total = 0, offset = 0, onChange }) => {
+  const currentPage = React.useMemo(() => (
+    Math.floor(Math.max(0, offset) / limit) + 1
+  ), [limit, offset]);
 
   const paginationRange = React.useMemo(() => {
     const totalPageCount = Math.ceil(total / limit);
+    const totalPageNumbers = SIBLING_COUNT + 5;
 
-    if (totalPageCount <= 6) {
+    if (totalPageNumbers >= totalPageCount) {
       return range(1, totalPageCount);
     }
 
-    const leftSiblingIndex = Math.max(currentPage - 1, 1);
-    const rightSiblingIndex = Math.min(currentPage + 1, totalPageCount);
+    const leftSiblingIndex = Math.max(currentPage - SIBLING_COUNT, 1);
+    const rightSiblingIndex = Math.min(currentPage + SIBLING_COUNT, totalPageCount);
 
     const shouldShowLeftDots = leftSiblingIndex > 2;
     const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
 
     if (!shouldShowLeftDots && shouldShowRightDots) {
-      const leftRange = range(1, 5);
+      const leftItemCount = 3 + 2 * SIBLING_COUNT;
+      const leftRange = range(1, leftItemCount);
 
-      return [...leftRange, DOTS, totalPageCount];
+      return [...leftRange, DOTS_RIGHT, totalPageCount];
     }
 
     if (shouldShowLeftDots && !shouldShowRightDots) {
-      const rightRange = range(totalPageCount - 4, totalPageCount);
-      return [1, DOTS, ...rightRange];
+      const rightItemCount = 3 + 2 * SIBLING_COUNT;
+      const rightRange = range(totalPageCount - rightItemCount + 1, totalPageCount);
+      return [1, DOTS_LEFT, ...rightRange];
     }
 
     const middleRange = range(leftSiblingIndex, rightSiblingIndex);
-    return [1, DOTS, ...middleRange, DOTS, totalPageCount];
+    return [1, DOTS_LEFT, ...middleRange, DOTS_RIGHT, totalPageCount];
   }, [total, limit, currentPage]);
 
   const handleClick = (value) => () => {
@@ -55,19 +62,19 @@ export const Pagination = ({ limit = 9, total = 120, offset = 1, onChange }) => 
     <div className={styles.wrapper}>
       <button
         type="button"
-        disabled={currentPage === 0}
+        disabled={currentPage === 1}
         className={cx(styles.button, styles.arrow)}
-        onClick={handleClick(currentPage)}
+        onClick={handleClick(currentPage - 1)}
       >
         <LeftIcon />
       </button>
-      {paginationRange.map((value) => (value === DOTS ? (
-        <span key={value} className={cx(styles.button, styles.dots)}>...</span>
+      {paginationRange.map((value) => (value.id ? (
+        <span key={value.id} className={cx(styles.button, styles.dots)}>...</span>
       ) : (
         <button
           key={value}
           type="button"
-          className={cx(styles.button, { [styles.active]: value - 1 === currentPage })}
+          className={cx(styles.button, { [styles.active]: value === currentPage })}
           onClick={handleClick(value)}
         >
           {value}
@@ -75,9 +82,9 @@ export const Pagination = ({ limit = 9, total = 120, offset = 1, onChange }) => 
       )))}
       <button
         type="button"
-        disabled={(currentPage + 1) * limit > total}
+        disabled={currentPage * limit > total}
         className={cx(styles.button, styles.arrow)}
-        onClick={handleClick(currentPage + 2)}
+        onClick={handleClick(currentPage + 1)}
       >
         <LeftIcon />
       </button>
