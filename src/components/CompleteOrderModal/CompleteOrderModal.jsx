@@ -1,9 +1,8 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { updateOrder } from '../../services/updateOrder';
-import { getOrder } from '../../store';
+import { getOrder, setOrder, deleteOrderById } from '../../store';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { useNotification } from '../../hooks/useNotification';
 import { Modal } from '../Modal';
@@ -13,24 +12,28 @@ import { Button } from '../Button';
 export const CompleteOrderModal = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const navigate = useNavigate();
   const order = useSelector(getOrder);
   const { isVisible, hideModal } = useModalVisibility('CompleteOrder');
+  const dispatch = useDispatch();
   const { pushNotification } = useNotification();
 
   const handleCompleteOrder = React.useCallback(() => {
     setIsLoading(true);
 
     updateOrder(order._id, { status: 'completed' })
-      .then(() => {
+      .then((updatedOrder) => {
+        dispatch(deleteOrderById(order._id));
+        dispatch(setOrder(updatedOrder));
         pushNotification({ theme: 'success', content: 'Task marked as completed!' });
-        navigate('/completed');
         hideModal();
       })
       .catch(() => {
         pushNotification({ theme: 'error', content: 'Something went wrong! Try again later.' });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-  }, [hideModal, navigate, order?._id, pushNotification]);
+  }, [dispatch, hideModal, order, pushNotification]);
 
   return (
     <Modal
@@ -45,7 +48,7 @@ export const CompleteOrderModal = () => {
           </Button>
         </GridEl>
         <GridEl size="auto">
-          <Button isLoading={isLoading} size="medium" theme="success" onClick={handleCompleteOrder}>
+          <Button loading={isLoading} size="medium" theme="success" onClick={handleCompleteOrder}>
             Complete task
           </Button>
         </GridEl>
