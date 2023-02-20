@@ -49,15 +49,16 @@ export const Multiselect = ({ options, placeholder, size, onChange, ...props }) 
 
   const content = React.useMemo(() => (
     <ul className={styles.options}>
-      {filteredOptions.map(({ value, label }) => (
+      {filteredOptions.map(({ value, label, icon: Icon }) => (
         <li key={value}>
           <button
             type="button"
             className={cx(styles.option, { [styles.selected]: values.includes(value) })}
             onClick={handleClick(value)}
           >
+            {Icon && <Icon className={styles.icon} />}
             {label}
-            {values.includes(value) && <DoneIcon />}
+            {values.includes(value) && <DoneIcon className={styles.check} />}
           </button>
         </li>
       ))}

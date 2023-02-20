@@ -63,11 +63,12 @@ export const OrderPriority = ({ id, disabled, ...props }) => {
               // eslint-disable-next-line max-len
               // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
               <li
-                key={label}
+                key={p.label}
                 className={cx(
                   styles.priority,
                   styles[`priority-${p.value}`],
-                  { [styles.selected]: priority === p.value },
+                  // eslint-disable-next-line eqeqeq
+                  { [styles.selected]: priority == p.value },
                 )}
                 onClick={handlePriorityClick(p.value)}
               >

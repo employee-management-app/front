@@ -1,3 +1,8 @@
+import { ReactComponent as LowPriorityIcon } from '../assets/icons/priorities/low.svg';
+import { ReactComponent as NormalPriorityIcon } from '../assets/icons/priorities/normal.svg';
+import { ReactComponent as HighPriorityIcon } from '../assets/icons/priorities/high.svg';
+import { ReactComponent as CriticalIcon } from '../assets/icons/priorities/critical.svg';
+
 export const PRODUCT_TYPE_OPTIONS = [
   {
     label: 'Osłony wewnętrzne (rolety, żaluzje, plisy)',
@@ -38,19 +43,23 @@ export const STAGE_OPTIONS = [
 
 export const PRIORITY_OPTIONS = [
   {
-    label: 'Low',
-    value: '0',
-  },
-  {
-    label: 'Normal',
-    value: '1',
+    label: 'Critical',
+    icon: CriticalIcon,
+    value: '3',
   },
   {
     label: 'High',
+    icon: HighPriorityIcon,
     value: '2',
   },
   {
-    label: 'Critical',
-    value: '3',
+    label: 'Normal',
+    icon: NormalPriorityIcon,
+    value: '1',
+  },
+  {
+    label: 'Low',
+    icon: LowPriorityIcon,
+    value: '0',
   },
 ];
