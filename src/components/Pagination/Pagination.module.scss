@@ -2,13 +2,15 @@
 
 .wrapper {
   display: flex;
-  gap: 6px;
+  justify-content: center;
+  padding: 0 0 10px;
+  gap: 2px;
 }
 
 .button {
   all: unset;
   box-sizing: border-box;
-  @include text-base;
+  @include text-small;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -16,7 +18,7 @@
   border-radius: 4px;
   padding: 7px;
   border: 1px solid transparent;
-  min-width: 36px;
+  min-width: 32px;
   transition: 0.1s ease-in-out;
   cursor: pointer;
   @include focusable;
@@ -37,7 +39,7 @@
 }
 
 .button.arrow {
-  padding: 4px;
+  padding: 2px;
   gap: 2px;
 
   svg {
@@ -61,5 +63,26 @@
 
   &:not(.active):not(:disabled):hover {
     border-color: transparent;
+  }
+}
+
+@include breakpoint-up("sm") {
+  .wrapper {
+    gap: 6px;
+  }
+
+  .button {
+    @include text-base;
+    min-width: 36px;
+  }
+
+  .button.arrow {
+    padding: 4px;
+  }
+}
+
+@include breakpoint-up("md") {
+  .wrapper {
+    padding: 20px 0 0;
   }
 }
