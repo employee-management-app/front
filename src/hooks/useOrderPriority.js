@@ -1,7 +1,6 @@
 import { PRIORITY_OPTIONS } from '../consts/order';
 
 export const useOrderPriority = (priority) => {
-  console.log(priority);
   // eslint-disable-next-line eqeqeq
   const priorityData = PRIORITY_OPTIONS.find(({ value }) => value == priority);
 
