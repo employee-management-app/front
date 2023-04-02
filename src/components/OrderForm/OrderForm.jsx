@@ -46,7 +46,7 @@ export const OrderForm = (props) => {
       const city = values.find(({ types }) => types.includes('administrative_area_level_2') || types.includes('locality'))?.long_name;
       const street = values.find(({ types }) => types.includes('route'))?.long_name;
       const code = values.find(({ types }) => types.includes('postal_code'))?.long_name;
-      const house = values.find(({ types }) => types.includes('street_number'))?.long_name;
+      const house = values.find(({ types }) => types.includes('street_number') || types.includes('premise'))?.long_name;
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();
 

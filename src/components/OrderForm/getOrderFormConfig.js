@@ -37,7 +37,7 @@ export const getOrderFormConfig = (yup, values = {}) => ({
   },
   street: {
     value: values.address?.street ?? '',
-    validation: yup?.string().required(),
+    validation: yup?.string(),
   },
   lat: {
     value: values.address?.lat ?? '',

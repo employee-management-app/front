@@ -43,7 +43,7 @@ export const Slot = ({ color, order, selected, onClick }) => {
       <Grid space={SPACES.S}>
         <GridEl>
           <Text fontWeight={500}>
-            {address.street} {address.house}
+            {address.street || <Text italic inline>No street</Text>} {address.house}
             <br />
             {address.code} {address.city}
           </Text>

@@ -128,7 +128,7 @@ export const OrderPage = ({ order }) => {
               </GridEl>
               <GridEl size="12">
                 <Text size={{ xs: 'base', md: 'medium' }}>
-                  {street} {house}{flat && `, lokal ${flat}`}<br />
+                  {street || <Text italic inline>No street</Text>} {house}{flat && `, lokal ${flat}`}<br />
                   {code} {city}
                 </Text>
                 <RouteLink href={`https://maps.google.com/?q=${lat},${lng}`} />

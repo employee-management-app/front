@@ -65,7 +65,7 @@ export const OrderCard = (props) => {
           {type}
         </Link>
         <Text className={styles.address}>
-          {street} {house}{flat ? `, lokal ${flat}` : ''}<br />
+          {street || <Text italic inline>No street</Text>} {house}{flat ? `, lokal ${flat}` : ''}<br />
           {code} {city}
         </Text>
         <Grid space={SPACES.S}>
