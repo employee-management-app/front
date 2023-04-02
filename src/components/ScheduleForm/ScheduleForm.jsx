@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { useAuth } from '../../hooks/useAuth';
-import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { updateOrder } from '../../services/updateOrder';
 import { setOrder, updateOrder as updateOrderInStore } from '../../store';
@@ -24,10 +23,10 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
   const getConfig = () => ({
     startDate: {
-      value: formatDateToDateTimeLocal(order.startDate),
+      value: order.startDate,
     },
     endDate: {
-      value: formatDateToDateTimeLocal(order.endDate),
+      value: order.endDate,
     },
   });
 

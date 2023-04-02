@@ -1,5 +1,3 @@
-import { formatDateToDateTimeLocal } from '../../utils/formatDateToDateTimeLocal';
-
 export const getOrderFormConfig = (yup, values = {}) => ({
   fullAddress: {
     value: values.address?.fullAddress || '',
@@ -61,10 +59,10 @@ export const getOrderFormConfig = (yup, values = {}) => ({
     value: values.assignedEmployee?._id || null,
   },
   startDate: {
-    value: formatDateToDateTimeLocal(values.startDate),
+    value: values.startDate,
   },
   endDate: {
-    value: formatDateToDateTimeLocal(values.endDate),
+    value: values.endDate,
   },
   employeeMessage: {
     value: values.employeeMessage || '',
