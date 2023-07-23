@@ -100,7 +100,10 @@ export const Inbox = () => {
   ), [orders, search]);
 
   const handleTabChange = React.useCallback((tabIndex) => {
-    navigate(`${TAB_URLS[tabIndex]}${location.search}`, { replace: true });
+    const locationSearch = tabIndex === 2
+      ? ''
+      : location.search;
+    navigate(`${TAB_URLS[tabIndex]}${locationSearch}`, { replace: true });
   }, [location.search, navigate]);
 
   if (isEmployee) {
