@@ -2,8 +2,11 @@ import React from 'react';
 
 import { ReactComponent as UsersIcon } from '../../assets/icons/users.svg';
 import { ReactComponent as ExitIcon } from '../../assets/icons/exit.svg';
+import { ReactComponent as UserGearIcon } from '../../assets/icons/user-gear.svg';
+import { ReactComponent as BuildingsIcon } from '../../assets/icons/buildings.svg';
 
 import { useAuth } from '../../hooks/useAuth';
+import { Tooltip } from '../Tooltip';
 import { PopoverMenu } from '../PopoverMenu';
 
 import styles from './UserWidget.module.scss';
@@ -11,7 +14,7 @@ import styles from './UserWidget.module.scss';
 export const UserWidget = () => {
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
 
-  const { isManager, user, onLogout } = useAuth();
+  const { isAdmin, isManager, user, onLogout } = useAuth();
 
   const togglePopover = React.useCallback(() => {
     setIsPopoverVisible((visibility) => !visibility);
@@ -22,6 +25,16 @@ export const UserWidget = () => {
   }, []);
 
   const menu = [
+    ...(isAdmin ? [{
+      label: 'Companies',
+      Icon: BuildingsIcon,
+      to: '/companies',
+    }] : []),
+    ...(isManager ? [{
+      label: 'Managers',
+      Icon: UserGearIcon,
+      to: '/managers',
+    }] : []),
     ...(isManager ? [{
       label: 'Employees',
       Icon: UsersIcon,
@@ -41,9 +54,15 @@ export const UserWidget = () => {
       items={menu}
       onVisibleChange={hidePopover}
     >
-      <button type="button" className={styles.user} onClick={togglePopover}>
-        {user.name[0]}{user.surname[0]}
-      </button>
+      <Tooltip
+        visible={isPopoverVisible ? false : undefined}
+        content={<>{user.name} {user.surname}<br />{user.email}</>}
+        placement="bottom-center"
+      >
+        <button type="button" className={styles.user} onClick={togglePopover}>
+          {user.name[0]}{user.surname[0]}
+        </button>
+      </Tooltip>
     </PopoverMenu>
   );
 };

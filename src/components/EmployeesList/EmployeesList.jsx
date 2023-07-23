@@ -1,4 +1,3 @@
-import cx from 'classnames';
 import React from 'react';
 
 import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
@@ -12,6 +11,7 @@ import { ColorPopover } from './ColorPopover';
 import styles from './EmployeesList.module.scss';
 import { EmployeeActions } from './EmployeeActions';
 import { Grid, GridEl } from '../Grid';
+import { Status } from '../Status';
 
 export const EmployeesList = ({ employees }) => {
   const columns = [
@@ -39,8 +39,8 @@ export const EmployeesList = ({ employees }) => {
       key: 'isActive',
       render: (isActive) => (
         isActive
-          ? <span className={cx(styles.status, styles.active)}>Active</span>
-          : <span className={cx(styles.status, styles.inactive)}>Inactive</span>
+          ? <Status status="success">Active</Status>
+          : <Status status="error">Inactive</Status>
       ),
     },
     {
@@ -48,8 +48,8 @@ export const EmployeesList = ({ employees }) => {
       key: 'isVerified',
       render: (isVerified) => (
         isVerified
-          ? <span className={cx(styles.status, styles.active)}>Yes</span>
-          : <span className={cx(styles.status, styles.inactive)}>No</span>
+          ? <Status status="success">Yes</Status>
+          : <Status status="error">No</Status>
       ),
     },
     {
@@ -69,12 +69,14 @@ export const EmployeesList = ({ employees }) => {
 
   return (
     <Grid>
-      <GridEl size="12">
-        <Table
-          columns={columns}
-          data={employees}
-        />
-      </GridEl>
+      {employees.length > 0 && (
+        <GridEl size="12">
+          <Table
+            columns={columns}
+            data={employees}
+          />
+        </GridEl>
+      )}
       <GridEl size="12">
         <Button icon={PlusIcon} onClick={showModal}>Add employee</Button>
       </GridEl>

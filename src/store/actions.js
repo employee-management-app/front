@@ -2,6 +2,9 @@ export const SET_ORDERS = 'SET_ORDERS';
 export const SET_COMPLETED_ORDERS = 'SET_COMPLETED_ORDERS';
 export const ADD_ORDER = 'ADD_ORDER';
 export const SET_EMPLOYEES = 'SET_EMPLOYEES';
+export const SET_MANAGERS = 'SET_MANAGERS';
+export const SET_COMPANIES = 'SET_COMPANIES';
+export const SET_COMPANY = 'SET_COMPANY';
 export const UPDATE_EMPLOYEE = 'UPDATE_EMPLOYEE';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const DELETE_ORDER_BY_ID = 'DELETE_ORDER_BY_ID';
@@ -58,9 +61,24 @@ export const setOrderToDuplicate = (order) => ({
   payload: order,
 });
 
+export const setCompany = (company) => ({
+  type: SET_COMPANY,
+  payload: company,
+});
+
 export const setEmployees = (employees) => ({
   type: SET_EMPLOYEES,
   payload: employees,
+});
+
+export const setManagers = (managers) => ({
+  type: SET_MANAGERS,
+  payload: managers,
+});
+
+export const setCompanies = (companies) => ({
+  type: SET_COMPANIES,
+  payload: companies,
 });
 
 export const updateEmployee = (employee) => ({

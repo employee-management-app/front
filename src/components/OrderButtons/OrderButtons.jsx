@@ -14,7 +14,7 @@ export const OrderButtons = ({ size, order }) => {
   const { assignedEmployee, startDate, disabled } = order;
 
   const dispatch = useDispatch();
-  const { isManager } = useAuth();
+  const { isEmployee } = useAuth();
   const { showModal: showAssignModal } = useModalVisibility('AssignOrder');
   const { showModal: showScheduleModal } = useModalVisibility('ScheduleOrder');
 
@@ -34,7 +34,7 @@ export const OrderButtons = ({ size, order }) => {
         <Button
           icon={assignedEmployee ? undefined : UserIcon}
           width="full"
-          disabled={((assignedEmployee && !isManager) || disabled)}
+          disabled={((assignedEmployee && isEmployee) || disabled)}
           onClick={openAssignModal}
         >
           {assignedEmployee ? `${assignedEmployee.name} ${assignedEmployee.surname}` : 'Assign'}

@@ -51,6 +51,13 @@ const setOrderToDuplicate = (state, action) => ({
   orderToDuplicate: action.payload,
 });
 
+// Company
+
+const setCompany = (state, action) => ({
+  ...state,
+  company: action.payload,
+});
+
 // Employees
 
 const setEmployees = (state, action) => ({
@@ -72,6 +79,20 @@ const updateEmployee = (state, action) => {
 const setEmployee = (state, action) => ({
   ...state,
   employee: action.payload,
+});
+
+// Managers
+
+const setManagers = (state, action) => ({
+  ...state,
+  managers: action.payload,
+});
+
+// Companies
+
+const setCompanies = (state, action) => ({
+  ...state,
+  companies: action.payload,
 });
 
 // UI
@@ -127,10 +148,13 @@ export const reducers = {
   [actions.UPDATE_ORDER]: updateOrder,
   [actions.DELETE_ORDER_BY_ID]: deleteOrderById,
   [actions.SET_ORDER]: setOrder,
+  [actions.SET_COMPANY]: setCompany,
   [actions.SET_ORDER_TO_EDIT]: setOrderToEdit,
   [actions.SET_ORDER_TO_DUPLICATE]: setOrderToDuplicate,
   [actions.SET_EMPLOYEE]: setEmployee,
   [actions.SET_EMPLOYEES]: setEmployees,
+  [actions.SET_MANAGERS]: setManagers,
+  [actions.SET_COMPANIES]: setCompanies,
   [actions.UPDATE_EMPLOYEE]: updateEmployee,
   [actions.PUSH_NOTIFICATION]: pushNotification,
   [actions.REMOVE_NOTIFICATION_BY_ID]: removeFirstNotification,

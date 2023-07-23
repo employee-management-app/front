@@ -8,33 +8,37 @@ import { FiltersDrawer } from './components/FIltersDrawer';
 import { EditOrderDrawer } from './components/EditOrderDrawer';
 import { DuplicateOrderDrawer } from './components/DuplicateOrderDrawer';
 import { AddEmployeeModal } from './components/AddEmployeeModal';
+import { AddManagerModal } from './components/AddManagerModal';
+import { AddCompanyModal } from './components/AddCompanyModal';
 import { EditEmployeeModal } from './components/EditEmployeeModal';
 import { CompleteOrderModal } from './components/CompleteOrderModal';
 import { DeleteOrderModal } from './components/DeleteOrderModal';
 import { AssignOrderModal } from './components/AssignOrderModal';
 import { ScheduleOrderModal } from './components/ScheduleOrderModal';
 import { Notifications } from './components/Notifications';
+import { AppSpinner } from './components/AppSpinner';
 import { useAuth } from './hooks/useAuth';
 import { Anytime } from './pages/anytime';
 import { Completed } from './pages/completed';
 import { Employees } from './pages/employees';
+import { Managers } from './pages/managers';
 import { Error } from './pages/error';
 import { Inbox } from './pages/inbox';
 import { Invitation } from './pages/invitation';
 import { Login } from './pages/login';
 import { Scheduled } from './pages/scheduled';
-import { Signup } from './pages/signup';
 import { Order } from './pages/order';
 import { UI } from './pages/ui';
+import { Companies } from './pages/companies';
 
-const ProtectedRoute = ({ children, role }) => {
-  const { isLoggedIn, isManager, isEmployee, USER_TYPES } = useAuth();
+const ProtectedRoute = ({ children, roles }) => {
+  const { isLoggedIn, user } = useAuth();
 
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
   }
 
-  if ((role === USER_TYPES.MANAGER && !isManager) || (role === USER_TYPES.EMPLOYEE && !isEmployee)) {
+  if (roles && !roles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
 
@@ -42,139 +46,177 @@ const ProtectedRoute = ({ children, role }) => {
 };
 
 const AppRoutes = () => {
-  const { USER_TYPES } = useAuth();
+  const { isLoggedIn, isLoading, USER_TYPES } = useAuth();
+
+  if (isLoading) {
+    return <AppSpinner />;
+  }
 
   return (
-    <Routes>
-      {/* Mixed views */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/invitation/:token" element={<Invitation />} />
-      <Route
-        path="/"
-        element={(
-          <ProtectedRoute>
-            <Inbox />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/list"
-        element={(
-          <ProtectedRoute>
-            <Inbox />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/timeline"
-        element={(
-          <ProtectedRoute>
-            <Inbox />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/calendar"
-        element={(
-          <ProtectedRoute>
-            <Inbox />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/orders/:id"
-        element={(
-          <ProtectedRoute>
-            <Order />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/completed"
-        element={(
-          <ProtectedRoute>
-            <Completed />
-          </ProtectedRoute>
-        )}
-      />
-      <Route path="/ui" element={<UI />} />
-      <Route path="*" element={<Error />} />
-      {/* Manager views */}
-      <Route
-        path="/employees"
-        element={(
-          <ProtectedRoute role={USER_TYPES.MANAGER}>
-            <Employees />
-          </ProtectedRoute>
-        )}
-      />
-      {/* Employee views */}
-      <Route
-        path="/anytime"
-        element={(
-          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
-            <Anytime />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/anytime/list"
-        element={(
-          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
-            <Anytime />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/anytime/timeline"
-        element={(
-          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
-            <Anytime />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/anytime/calendar"
-        element={(
-          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
-            <Anytime />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/scheduled"
-        element={(
-          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
-            <Scheduled />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/scheduled/list"
-        element={(
-          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
-            <Scheduled />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/scheduled/timeline"
-        element={(
-          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
-            <Scheduled />
-          </ProtectedRoute>
-        )}
-      />
-      <Route
-        path="/scheduled/calendar"
-        element={(
-          <ProtectedRoute role={USER_TYPES.EMPLOYEE}>
-            <Scheduled />
-          </ProtectedRoute>
-        )}
-      />
-    </Routes>
+    <>
+      <Routes>
+        {/* Mixed views */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/invitation/:token" element={<Invitation />} />
+        <Route
+          path="/"
+          element={(
+            <ProtectedRoute>
+              <Inbox />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/list"
+          element={(
+            <ProtectedRoute>
+              <Inbox />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/timeline"
+          element={(
+            <ProtectedRoute>
+              <Inbox />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/calendar"
+          element={(
+            <ProtectedRoute>
+              <Inbox />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/orders/:id"
+          element={(
+            <ProtectedRoute>
+              <Order />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/completed"
+          element={(
+            <ProtectedRoute>
+              <Completed />
+            </ProtectedRoute>
+          )}
+        />
+        <Route path="/ui" element={<UI />} />
+        <Route path="*" element={<Error />} />
+        {/* Admin views */}
+        <Route
+          path="/companies"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.ADMIN]}>
+              <Companies />
+            </ProtectedRoute>
+          )}
+        />
+        {/* Manager views */}
+        <Route
+          path="/employees"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.MANAGER]}>
+              <Employees />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/managers"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.MANAGER]}>
+              <Managers />
+            </ProtectedRoute>
+          )}
+        />
+        {/* Employee views */}
+        <Route
+          path="/anytime"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
+              <Anytime />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/anytime/list"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
+              <Anytime />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/anytime/timeline"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
+              <Anytime />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/anytime/calendar"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
+              <Anytime />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/scheduled"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
+              <Scheduled />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/scheduled/list"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
+              <Scheduled />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/scheduled/timeline"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
+              <Scheduled />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/scheduled/calendar"
+          element={(
+            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
+              <Scheduled />
+            </ProtectedRoute>
+          )}
+        />
+      </Routes>
+      {isLoggedIn && (
+        <>
+          <FiltersDrawer />
+          <CreateOrderDrawer />
+          <EditOrderDrawer />
+          <DuplicateOrderDrawer />
+          <AddEmployeeModal />
+          <AddManagerModal />
+          <AddCompanyModal />
+          <EditEmployeeModal />
+          <CompleteOrderModal />
+          <DeleteOrderModal />
+          <AssignOrderModal />
+          <ScheduleOrderModal />
+        </>
+      )}
+    </>
   );
 };
 
@@ -185,16 +227,6 @@ const App = () => (
       <main>
         <AppRoutes />
       </main>
-      <FiltersDrawer />
-      <CreateOrderDrawer />
-      <EditOrderDrawer />
-      <DuplicateOrderDrawer />
-      <AddEmployeeModal />
-      <EditEmployeeModal />
-      <CompleteOrderModal />
-      <DeleteOrderModal />
-      <AssignOrderModal />
-      <ScheduleOrderModal />
     </AuthProvider>
     <Notifications />
   </BrowserRouter>

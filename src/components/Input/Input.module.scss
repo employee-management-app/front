@@ -63,6 +63,11 @@
     }
   }
 
+  &:disabled {
+    color: $color-gray;
+    cursor: not-allowed;
+  }
+
   &:not([value=""]):not(:focus) {
     border-color: $color-dark;
 

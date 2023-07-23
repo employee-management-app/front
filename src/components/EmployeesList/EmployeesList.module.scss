@@ -1,29 +1,5 @@
 @use "../../styles/variables.scss" as *;
 
-.status {
-  display: inline-flex;
-  align-items: center;
-
-  &::before {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: currentColor;
-    box-shadow: 0 0 6px currentColor;
-    margin-right: 8px;
-  }
-
-  &.active::before {
-    color: $color-success;
-  }
-
-  &.inactive::before {
-    color: $color-danger;
-  }
-}
-
 .colorBox {
   all: unset;
   box-sizing: border-box;

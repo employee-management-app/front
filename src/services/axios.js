@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { getTokenFromLocalStorage } from '../utils/getTokenFromLocalStorage';
 
 const getAuthHeader = () => {
-  const { token } = JSON.parse(window.localStorage.getItem('auth')) || {};
+  const token = getTokenFromLocalStorage();
 
   if (!token) {
     return {};

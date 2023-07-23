@@ -8,11 +8,11 @@ import { Modal } from '../Modal';
 import { AssignForm } from '../AssignForm';
 
 export const AssignOrderModal = () => {
-  const { isManager } = useAuth();
+  const { isEmployee } = useAuth();
   const { isVisible, hideModal } = useModalVisibility('AssignOrder');
   const order = useSelector(getOrder);
 
-  if (!isManager) {
+  if (isEmployee) {
     return null;
   }
 

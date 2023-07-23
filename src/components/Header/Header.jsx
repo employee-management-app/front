@@ -5,12 +5,12 @@ import { ReactComponent as InboxIcon } from '../../assets/icons/inbox.svg';
 import { ReactComponent as CalendarIcon } from '../../assets/icons/calendar.svg';
 import { ReactComponent as ArrowRightIcon } from '../../assets/icons/arrow-right.svg';
 import { useAuth } from '../../hooks/useAuth';
+import logoImage from '../../assets/images/logo.svg';
 
 import { Container } from '../Container';
 import { Grid, GridEl } from '../Grid';
 import { UserWidget } from '../UserWidget';
 
-import logoImage from './assets/logo.png';
 import styles from './Header.module.scss';
 
 const NAV_ITEMS = {
@@ -20,7 +20,7 @@ const NAV_ITEMS = {
 };
 
 export const Header = () => {
-  const { isLoggedIn, isManager } = useAuth();
+  const { isLoggedIn, isEmployee, company } = useAuth();
   const location = useLocation();
   const pathname = `${location.pathname}/`.slice(0, `${location.pathname}/`.lastIndexOf('/'));
 
@@ -55,7 +55,7 @@ export const Header = () => {
   };
 
   const menu = isLoggedIn ? [
-    ...(isManager ? [
+    ...(!isEmployee ? [
       {
         to: navStates['/'],
         label: 'Scheduler',
@@ -87,7 +87,7 @@ export const Header = () => {
           <Grid alignItems="flex-end">
             <GridEl size={{ xs: 'fluid', md: '3' }}>
               <Link to="/" className={styles.logo}>
-                <img src={logoImage} alt="Perfecta" />
+                <img src={company?.logo ?? logoImage} alt={company?.name ?? 'Employee management app'} />
               </Link>
             </GridEl>
             <GridEl size={{ xs: 'auto', md: 'fluid' }}>

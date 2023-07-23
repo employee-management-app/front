@@ -17,7 +17,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isManager } = useAuth();
+  const { isEmployee } = useAuth();
   const { hideModal } = useModalVisibility('ScheduleOrder');
   const { pushNotification } = useNotification();
 
@@ -57,7 +57,7 @@ export const ScheduleForm = ({ order, onSuccess }) => {
 
     updateOrder(order._id, fields)
       .then((data) => {
-        if (isManager) {
+        if (!isEmployee) {
           dispatch(updateOrderInStore(data));
           dispatch(setOrder(data));
         } else {

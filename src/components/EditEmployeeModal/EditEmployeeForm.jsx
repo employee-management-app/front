@@ -96,6 +96,7 @@ export const EditEmployeeForm = ({ employee, onSuccess }) => {
               <Field label="Email" error={errors.email}>
                 <Input
                   type="email"
+                  disabled
                   value={fields.email}
                   placeholder="Email"
                   onChange={(e) => onFieldChange(e, 'email')}

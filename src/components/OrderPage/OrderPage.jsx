@@ -44,7 +44,7 @@ export const OrderPage = ({ order }) => {
     address: { street, city, code, house, flat, lat, lng },
   } = order;
 
-  const { isManager } = useAuth();
+  const { isEmployee } = useAuth();
   const { showDrawer: showEditDrawer } = useDrawerVisibility('EditOrder');
   const { showModal: showDeleteModal } = useModalVisibility('DeleteOrder');
   const { showDrawer: showDuplicateDrawer } = useDrawerVisibility('DuplicateOrder');
@@ -93,7 +93,7 @@ export const OrderPage = ({ order }) => {
                       </Button>
                     </GridEl>
                   )}
-                  {isManager && (
+                  {!isEmployee && (
                     <>
                       <GridEl size={{ xs: 0, lg: 'auto' }}>
                         <Button
@@ -114,7 +114,7 @@ export const OrderPage = ({ order }) => {
                       </GridEl>
                     </>
                   )}
-                  {(!isCompleted && isManager) && (
+                  {(!isCompleted && !isEmployee) && (
                     <GridEl size={{ xs: 0, lg: 'auto' }}>
                       <Button
                         icon={EditIcon}
@@ -161,7 +161,7 @@ export const OrderPage = ({ order }) => {
               </GridEl>
             </Grid>
           </GridEl>
-          {isManager && (
+          {!isEmployee && (
             <GridEl size="12">
               <Grid space={SPACES.S}>
                 <GridEl size="12">
@@ -181,7 +181,7 @@ export const OrderPage = ({ order }) => {
             <Grid space={SPACES.S}>
               <GridEl size="12">
                 <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
-                  {isManager
+                  {!isEmployee
                     ? (
                       <>
                         Description for employees
@@ -202,7 +202,7 @@ export const OrderPage = ({ order }) => {
               </GridEl>
             </Grid>
           </GridEl>
-          {isManager && (
+          {!isEmployee && (
             <GridEl size="12">
               <Grid space={SPACES.S}>
                 <GridEl size="12">

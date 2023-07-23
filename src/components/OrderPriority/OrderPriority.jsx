@@ -17,7 +17,7 @@ export const OrderPriority = ({ id, disabled, ...props }) => {
   const [isDropdownVisible, setIsDropdownVisible] = React.useState(false);
 
   const dispatch = useDispatch();
-  const { isManager } = useAuth();
+  const { isEmployee } = useAuth();
   const { pushNotification } = useNotification();
 
   const handleClick = React.useCallback(() => {
@@ -50,7 +50,7 @@ export const OrderPriority = ({ id, disabled, ...props }) => {
       <button
         type="button"
         className={cx(styles.priority, styles[`priority-${priority}`])}
-        disabled={!isManager || disabled}
+        disabled={isEmployee || disabled}
         onClick={handleClick}
       >
         <Icon />

@@ -10,7 +10,6 @@ import { Field } from '../Field';
 import { Text } from '../Text';
 import { Input } from '../Input';
 import { Button } from '../Button';
-import { Link } from '../Link';
 
 const getConfig = (yup) => ({
   email: {
@@ -101,11 +100,6 @@ export const LoginForm = () => {
             >
               Log in
             </Button>
-          </GridEl>
-          <GridEl size="12">
-            <Link to="/signup">
-              Don&apos;t have an account yet? Register now
-            </Link>
           </GridEl>
         </Grid>
       </form>

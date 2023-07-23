@@ -37,6 +37,7 @@ export const Input = React.forwardRef((props, ref) => {
         type={props.type || 'text'}
         placeholder={props.placeholder}
         value={value}
+        disabled={props.disabled}
         min={props.min}
         readOnly={props.readOnly}
         className={styles.input}

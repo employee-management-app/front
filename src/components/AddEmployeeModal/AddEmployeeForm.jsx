@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
-import { getEmployees, setEmployees } from '../../store';
+import { getCompany, getEmployees, setEmployees } from '../../store';
 import { useNotification } from '../../hooks/useNotification';
 import { addEmployee } from '../../services/addEmployee';
 import { Grid, GridEl, SPACES } from '../Grid';
@@ -12,6 +12,7 @@ import { Button } from '../Button';
 
 export const AddEmployeeForm = ({ onSuccess }) => {
   const dispatch = useDispatch();
+  const company = useSelector(getCompany);
   const employees = useSelector(getEmployees);
   const { pushNotification } = useNotification();
 
@@ -51,7 +52,7 @@ export const AddEmployeeForm = ({ onSuccess }) => {
 
     setIsLoading(true);
 
-    addEmployee(fields)
+    addEmployee({ ...fields, companyId: company._id })
       .then((data) => {
         onSuccess?.();
         dispatch(setEmployees([...employees, data]));

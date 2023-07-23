@@ -10,7 +10,10 @@ const initialStore = {
   orderToEdit: null,
   orderToDuplicate: null,
   notifications: [],
+  company: null,
+  companies: [],
   employees: [],
+  managers: [],
   visibleDrawers: [],
   visibleModals: [],
 };

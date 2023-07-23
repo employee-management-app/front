@@ -38,7 +38,7 @@ export const OrderCard = (props) => {
     type,
   } = props;
 
-  const { isManager, isEmployee } = useAuth();
+  const { isEmployee } = useAuth();
 
   const handleClick = React.useCallback((e) => {
     onClick?.(e);
@@ -47,10 +47,10 @@ export const OrderCard = (props) => {
   const { code, city, street, house, flat, lat, lng } = address;
 
   const shortDescription = React.useMemo(() => (
-    isManager
+    !isEmployee
       ? managerMessage || message || employeeMessage
       : employeeMessage
-  ), [employeeMessage, isManager, managerMessage, message]);
+  ), [employeeMessage, isEmployee, managerMessage, message]);
 
   return (
     <Card className={cx(styles.card, { [styles.disabled]: disabled })}>

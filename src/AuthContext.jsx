@@ -2,60 +2,86 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import axios from './services/axios';
+import { fetchCurrentUser } from './services/fetchCurrentUser';
+import { getTokenFromLocalStorage } from './utils/getTokenFromLocalStorage';
 
-const authFromLocalStorage = JSON.parse(window.localStorage.getItem('auth'));
+const tokenFromLocalStorage = getTokenFromLocalStorage();
 
 const defaultContextValue = {
   isLoggedIn: false,
+  isAdmin: false,
   isManager: false,
   isEmployee: false,
+  company: null,
   user: {},
 };
 
 export const AuthContext = React.createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = React.useState(authFromLocalStorage || defaultContextValue);
+  const [token, setToken] = React.useState(tokenFromLocalStorage);
+  const [auth, setAuth] = React.useState(defaultContextValue);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const navigate = useNavigate();
 
-  const handleLogin = (fields) => new Promise((resolve, reject) => {
-    axios.post(`${process.env.REACT_APP_API_URL}/auth/signin`, fields)
-      .then(({ data }) => {
-        const { token, user } = data;
+  const handleLogout = React.useCallback(() => {
+    setAuth(defaultContextValue);
+    setToken(null);
+    navigate('/login');
+    window.localStorage.removeItem('auth');
+  }, [navigate]);
 
+  const getUser = () => {
+    fetchCurrentUser()
+      .then(({ user, company }) => {
         const authData = {
           isLoggedIn: true,
           ...(user.role === 'manager' && { isManager: true }),
           ...(user.role === 'employee' && { isEmployee: true }),
+          ...(user.role === 'admin' && { isAdmin: true }),
+          company,
           user,
-          token,
         };
 
         setAuth(authData);
-        resolve(authData);
-        window.localStorage.setItem('auth', JSON.stringify(authData));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  React.useEffect(() => {
+    if (token) {
+      getUser();
+    } else {
+      setIsLoading(false);
+    }
+  }, [token]);
+
+  const handleLogin = (fields) => new Promise((resolve, reject) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/auth/signin`, fields)
+      .then(({ data }) => {
+        setToken(data.token);
+        window.localStorage.setItem('auth', data.token);
+        resolve();
       })
       .catch((err) => {
         reject(err.response.data || {});
       });
   });
 
-  const handleLogout = () => {
-    setAuth(defaultContextValue);
-    navigate('/login');
-    window.localStorage.removeItem('auth');
-  };
-
-  const value = {
+  const value = React.useMemo(() => ({
     ...auth,
+    isLoading,
     USER_TYPES: {
-      MANAGER: 'MANAGER',
-      EMPLOYEE: 'EMPLOYEE',
+      ADMIN: 'admin',
+      MANAGER: 'manager',
+      EMPLOYEE: 'employee',
     },
     onLogin: handleLogin,
     onLogout: handleLogout,
-  };
+  }), [auth, handleLogout, isLoading]);
 
   return (
     <AuthContext.Provider value={value}>
