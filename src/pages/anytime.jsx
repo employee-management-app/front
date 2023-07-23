@@ -77,11 +77,11 @@ export const Anytime = () => {
   }, []);
 
   const handleTabChange = React.useCallback((tabIndex) => {
-    const locationSearch = tabIndex === 2
+    const locationSearch = tabIndex === 2 || activeTab === 2
       ? ''
       : location.search;
     navigate(`${TAB_URLS[tabIndex]}${locationSearch}`, { replace: true });
-  }, [location.search, navigate]);
+  }, [activeTab, location.search, navigate]);
 
   // Temporary solution on front part for the search
   const filteredOrders = React.useMemo(() => (

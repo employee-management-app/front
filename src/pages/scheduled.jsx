@@ -73,11 +73,11 @@ export const Scheduled = () => {
   }, [filters]);
 
   const handleTabChange = React.useCallback((tabIndex) => {
-    const locationSearch = tabIndex === 2
+    const locationSearch = tabIndex === 2 || activeTab === 2
       ? ''
       : location.search;
     navigate(`${TAB_URLS[tabIndex]}${locationSearch}`, { replace: true });
-  }, [location.search, navigate]);
+  }, [activeTab, location.search, navigate]);
 
   const handleSearchChange = React.useCallback((e) => {
     setSearch(e.target.value);
