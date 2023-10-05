@@ -4,7 +4,9 @@ import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
+import { useAuth } from '../../hooks/useAuth';
 import { createOrder } from '../../services/createOrder';
+import { getStageOptions } from '../../consts/order';
 
 import { addOrder } from '../../store';
 
@@ -14,6 +16,9 @@ import { getOrderFormConfig } from './getOrderFormConfig';
 export const CreateOrderForm = ({ onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
+  const { user: { companyId } } = useAuth();
+  const stageOptions = getStageOptions(companyId);
+  const defaultValues = stageOptions.length === 1 ? { stage: stageOptions[0].value } : {};
   const {
     fields,
     errors,
@@ -23,7 +28,7 @@ export const CreateOrderForm = ({ onSuccess }) => {
     onValueChange,
     onFieldChange,
     onSubmit,
-  } = useForm(getOrderFormConfig);
+  } = useForm((yup) => getOrderFormConfig(yup, defaultValues));
   const { hideModal } = useModalVisibility('CreateOrder');
 
   const handleSubmit = (e) => {

@@ -3,7 +3,7 @@ import { ReactComponent as NormalPriorityIcon } from '../assets/icons/priorities
 import { ReactComponent as HighPriorityIcon } from '../assets/icons/priorities/high.svg';
 import { ReactComponent as CriticalIcon } from '../assets/icons/priorities/critical.svg';
 
-export const PRODUCT_TYPE_OPTIONS = [
+const DEFAULT_PRODUCT_TYPE_OPTIONS = [
   {
     label: 'Osłony wewnętrzne (rolety, żaluzje, plisy)',
     value: 'Osłony wewnętrzne',
@@ -22,7 +22,34 @@ export const PRODUCT_TYPE_OPTIONS = [
   },
 ];
 
-export const STAGE_OPTIONS = [
+const REAL_ESTATE_PRODUCT_TYPE_OPTIONS = [
+  {
+    label: 'Serwis drzwi/bramy',
+    value: 'Serwis drzwi/bramy',
+  },
+  {
+    label: 'Prace porządkowe (sprzątanie)',
+    value: 'Prace porządkowe',
+  },
+  {
+    label: 'Utrzymanie chodników i dróg (odśnieżanie/solenie)',
+    value: 'Utrzymanie chodników i dróg',
+  },
+  {
+    label: 'Pielęgnacja zieleni',
+    value: 'Pielęgnacja zieleni',
+  },
+];
+
+export const getProductTypeOptions = (companyId) => {
+  if (companyId === '651ebd32365d2688cb5e63cd') {
+    return REAL_ESTATE_PRODUCT_TYPE_OPTIONS;
+  }
+
+  return DEFAULT_PRODUCT_TYPE_OPTIONS;
+};
+
+const DEFAULT_STAGE_OPTIONS = [
   {
     label: 'Pomiar',
     value: 'Pomiar',
@@ -40,6 +67,21 @@ export const STAGE_OPTIONS = [
     value: 'Serwis',
   },
 ];
+
+const REAL_ESTATE_STAGE_OPTIONS = [
+  {
+    label: 'Serwis',
+    value: 'Serwis',
+  },
+];
+
+export const getStageOptions = (companyId) => {
+  if (companyId === '651ebd32365d2688cb5e63cd') {
+    return REAL_ESTATE_STAGE_OPTIONS;
+  }
+
+  return DEFAULT_STAGE_OPTIONS;
+};
 
 export const PRIORITY_OPTIONS = [
   {

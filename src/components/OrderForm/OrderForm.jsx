@@ -4,7 +4,8 @@ import { usePlacesWidget } from 'react-google-autocomplete';
 
 import { fetchEmployees } from '../../services/fetchEmployees';
 import { getEmployees, setEmployees } from '../../store';
-import { STAGE_OPTIONS, PRODUCT_TYPE_OPTIONS } from '../../consts/order';
+import { getStageOptions, getProductTypeOptions } from '../../consts/order';
+import { useAuth } from '../../hooks/useAuth';
 import { Grid, GridEl } from '../Grid';
 import { Field } from '../Field';
 import { Textarea } from '../Textarea';
@@ -27,6 +28,7 @@ export const OrderForm = (props) => {
 
   const dispatch = useDispatch();
   const employees = useSelector(getEmployees);
+  const { user: { companyId } } = useAuth();
 
   const employeesOptions = React.useMemo(() => (
     employees.map(({ _id, name, surname }) => ({
@@ -161,7 +163,7 @@ export const OrderForm = (props) => {
               <Field label={editMode && 'Product type'} error={errors.type}>
                 <Select
                   value={fields.type}
-                  options={PRODUCT_TYPE_OPTIONS}
+                  options={getProductTypeOptions(companyId)}
                   placeholder="Product type*"
                   size="medium"
                   required
@@ -173,7 +175,7 @@ export const OrderForm = (props) => {
               <Field label={editMode && 'Stage'} error={errors.stage}>
                 <Select
                   value={fields.stage}
-                  options={STAGE_OPTIONS}
+                  options={getStageOptions(companyId)}
                   placeholder="Stage*"
                   size="medium"
                   required

@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import { fetchEmployees } from '../../services/fetchEmployees';
 import { getEmployees, getOrdersTotal, setEmployees } from '../../store';
-import { STAGE_OPTIONS, PRIORITY_OPTIONS, PRODUCT_TYPE_OPTIONS } from '../../consts/order';
+import { getStageOptions, PRIORITY_OPTIONS, getProductTypeOptions } from '../../consts/order';
 import { ReactComponent as TrashIcon } from '../../assets/icons/trash.svg';
 import { Button } from '../Button';
 import { Drawer } from '../Drawer';
@@ -23,7 +23,7 @@ export const FiltersDrawer = () => {
   const { isVisible, hideDrawer } = useDrawerVisibility('FiltersDrawer');
   const [searchParams, setSearchParams] = useSearchParams();
   const employees = useSelector(getEmployees);
-  const { isEmployee } = useAuth();
+  const { isEmployee, user: { companyId } } = useAuth();
   const { filtersCount, resetFilters } = useFilters();
 
   React.useEffect(() => {
@@ -80,6 +80,8 @@ export const FiltersDrawer = () => {
     return 'No results';
   }, [ordersTotal]);
 
+  const stageOptions = getStageOptions(companyId);
+
   return (
     <Drawer size="small" title={drawerTitle} isOpen={isVisible} onClose={hideDrawer}>
       <Grid space={SPACES.L}>
@@ -101,17 +103,19 @@ export const FiltersDrawer = () => {
             </Field>
           </GridEl>
         )}
-        <GridEl size="12">
-          <Field label="Stage">
-            <Multiselect
-              values={searchParams.getAll('stage')}
-              options={STAGE_OPTIONS}
-              placeholder="Select stage"
-              size="medium"
-              onChange={handleMultiFilterChange('stage')}
-            />
-          </Field>
-        </GridEl>
+        {stageOptions.length > 1 && (
+          <GridEl size="12">
+            <Field label="Stage">
+              <Multiselect
+                values={searchParams.getAll('stage')}
+                options={getStageOptions(companyId)}
+                placeholder="Select stage"
+                size="medium"
+                onChange={handleMultiFilterChange('stage')}
+              />
+            </Field>
+          </GridEl>
+        )}
         <GridEl size="12">
           <Field label="Priority">
             <Multiselect
@@ -127,7 +131,7 @@ export const FiltersDrawer = () => {
           <Field label="Product type">
             <Multiselect
               values={searchParams.getAll('type')}
-              options={PRODUCT_TYPE_OPTIONS}
+              options={getProductTypeOptions(companyId)}
               placeholder="Select type"
               size="medium"
               onChange={handleMultiFilterChange('type')}
