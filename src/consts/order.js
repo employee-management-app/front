@@ -41,9 +41,32 @@ const REAL_ESTATE_PRODUCT_TYPE_OPTIONS = [
   },
 ];
 
+const SECURITY_SYSTEM_PRODUCT_TYPE_OPTIONS = [
+  {
+    value: 'CCTV',
+    label: 'CCTV',
+  },
+  {
+    value: 'SSWiN',
+    label: 'SSWiN',
+  },
+  {
+    value: 'KD',
+    label: 'KD',
+  },
+  {
+    value: 'Inne',
+    label: 'Inne',
+  },
+];
+
 export const getProductTypeOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_PRODUCT_TYPE_OPTIONS;
+  }
+
+  if (companyId === '65a173aa95adb83fb2b32098') {
+    return SECURITY_SYSTEM_PRODUCT_TYPE_OPTIONS;
   }
 
   return DEFAULT_PRODUCT_TYPE_OPTIONS;
@@ -75,9 +98,32 @@ const REAL_ESTATE_STAGE_OPTIONS = [
   },
 ];
 
+const SECURITY_SYSTEM_STAGE_OPTIONS = [
+  {
+    label: 'Oględziny miejsca',
+    value: 'Oględziny miejsca',
+  },
+  {
+    label: 'Montaż',
+    value: 'Montaż',
+  },
+  {
+    label: 'Serwis/naprawa',
+    value: 'Serwis/naprawa',
+  },
+  {
+    label: 'Reklamacja',
+    value: 'Reklamacja',
+  },
+];
+
 export const getStageOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_STAGE_OPTIONS;
+  }
+
+  if (companyId === '65a173aa95adb83fb2b32098') {
+    return SECURITY_SYSTEM_STAGE_OPTIONS;
   }
 
   return DEFAULT_STAGE_OPTIONS;
