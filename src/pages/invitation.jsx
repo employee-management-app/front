@@ -30,7 +30,7 @@ export const Invitation = () => {
   } = useForm((yup) => ({
     password: {
       value: '',
-      validation: yup.string().min(8).max(100).required(),
+      validation: yup.string().required().min(8).max(100),
     },
     repeatPassword: {
       value: '',

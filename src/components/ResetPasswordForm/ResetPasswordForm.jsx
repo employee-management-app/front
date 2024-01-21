@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
-import { useAuth } from '../../hooks/useAuth';
 import { useNotification } from '../../hooks/useNotification';
+import { resetPassword } from '../../services/resetPassword';
 
 import { Container } from '../Container';
 import { Grid, GridEl, SPACES } from '../Grid';
@@ -17,13 +18,9 @@ const getConfig = (yup) => ({
     value: '',
     validation: yup.string().email().max(100).required(),
   },
-  password: {
-    value: '',
-    validation: yup.string().required().max(100),
-  },
 });
 
-export const LoginForm = () => {
+export const ResetPasswordForm = () => {
   const {
     fields,
     errors,
@@ -34,8 +31,8 @@ export const LoginForm = () => {
     onSubmit,
   } = useForm(getConfig);
 
-  const { onLogin } = useAuth(fields);
   const { pushNotification } = useNotification();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     onSubmit(e);
@@ -46,7 +43,13 @@ export const LoginForm = () => {
 
     setIsLoading(true);
 
-    onLogin(fields)
+    console.log(fields);
+
+    resetPassword(fields)
+      .then(() => {
+        navigate('/login');
+        pushNotification({ theme: 'success', content: 'Check your email for reset link!' });
+      })
       .catch((err) => {
         pushNotification({ theme: 'error', content: err.message || 'Something went wrong...' });
       })
@@ -64,33 +67,18 @@ export const LoginForm = () => {
       >
         <Grid space={SPACES.XL}>
           <GridEl size="12">
-            <Text size="h2" center>Log in to your account</Text>
+            <Text size="h2" center>Reset your password</Text>
           </GridEl>
           <GridEl size="12">
-            <Grid>
-              <GridEl size="12">
-                <Field error={errors.email}>
-                  <Input
-                    value={fields.email}
-                    size="medium"
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => onFieldChange(e, 'email')}
-                  />
-                </Field>
-              </GridEl>
-              <GridEl size="12">
-                <Field error={errors.password}>
-                  <Input
-                    value={fields.password}
-                    size="medium"
-                    type="password"
-                    placeholder="Password"
-                    onChange={(e) => onFieldChange(e, 'password')}
-                  />
-                </Field>
-              </GridEl>
-            </Grid>
+            <Field error={errors.email}>
+              <Input
+                value={fields.email}
+                size="medium"
+                type="email"
+                placeholder="Email"
+                onChange={(e) => onFieldChange(e, 'email')}
+              />
+            </Field>
           </GridEl>
           <GridEl size="12">
             <Grid>
@@ -101,11 +89,11 @@ export const LoginForm = () => {
                   width="full"
                   loading={isLoading}
                 >
-                  Log in
+                  Send reset link
                 </Button>
               </GridEl>
               <GridEl size="12">
-                <Link to="/forgot-password">Forgot password?</Link>
+                <Link to="/login">Log in</Link>
               </GridEl>
             </Grid>
           </GridEl>

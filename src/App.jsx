@@ -30,6 +30,8 @@ import { Scheduled } from './pages/scheduled';
 import { Order } from './pages/order';
 import { UI } from './pages/ui';
 import { Companies } from './pages/companies';
+import { ResetPassword } from './pages/reset-password';
+import { ChangePassword } from './pages/change-password';
 
 const ProtectedRoute = ({ children, roles }) => {
   const { isLoggedIn, user } = useAuth();
@@ -57,6 +59,8 @@ const AppRoutes = () => {
       <Routes>
         {/* Mixed views */}
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ResetPassword />} />
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/invitation/:token" element={<Invitation />} />
         <Route
           path="/"

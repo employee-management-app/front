@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from '../../hooks/useForm';
-import { useAuth } from '../../hooks/useAuth';
 import { useNotification } from '../../hooks/useNotification';
 
 import { Container } from '../Container';
@@ -10,20 +10,20 @@ import { Field } from '../Field';
 import { Text } from '../Text';
 import { Input } from '../Input';
 import { Button } from '../Button';
-import { Link } from '../Link';
+import { changePassword } from '../../services/changePassword';
 
 const getConfig = (yup) => ({
-  email: {
-    value: '',
-    validation: yup.string().email().max(100).required(),
-  },
   password: {
     value: '',
-    validation: yup.string().required().max(100),
+    validation: yup.string().required().min(8).max(100),
+  },
+  passwordRepeat: {
+    value: '',
+    validation: yup.string().required().oneOf([yup.ref('password')], 'Passwords do not match'),
   },
 });
 
-export const LoginForm = () => {
+export const ChangePasswordForm = () => {
   const {
     fields,
     errors,
@@ -34,8 +34,10 @@ export const LoginForm = () => {
     onSubmit,
   } = useForm(getConfig);
 
-  const { onLogin } = useAuth(fields);
+  const [searchParams] = useSearchParams();
+
   const { pushNotification } = useNotification();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     onSubmit(e);
@@ -46,7 +48,14 @@ export const LoginForm = () => {
 
     setIsLoading(true);
 
-    onLogin(fields)
+    changePassword({ ...fields, token: searchParams.get('token') })
+      .then(() => {
+        navigate('/login');
+        pushNotification({
+          theme: 'success',
+          content: 'Your password has been updated, you can log in to the system!',
+        });
+      })
       .catch((err) => {
         pushNotification({ theme: 'error', content: err.message || 'Something went wrong...' });
       })
@@ -64,21 +73,10 @@ export const LoginForm = () => {
       >
         <Grid space={SPACES.XL}>
           <GridEl size="12">
-            <Text size="h2" center>Log in to your account</Text>
+            <Text size="h2" center>Change your password</Text>
           </GridEl>
           <GridEl size="12">
             <Grid>
-              <GridEl size="12">
-                <Field error={errors.email}>
-                  <Input
-                    value={fields.email}
-                    size="medium"
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => onFieldChange(e, 'email')}
-                  />
-                </Field>
-              </GridEl>
               <GridEl size="12">
                 <Field error={errors.password}>
                   <Input
@@ -90,24 +88,28 @@ export const LoginForm = () => {
                   />
                 </Field>
               </GridEl>
+              <GridEl size="12">
+                <Field error={errors.passwordRepeat}>
+                  <Input
+                    value={fields.passwordRepeat}
+                    size="medium"
+                    type="password"
+                    placeholder="Repeat password"
+                    onChange={(e) => onFieldChange(e, 'passwordRepeat')}
+                  />
+                </Field>
+              </GridEl>
             </Grid>
           </GridEl>
           <GridEl size="12">
-            <Grid>
-              <GridEl size="12">
-                <Button
-                  type="submit"
-                  size="medium"
-                  width="full"
-                  loading={isLoading}
-                >
-                  Log in
-                </Button>
-              </GridEl>
-              <GridEl size="12">
-                <Link to="/forgot-password">Forgot password?</Link>
-              </GridEl>
-            </Grid>
+            <Button
+              type="submit"
+              size="medium"
+              width="full"
+              loading={isLoading}
+            >
+              Change
+            </Button>
           </GridEl>
         </Grid>
       </form>
