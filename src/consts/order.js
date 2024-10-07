@@ -60,6 +60,25 @@ const SECURITY_SYSTEM_PRODUCT_TYPE_OPTIONS = [
   },
 ];
 
+const ENERGY_SYSTEM_PRODUCT_TYPE_OPTIONS = [
+  {
+    label: 'Ogrzewanie (gazowe)',
+    value: 'Ogrzewanie (gazowe)',
+  },
+  {
+    label: 'Ogrzewanie (pompy ciepła)',
+    value: 'Ogrzewanie (pompy ciepła)',
+  },
+  {
+    label: 'Klimatyzacja',
+    value: 'Klimatyzacja',
+  },
+  {
+    label: 'Elektryka',
+    value: 'Elektryka',
+  },
+];
+
 export const getProductTypeOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_PRODUCT_TYPE_OPTIONS;
@@ -67,6 +86,10 @@ export const getProductTypeOptions = (companyId) => {
 
   if (companyId === '65a173aa95adb83fb2b32098') {
     return SECURITY_SYSTEM_PRODUCT_TYPE_OPTIONS;
+  }
+
+  if (companyId === '6703b64ae29df1ea971bd5e4') {
+    return ENERGY_SYSTEM_PRODUCT_TYPE_OPTIONS;
   }
 
   return DEFAULT_PRODUCT_TYPE_OPTIONS;
