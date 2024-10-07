@@ -11,10 +11,10 @@ $header-padding: 16px;
 }
 
 .logo {
-  display: inline-block;
+  display: flex;
   text-decoration: none;
   width: 140px;
-  height: 35px;
+  height: 36px;
 
   img {
     width: 100%;
