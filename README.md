@@ -3,9 +3,9 @@
 ### Requirements
 
 - node v.16.x.x installed on your local machine
-- npm v.8.x.x installed on your local machine 
+- npm v.8.x.x installed on your local machine
 
-Check in terminal:
+Check in the terminal:
 
 ```
 node -v
@@ -18,7 +18,7 @@ v8.x.x
 ## Deployments
 
 - `master` branch deploys automatically when new changes are committed on this url:
-   
+
    https://employee-management-master.herokuapp.com
 
 - every pull request is automatically deployed with Heroku
