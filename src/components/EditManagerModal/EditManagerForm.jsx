@@ -1,27 +1,24 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
-import { getCompany, getManagers, setManagers } from '../../store';
+import { updateManager as updateManagerInStore } from '../../store';
 import { useNotification } from '../../hooks/useNotification';
-import { useAuth } from '../../hooks/useAuth';
-import { addManager } from '../../services/addManager';
 import { Grid, GridEl, SPACES } from '../Grid';
 import { Field } from '../Field';
 import { Input } from '../Input';
 import { Button } from '../Button';
+import { updateManager } from '../../services/updateManager';
 import { Checkbox } from '../Checkbox';
 
-export const AddManagerForm = ({ onSuccess }) => {
+export const EditManagerForm = ({ manager, onSuccess }) => {
   const dispatch = useDispatch();
-  const managers = useSelector(getManagers);
-  const company = useSelector(getCompany);
   const { pushNotification } = useNotification();
-  const { user } = useAuth();
 
   const {
     fields,
     errors,
+    isTouched,
     isValid,
     isLoading,
     setIsLoading,
@@ -30,23 +27,23 @@ export const AddManagerForm = ({ onSuccess }) => {
     onSubmit,
   } = useForm((yup) => ({
     email: {
-      value: '',
+      value: manager.email,
       validation: yup.string().email().max(100).required(),
     },
     name: {
-      value: '',
+      value: manager.name,
       validation: yup.string().max(100).required(),
     },
     surname: {
-      value: '',
+      value: manager.surname,
       validation: yup.string().max(100).required(),
     },
     phone: {
-      value: '',
+      value: manager.phone,
       validation: yup.string().min(6).max(100).required(),
     },
     isOwner: {
-      value: false,
+      value: manager.role === 'owner',
       validation: yup.boolean(),
     },
   }));
@@ -54,21 +51,24 @@ export const AddManagerForm = ({ onSuccess }) => {
   const handleSubmit = (e) => {
     onSubmit(e);
 
-    if (!isValid) {
+    if (!isTouched) {
+      onSuccess?.();
+    }
+
+    if (!isValid || !isTouched) {
       return;
     }
 
     setIsLoading(true);
 
-    addManager({ ...fields, companyId: user.companyId ?? company._id })
+    updateManager(manager._id, fields)
       .then((data) => {
         onSuccess?.();
-        dispatch(setManagers([...managers, data]));
-        pushNotification({ theme: 'success', content: 'Invitation link has been sent to the manager!' });
+        dispatch(updateManagerInStore(data));
+        pushNotification({ theme: 'success', content: 'Account information was successfully updated!' });
       })
-      .catch((error) => {
-        const content = error.response?.data.message ?? 'Something went wrong';
-        pushNotification({ theme: 'error', content });
+      .catch(() => {
+        pushNotification({ theme: 'error', content: 'Something went wrong' });
       })
       .finally(() => {
         setIsLoading(false);
@@ -81,7 +81,7 @@ export const AddManagerForm = ({ onSuccess }) => {
         <GridEl size="12">
           <Grid>
             <GridEl size="6">
-              <Field error={errors.name}>
+              <Field label="Name" error={errors.name}>
                 <Input
                   value={fields.name}
                   placeholder="Name"
@@ -90,7 +90,7 @@ export const AddManagerForm = ({ onSuccess }) => {
               </Field>
             </GridEl>
             <GridEl size="6">
-              <Field error={errors.surname}>
+              <Field label="Surname" error={errors.surname}>
                 <Input
                   value={fields.surname}
                   placeholder="Surname"
@@ -99,9 +99,10 @@ export const AddManagerForm = ({ onSuccess }) => {
               </Field>
             </GridEl>
             <GridEl size="6">
-              <Field error={errors.email}>
+              <Field label="Email" error={errors.email}>
                 <Input
                   type="email"
+                  disabled
                   value={fields.email}
                   placeholder="Email"
                   onChange={(e) => onFieldChange(e, 'email')}
@@ -109,7 +110,7 @@ export const AddManagerForm = ({ onSuccess }) => {
               </Field>
             </GridEl>
             <GridEl size="6">
-              <Field error={errors.phone}>
+              <Field label="Phone" error={errors.phone}>
                 <Input
                   value={fields.phone}
                   placeholder="Phone"
@@ -126,7 +127,7 @@ export const AddManagerForm = ({ onSuccess }) => {
         </GridEl>
         <GridEl size="12">
           <Button type="submit" loading={isLoading}>
-            Invite
+            Update account
           </Button>
         </GridEl>
       </Grid>

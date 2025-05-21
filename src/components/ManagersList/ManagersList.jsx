@@ -2,13 +2,17 @@ import React from 'react';
 
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
+import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../Button';
 import { Table } from '../Table';
 import { Status } from '../Status';
 
 import { Grid, GridEl } from '../Grid';
+import { ManagerActions } from './ManagerActions';
 
 export const ManagersList = ({ managers }) => {
+  const { user } = useAuth();
+
   const columns = [
     {
       title: 'Name',
@@ -39,6 +43,22 @@ export const ManagersList = ({ managers }) => {
           ? <Status status="success">Yes</Status>
           : <Status status="error">No</Status>
       ),
+    },
+    {
+      title: 'Admin',
+      key: 'role',
+      render: (role) => (
+        role === 'owner'
+          ? <Status status="success">Yes</Status>
+          : <Status status="error">No</Status>
+      ),
+    },
+    {
+      title: '',
+      key: '_id',
+      render: (_, index) => (user._id === managers[index]._id ? '' : (
+        <ManagerActions manager={managers[index]} />
+      )),
     },
   ];
 

@@ -8,10 +8,10 @@ import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import styles from './CreateOrderButton.module.scss';
 
 export const CreateOrderButton = () => {
-  const { isManager } = useAuth();
+  const { isManager, isOwner } = useAuth();
   const { showDrawer, isVisible } = useDrawerVisibility('CreateOrder');
 
-  if (!isManager) {
+  if (!isManager && !isOwner) {
     return null;
   }
 

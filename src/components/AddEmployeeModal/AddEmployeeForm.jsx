@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { getCompany, getEmployees, setEmployees } from '../../store';
 import { useNotification } from '../../hooks/useNotification';
+import { useAuth } from '../../hooks/useAuth';
 import { addEmployee } from '../../services/addEmployee';
 import { Grid, GridEl, SPACES } from '../Grid';
 import { Field } from '../Field';
@@ -15,6 +16,7 @@ export const AddEmployeeForm = ({ onSuccess }) => {
   const company = useSelector(getCompany);
   const employees = useSelector(getEmployees);
   const { pushNotification } = useNotification();
+  const { user } = useAuth();
 
   const {
     fields,
@@ -52,7 +54,7 @@ export const AddEmployeeForm = ({ onSuccess }) => {
 
     setIsLoading(true);
 
-    addEmployee({ ...fields, companyId: company._id })
+    addEmployee({ ...fields, companyId: user.companyId ?? company._id })
       .then((data) => {
         onSuccess?.();
         dispatch(setEmployees([...employees, data]));

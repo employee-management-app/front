@@ -32,6 +32,7 @@ import { UI } from './pages/ui';
 import { Companies } from './pages/companies';
 import { ResetPassword } from './pages/reset-password';
 import { ChangePassword } from './pages/change-password';
+import { EditManagerModal } from './components/EditManagerModal';
 
 const ProtectedRoute = ({ children, roles }) => {
   const { isLoggedIn, user } = useAuth();
@@ -125,7 +126,7 @@ const AppRoutes = () => {
         <Route
           path="/employees"
           element={(
-            <ProtectedRoute roles={[USER_TYPES.MANAGER]}>
+            <ProtectedRoute roles={[USER_TYPES.OWNER, USER_TYPES.MANAGER]}>
               <Employees />
             </ProtectedRoute>
           )}
@@ -133,7 +134,7 @@ const AppRoutes = () => {
         <Route
           path="/managers"
           element={(
-            <ProtectedRoute roles={[USER_TYPES.MANAGER]}>
+            <ProtectedRoute roles={[USER_TYPES.OWNER]}>
               <Managers />
             </ProtectedRoute>
           )}
@@ -214,6 +215,7 @@ const AppRoutes = () => {
           <AddManagerModal />
           <AddCompanyModal />
           <EditEmployeeModal />
+          <EditManagerModal />
           <CompleteOrderModal />
           <DeleteOrderModal />
           <AssignOrderModal />

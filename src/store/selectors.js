@@ -8,6 +8,7 @@ export const getEmployees = (state) => state.employees;
 export const getEmployee = (state) => state.employee;
 export const getCompany = (state) => state.company;
 export const getManagers = (state) => state.managers;
+export const getManager = (state) => state.manager;
 export const getCompanies = (state) => state.companies;
 export const getNotifications = (state) => state.notifications;
 export const getIsModalVisible = (modal) => (state) => state.visibleModals.includes(modal);

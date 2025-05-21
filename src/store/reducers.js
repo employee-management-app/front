@@ -88,6 +88,22 @@ const setManagers = (state, action) => ({
   managers: action.payload,
 });
 
+// Manager
+
+const setManager = (state, action) => ({
+  ...state,
+  manager: action.payload,
+});
+
+const updateManager = (state, action) => {
+  const index = state.managers.findIndex(({ _id }) => _id === action.payload._id);
+
+  return {
+    ...state,
+    managers: Object.assign([], state.managers, { [index]: action.payload }),
+  };
+};
+
 // Companies
 
 const setCompanies = (state, action) => ({
@@ -154,8 +170,10 @@ export const reducers = {
   [actions.SET_EMPLOYEE]: setEmployee,
   [actions.SET_EMPLOYEES]: setEmployees,
   [actions.SET_MANAGERS]: setManagers,
+  [actions.SET_MANAGER]: setManager,
   [actions.SET_COMPANIES]: setCompanies,
   [actions.UPDATE_EMPLOYEE]: updateEmployee,
+  [actions.UPDATE_MANAGER]: updateManager,
   [actions.PUSH_NOTIFICATION]: pushNotification,
   [actions.REMOVE_NOTIFICATION_BY_ID]: removeFirstNotification,
   [actions.SHOW_MODAL]: showModal,

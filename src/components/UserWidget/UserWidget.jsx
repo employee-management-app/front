@@ -14,7 +14,7 @@ import styles from './UserWidget.module.scss';
 export const UserWidget = () => {
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
 
-  const { isAdmin, isManager, user, onLogout } = useAuth();
+  const { isAdmin, isManager, isOwner, user, onLogout } = useAuth();
 
   const togglePopover = React.useCallback(() => {
     setIsPopoverVisible((visibility) => !visibility);
@@ -30,12 +30,12 @@ export const UserWidget = () => {
       Icon: BuildingsIcon,
       to: '/companies',
     }] : []),
-    ...(isManager ? [{
+    ...(isOwner ? [{
       label: 'Managers',
       Icon: UserGearIcon,
       to: '/managers',
     }] : []),
-    ...(isManager ? [{
+    ...(isManager || isOwner ? [{
       label: 'Employees',
       Icon: UsersIcon,
       to: '/employees',

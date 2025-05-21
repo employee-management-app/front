@@ -11,6 +11,7 @@ const defaultContextValue = {
   isLoggedIn: false,
   isAdmin: false,
   isManager: false,
+  isOwner: false,
   isEmployee: false,
   company: null,
   user: {},
@@ -40,6 +41,7 @@ export const AuthProvider = ({ children }) => {
           ...(user.role === 'manager' && { isManager: true }),
           ...(user.role === 'employee' && { isEmployee: true }),
           ...(user.role === 'admin' && { isAdmin: true }),
+          ...(user.role === 'owner' && { isOwner: true }),
           company,
           user,
         };
@@ -78,6 +80,7 @@ export const AuthProvider = ({ children }) => {
       ADMIN: 'admin',
       MANAGER: 'manager',
       EMPLOYEE: 'employee',
+      OWNER: 'owner',
     },
     onLogin: handleLogin,
     onLogout: handleLogout,
