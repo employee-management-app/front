@@ -17,7 +17,7 @@ v8.x.x
 
 ## Deployments
 
-- `master` branch deploys automatically when new changes are committed on this url: 
+- `master` branch deploys automatically when new changes are committed on this url:
 
    https://employee-management-master.herokuapp.com
 
