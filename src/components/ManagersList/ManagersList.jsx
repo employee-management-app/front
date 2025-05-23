@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ReactComponent as PhoneIcon } from '../../assets/icons/phone.svg';
+import { ReactComponent as MailIcon } from '../../assets/icons/mail.svg';
 import { ReactComponent as PlusIcon } from '../../assets/icons/plus.svg';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { useAuth } from '../../hooks/useAuth';
@@ -9,6 +11,8 @@ import { Status } from '../Status';
 
 import { Grid, GridEl } from '../Grid';
 import { ManagerActions } from './ManagerActions';
+
+import styles from './ManagerActions.module.scss';
 
 export const ManagersList = ({ managers }) => {
   const { user } = useAuth();
@@ -54,11 +58,15 @@ export const ManagersList = ({ managers }) => {
       ),
     },
     {
-      title: '',
-      key: '_id',
-      render: (_, index) => (user._id === managers[index]._id ? '' : (
-        <ManagerActions manager={managers[index]} />
-      )),
+      title: 'Actions',
+      key: ['phone', 'email'],
+      render: ([phone, email], index) => (
+        <div className={styles.actions}>
+          <Button href={`tel:${phone}`} icon={PhoneIcon} />
+          <Button href={`mailto:${email}`} icon={MailIcon} />
+          {user._id !== managers[index]._id && <ManagerActions manager={managers[index]} />}
+        </div>
+      ),
     },
   ];
 

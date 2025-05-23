@@ -57,8 +57,8 @@ export const EmployeesList = ({ employees }) => {
       key: ['phone', 'email'],
       render: ([phone, email], index) => (
         <div className={styles.actions}>
-          <Button to={`tel:${phone}`} icon={PhoneIcon} />
-          <Button to={`mailto:${email}`} icon={MailIcon} />
+          <Button href={`tel:${phone}`} icon={PhoneIcon} />
+          <Button href={`mailto:${email}`} icon={MailIcon} />
           <EmployeeActions employee={employees[index]} />
         </div>
       ),

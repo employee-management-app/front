@@ -17,3 +17,9 @@
     fill: $color-primary;
   }
 }
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
