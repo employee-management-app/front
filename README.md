@@ -3,7 +3,7 @@
 ### Requirements
 
 - node v.16.x.x installed on your local machine
-- npm v.8.x.x installed on your local machine
+- npm v.8.x.x installed on your local machine 
 
 Check in the terminal:
 
