@@ -7,7 +7,7 @@ import { useNotification } from '../../hooks/useNotification';
 import { useAuth } from '../../hooks/useAuth';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { updateOrder } from '../../services/updateOrder';
-import { setOrder, updateOrder as updateOrderInStore } from '../../store';
+import { setOrder, setOverlapOrders, updateOrder as updateOrderInStore } from '../../store';
 
 import { Button } from '../Button';
 import { Grid, GridEl, SPACES } from '../Grid';
@@ -18,8 +18,8 @@ export const ScheduleForm = ({ order, onSuccess }) => {
   const navigate = useNavigate();
 
   const { isEmployee } = useAuth();
-  const { hideModal } = useModalVisibility('ScheduleOrder');
   const { pushNotification } = useNotification();
+  const { showModal: showOverlapModal } = useModalVisibility('OverlapOrdersModal');
 
   const getConfig = () => ({
     startDate: {
@@ -71,14 +71,17 @@ export const ScheduleForm = ({ order, onSuccess }) => {
         onSuccess();
       })
       .catch((error) => {
-        const content = error.response?.data.message ?? 'Something went wrong';
-        const action = !!error.response?.data.value && {
-          to: `/orders/${error.response?.data.value}`,
-          onClick: hideModal,
-          label: 'See order',
-        };
+        if (error.response?.data.value.orders) {
+          showOverlapModal();
+          dispatch(setOverlapOrders({
+            orders: error.response?.data.value.orders,
+            order: error.response?.data.value.order,
+          }));
 
-        pushNotification({ theme: 'error', content, action });
+          return;
+        }
+
+        pushNotification({ theme: 'error', content: 'Something went wrong' });
       })
       .finally(() => {
         setIsLoading(false);

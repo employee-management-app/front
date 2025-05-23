@@ -25,6 +25,7 @@
   width: 535px;
   min-height: 100px;
   max-height: 95%;
+  max-width: calc(100% - 20px);
   overflow-y: auto;
   background-color: #fff;
   padding: 26px 30px;
@@ -40,6 +41,10 @@
 
   &.center {
     text-align: center;
+  }
+
+  &.sizeLarge {
+    width: 1024px;
   }
 }
 

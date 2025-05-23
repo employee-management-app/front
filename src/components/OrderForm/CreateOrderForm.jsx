@@ -8,7 +8,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { createOrder } from '../../services/createOrder';
 import { getStageOptions } from '../../consts/order';
 
-import { addOrder } from '../../store';
+import { addOrder, setOverlapOrders } from '../../store';
 
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
@@ -29,7 +29,7 @@ export const CreateOrderForm = ({ onSuccess }) => {
     onFieldChange,
     onSubmit,
   } = useForm((yup) => getOrderFormConfig(yup, defaultValues));
-  const { hideModal } = useModalVisibility('CreateOrder');
+  const { showModal: showOverlapModal } = useModalVisibility('OverlapOrdersModal');
 
   const handleSubmit = (e) => {
     onSubmit(e);
@@ -63,14 +63,17 @@ export const CreateOrderForm = ({ onSuccess }) => {
         pushNotification({ theme: 'success', content: 'Task was successfully created!' });
       })
       .catch((error) => {
-        const content = error.response?.data.message ?? 'Something went wrong';
-        const action = !!error.response?.data.value && {
-          to: `/orders/${error.response?.data.value}`,
-          onClick: hideModal,
-          label: 'See order',
-        };
+        if (error.response?.data.value.orders) {
+          showOverlapModal();
+          dispatch(setOverlapOrders({
+            orders: error.response?.data.value.orders,
+            order: error.response?.data.value.order,
+          }));
 
-        pushNotification({ theme: 'error', content, action });
+          return;
+        }
+
+        pushNotification({ theme: 'error', content: 'Something went wrong' });
       })
       .finally(() => {
         setIsLoading(false);

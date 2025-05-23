@@ -14,6 +14,7 @@ export const SET_ORDER = 'SET_ORDER';
 export const SET_ORDER_TO_EDIT = 'SET_ORDER_TO_EDIT';
 export const SET_ORDER_TO_DUPLICATE = 'SET_ORDER_TO_DUPLICATE';
 export const SET_EMPLOYEE = 'SET_EMPLOYEE';
+export const SET_OVERLAP_ORDERS = 'SET_OVERLAP_ORDERS';
 export const PUSH_NOTIFICATION = 'PUSH_NOTIFICATION';
 export const REMOVE_NOTIFICATION_BY_ID = 'REMOVE_NOTIFICATION_BY_ID';
 export const SHOW_MODAL = 'SHOW_MODAL';
@@ -86,6 +87,11 @@ export const setManager = (manager) => ({
 export const setCompanies = (companies) => ({
   type: SET_COMPANIES,
   payload: companies,
+});
+
+export const setOverlapOrders = (overlapOrdersData) => ({
+  type: SET_OVERLAP_ORDERS,
+  payload: overlapOrdersData,
 });
 
 export const updateEmployee = (employee) => ({

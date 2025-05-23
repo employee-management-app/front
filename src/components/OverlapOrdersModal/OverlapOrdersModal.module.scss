@@ -1,4 +1,10 @@
-@use "../../../styles/variables" as *;
+@use "../../styles/variables" as *;
+
+.timelineWrapper {
+  overflow-x: auto;
+  padding: 20px;
+  margin: -20px;
+}
 
 .timeline {
   position: relative;
@@ -70,10 +76,6 @@
   transform: translateY(-50%);
   z-index: 1;
   cursor: pointer;
-
-  &.ghost {
-    border-style: dashed;
-  }
 }
 
 .slotPriority {
@@ -112,34 +114,23 @@
   text-overflow: ellipsis;
 }
 
-.closeButton {
-  all: unset;
-  box-sizing: border-box;
-  display: inline-flex;
-  position: absolute;
-  padding: 8px;
-  top: 6px;
-  right: 6px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: $color-gray-lighten-3;
-  transition: 0.2s;
-  cursor: pointer;
+.warning {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
 
-  &:hover {
-    filter: brightness(0.95);
-  }
+.warningIcon {
+  width: 20px;
+  height: 20px;
+  fill: $color-danger;
+}
 
-  &:active {
-    transform: scale(0.95);
-  }
-
-  svg {
-    width: 100%;
-    height: 100%;
-    fill: $color-dark;
-  }
+.footer {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
 }
 
 @include breakpoint-up("sm") {

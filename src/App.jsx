@@ -15,6 +15,7 @@ import { CompleteOrderModal } from './components/CompleteOrderModal';
 import { DeleteOrderModal } from './components/DeleteOrderModal';
 import { AssignOrderModal } from './components/AssignOrderModal';
 import { ScheduleOrderModal } from './components/ScheduleOrderModal';
+import { OverlapOrdersModal } from './components/OverlapOrdersModal';
 import { Notifications } from './components/Notifications';
 import { AppSpinner } from './components/AppSpinner';
 import { useAuth } from './hooks/useAuth';
@@ -220,6 +221,7 @@ const AppRoutes = () => {
           <DeleteOrderModal />
           <AssignOrderModal />
           <ScheduleOrderModal />
+          <OverlapOrdersModal />
         </>
       )}
     </>

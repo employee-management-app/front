@@ -22,7 +22,7 @@ export const Modal = ({ onClose, ...props }) => {
     <ReactModal
       isOpen={isOpen}
       ariaHideApp={false}
-      className={cx(styles.modal, { [styles.center]: props.center })}
+      className={cx(styles.modal, { [styles.center]: props.center, [styles.sizeLarge]: props.size === 'large' })}
       overlayClassName={styles.overlay}
       closeTimeoutMS={200}
       onRequestClose={closeModal}

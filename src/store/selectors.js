@@ -13,3 +13,5 @@ export const getCompanies = (state) => state.companies;
 export const getNotifications = (state) => state.notifications;
 export const getIsModalVisible = (modal) => (state) => state.visibleModals.includes(modal);
 export const getIsDrawerVisible = (drawer) => (state) => state.visibleDrawers.includes(drawer);
+export const getOverlapOrders = (state) => state.overlapOrders;
+export const getOverlapOrder = (state) => state.overlapOrder;

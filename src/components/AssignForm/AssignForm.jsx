@@ -6,7 +6,7 @@ import { useNotification } from '../../hooks/useNotification';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
 import { updateOrder } from '../../services/updateOrder';
 import { fetchEmployees } from '../../services/fetchEmployees';
-import { getEmployees, updateOrder as updateOrderInStore, setEmployees, setOrder } from '../../store';
+import { getEmployees, updateOrder as updateOrderInStore, setEmployees, setOrder, setOverlapOrders } from '../../store';
 
 import { Select } from '../Select';
 import { Button } from '../Button';
@@ -23,7 +23,7 @@ export const AssignForm = ({ order, onSuccess }) => {
     },
   });
 
-  const { hideModal } = useModalVisibility('AssignOrder');
+  const { showModal: showOverlapModal } = useModalVisibility('OverlapOrdersModal');
   const { pushNotification } = useNotification();
   const {
     fields,
@@ -76,14 +76,17 @@ export const AssignForm = ({ order, onSuccess }) => {
         onSuccess();
       })
       .catch((error) => {
-        const content = error.response?.data.message ?? 'Something went wrong';
-        const action = !!error.response?.data.value && {
-          to: `/orders/${error.response?.data.value}`,
-          onClick: hideModal,
-          label: 'See order',
-        };
+        if (error.response?.data.value.orders) {
+          showOverlapModal();
+          dispatch(setOverlapOrders({
+            orders: error.response?.data.value.orders,
+            order: error.response?.data.value.order,
+          }));
 
-        pushNotification({ theme: 'error', content, action });
+          return;
+        }
+
+        pushNotification({ theme: 'error', content: 'Something went wrong' });
       })
       .finally(() => {
         setIsLoading(false);

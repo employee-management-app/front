@@ -9,7 +9,7 @@ import { Text } from '../../Text';
 
 import styles from './Timeline.module.scss';
 
-export const Slot = ({ color, order, selected, onClick }) => {
+export const Slot = ({ color, order, selected, variant, onClick }) => {
   const { address, priority, startDate, status, endDate } = order;
 
   const time = React.useMemo(() => (
@@ -25,10 +25,12 @@ export const Slot = ({ color, order, selected, onClick }) => {
     return {
       width: `calc(${(difference * 100) / (15 * 60)}% - 1px)`,
       left: `calc(${(start * 100) / (15 * 60)}% + 1px)`,
-      backgroundColor: selected ? `${color}4C` : `${color}26`,
-      borderColor: selected ? 'transparent' : `${color}4C`,
+      backgroundColor: selected || variant === 'ghost' ? `${color}4C` : `${color}26`,
+      borderColor: variant === 'ghost' ? color : (selected ? 'transparent' : `${color}4C`),
+      zIndex: variant === 'ghost' ? 1 : undefined,
+      backdropFilter: variant === 'ghost' ? 'blur(1px)' : undefined,
     };
-  }, [selected, color, startDate, endDate]);
+  }, [selected, color, startDate, endDate, variant]);
 
   const tooltipContent = React.useMemo(() => {
     if (status === 'completed') {
@@ -59,7 +61,7 @@ export const Slot = ({ color, order, selected, onClick }) => {
     <Tooltip content={tooltipContent} placement="top-start">
       <button
         type="button"
-        className={styles.slot}
+        className={cx(styles.slot, { [styles.ghost]: variant === 'ghost' })}
         style={style}
         onClick={status === 'completed' ? () => null : onClick}
       >

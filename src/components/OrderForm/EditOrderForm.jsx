@@ -3,18 +3,18 @@ import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
-import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import { updateOrder } from '../../services/updateOrder';
 
-import { setOrder, updateOrder as updateOrderInStore } from '../../store';
+import { setOrder, setOverlapOrders, updateOrder as updateOrderInStore } from '../../store';
 
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
+import { useModalVisibility } from '../../hooks/useModalVisibility';
 
 export const EditOrderForm = ({ values, onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { hideDrawer } = useDrawerVisibility('EditOrder');
+  const { showModal: showOverlapModal } = useModalVisibility('OverlapOrdersModal');
   const {
     fields,
     errors,
@@ -74,14 +74,17 @@ export const EditOrderForm = ({ values, onSuccess }) => {
         pushNotification({ theme: 'success', content: 'Task was successfully updated!' });
       })
       .catch((error) => {
-        const content = error.response?.data.message ?? 'Something went wrong';
-        const action = !!error.response?.data.value && {
-          to: `/orders/${error.response?.data.value}`,
-          onClick: hideDrawer,
-          label: 'See order',
-        };
+        if (error.response?.data.value.orders) {
+          showOverlapModal();
+          dispatch(setOverlapOrders({
+            orders: error.response?.data.value.orders,
+            order: error.response?.data.value.order,
+          }));
 
-        pushNotification({ theme: 'error', content, action });
+          return;
+        }
+
+        pushNotification({ theme: 'error', content: 'Something went wrong' });
       })
       .finally(() => {
         setIsLoading(false);

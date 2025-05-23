@@ -79,6 +79,57 @@ const ENERGY_SYSTEM_PRODUCT_TYPE_OPTIONS = [
   },
 ];
 
+const MAGAS_PRODUCT_TYPE_OPTIONS = [
+  {
+    label: 'Rolety materiałowe',
+    value: 'Rolety materiałowe',
+  },
+  {
+    label: 'Rolety dzień-noc',
+    value: 'Rolety dzień-noc',
+  },
+  {
+    label: 'Żaluzje drewniane',
+    value: 'Żaluzje drewniane',
+  },
+  {
+    label: 'Żaluzje aluminiowe',
+    value: 'Żaluzje aluminiowe',
+  },
+  {
+    label: 'Plisy',
+    value: 'Plisy',
+  },
+  {
+    label: 'Rolety zewnętrzne',
+    value: 'Rolety zewnętrzne',
+  },
+  {
+    label: 'Moskitiery',
+    value: 'Moskitiery',
+  },
+  {
+    label: 'Żaluzje fasadowe',
+    value: 'Żaluzje fasadowe',
+  },
+  {
+    label: 'Rolety Screen',
+    value: 'Rolety Screen',
+  },
+  {
+    label: 'Markizy',
+    value: 'Markizy',
+  },
+  {
+    label: 'Pergole',
+    value: 'Pergole',
+  },
+  {
+    label: 'Inne',
+    value: 'Inne',
+  },
+];
+
 export const getProductTypeOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_PRODUCT_TYPE_OPTIONS;
@@ -90,6 +141,10 @@ export const getProductTypeOptions = (companyId) => {
 
   if (companyId === '6703b64ae29df1ea971bd5e4') {
     return ENERGY_SYSTEM_PRODUCT_TYPE_OPTIONS;
+  }
+
+  if (companyId === '682d7d9a26d1da92821a9860') {
+    return MAGAS_PRODUCT_TYPE_OPTIONS;
   }
 
   return DEFAULT_PRODUCT_TYPE_OPTIONS;

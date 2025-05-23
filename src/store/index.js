@@ -16,6 +16,8 @@ const initialStore = {
   managers: [],
   visibleDrawers: [],
   visibleModals: [],
+  overlapOrder: null,
+  overlapOrders: [],
 };
 
 const reducer = (state = initialStore, action) => {

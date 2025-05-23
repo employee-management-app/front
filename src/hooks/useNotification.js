@@ -6,7 +6,7 @@ import { pushNotification as pushNotificationToStore, removeNotificationById } f
 export const useNotification = () => {
   const dispatch = useDispatch();
 
-  const pushNotification = React.useCallback((notification) => {
+  const pushNotification = React.useCallback((notification, duration = 7000) => {
     const id = `${Date.now()}`;
 
     dispatch(pushNotificationToStore({ id, ...notification }));
@@ -14,7 +14,7 @@ export const useNotification = () => {
     if (!notification.manualClose) {
       setTimeout(() => {
         dispatch(removeNotificationById(id));
-      }, 7000);
+      }, duration);
     }
   }, [dispatch]);
 

@@ -111,6 +111,14 @@ const setCompanies = (state, action) => ({
   companies: action.payload,
 });
 
+// Overlapped order
+
+const setOverlapOrders = (state, action) => ({
+  ...state,
+  overlapOrders: action.payload.orders,
+  overlapOrder: action.payload.order,
+});
+
 // UI
 
 const pushNotification = (state, action) => ({
@@ -172,6 +180,7 @@ export const reducers = {
   [actions.SET_MANAGERS]: setManagers,
   [actions.SET_MANAGER]: setManager,
   [actions.SET_COMPANIES]: setCompanies,
+  [actions.SET_OVERLAP_ORDERS]: setOverlapOrders,
   [actions.UPDATE_EMPLOYEE]: updateEmployee,
   [actions.UPDATE_MANAGER]: updateManager,
   [actions.PUSH_NOTIFICATION]: pushNotification,

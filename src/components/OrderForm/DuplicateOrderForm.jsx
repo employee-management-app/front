@@ -3,18 +3,18 @@ import { useDispatch } from 'react-redux';
 
 import { useForm } from '../../hooks/useForm';
 import { useNotification } from '../../hooks/useNotification';
-import { useDrawerVisibility } from '../../hooks/useDrawerVisibility';
 import { createOrder } from '../../services/createOrder';
 
-import { addOrder } from '../../store';
+import { addOrder, setOverlapOrders } from '../../store';
 
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
+import { useModalVisibility } from '../../hooks/useModalVisibility';
 
 export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { hideDrawer } = useDrawerVisibility('DuplicateOrder');
+  const { showModal: showOverlapModal } = useModalVisibility('OverlapOrdersModal');
   const {
     fields,
     errors,
@@ -73,14 +73,17 @@ export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, 
         pushNotification({ theme: 'success', content: 'Task was successfully duplicated!', action });
       })
       .catch((error) => {
-        const content = error.response?.data.message ?? 'Something went wrong';
-        const action = !!error.response?.data.value && {
-          to: `/orders/${error.response?.data.value}`,
-          onClick: hideDrawer,
-          label: 'Open task',
-        };
+        if (error.response?.data.value.orders) {
+          showOverlapModal();
+          dispatch(setOverlapOrders({
+            orders: error.response?.data.value.orders,
+            order: error.response?.data.value.order,
+          }));
 
-        pushNotification({ theme: 'error', content, action });
+          return;
+        }
+
+        pushNotification({ theme: 'error', content: 'Something went wrong' });
       })
       .finally(() => {
         setIsLoading(false);
