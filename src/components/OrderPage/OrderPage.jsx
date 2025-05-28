@@ -26,6 +26,7 @@ import { Container } from '../Container';
 import { ManagerMessageModal } from './ManagerMessageModal';
 import { EmployeeMessageModal } from './EmployeeMessageModal';
 import styles from './OrderPage.module.scss';
+import { EmployeeNotesModal } from './EmployeeNotesModal';
 
 export const OrderPage = ({ order }) => {
   const {
@@ -40,6 +41,7 @@ export const OrderPage = ({ order }) => {
     message,
     employeeMessage,
     managerMessage,
+    employeeNotes,
     files = [],
     address: { street, city, code, house, flat, lat, lng },
   } = order;
@@ -51,6 +53,7 @@ export const OrderPage = ({ order }) => {
   const { showModal: showCompleteModal } = useModalVisibility('CompleteOrder');
   const { showModal: showManagerMessageModal } = useModalVisibility('ManagerMessageModal');
   const { showModal: showEmployeeMessageModal } = useModalVisibility('EmployeeMessageModal');
+  const { showModal: showEmployeeNotesModal } = useModalVisibility('EmployeeNotesModal');
 
   const isCompleted = order.status === 'completed';
 
@@ -161,7 +164,7 @@ export const OrderPage = ({ order }) => {
               </GridEl>
             </Grid>
           </GridEl>
-          {!isEmployee && (
+          {!isEmployee && message && (
             <GridEl size="12">
               <Grid space={SPACES.S}>
                 <GridEl size="12">
@@ -227,6 +230,31 @@ export const OrderPage = ({ order }) => {
             <Grid space={SPACES.S}>
               <GridEl size="12">
                 <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
+                  {isEmployee
+                    ? (
+                      <>
+                        Notes
+                        {!isCompleted && (
+                          <button type="button" className={styles.editButton} onClick={showEmployeeNotesModal}>
+                            <EditIcon />
+                          </button>
+                        )}
+                      </>
+                    )
+                    : 'Notes'}
+                </Text>
+              </GridEl>
+              <GridEl size="12">
+                <Text size={{ xs: 'base', md: 'medium' }} italic={!employeeNotes}>
+                  {employeeNotes || 'Empty'}
+                </Text>
+              </GridEl>
+            </Grid>
+          </GridEl>
+          <GridEl size="12">
+            <Grid space={SPACES.S}>
+              <GridEl size="12">
+                <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
                   Photos
                 </Text>
               </GridEl>
@@ -252,6 +280,7 @@ export const OrderPage = ({ order }) => {
       </div>
       <ManagerMessageModal orderId={id} message={managerMessage} />
       <EmployeeMessageModal orderId={id} message={employeeMessage} />
+      <EmployeeNotesModal orderId={id} notes={employeeNotes} />
     </>
   );
 };

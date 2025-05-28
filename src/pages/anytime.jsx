@@ -5,8 +5,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
 import { setOrders, getOrders } from '../store';
 import { Container } from '../components/Container';
-import { EmptyState } from '../components/EmptyState';
-import { Button } from '../components/Button';
 import { Tabs, Tab, TabsItems, TabsItem } from '../components/Tabs';
 import { Input } from '../components/Input';
 import { Grid, GridEl, SPACES } from '../components/Grid';
@@ -18,25 +16,24 @@ import { useNotification } from '../hooks/useNotification';
 import { useAuth } from '../hooks/useAuth';
 import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
 import { useFilters } from '../hooks/useFilters';
+import { CreateOrderButton } from '../components/CreateOrderButton';
 
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
 import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg';
-import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
+import { EmployeeTimeline } from '../components/EmployeeTimeline/EmployeeTimeline';
 
 const URL_TABS = {
   '/anytime/list': 0,
   '/anytime': 1,
   '/anytime/timeline': 2,
-  '/anytime/calendar': 3,
 };
 
 const TAB_URLS = {
   0: '/anytime/list',
   1: '/anytime',
   2: '/anytime/timeline',
-  3: '/anytime/calendar',
 };
 
 export const Anytime = () => {
@@ -112,7 +109,6 @@ export const Anytime = () => {
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
                   <Tab id={2} icon={TimelineIcon}>Timeline</Tab>
-                  <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
               {activeTab < 2 && (
@@ -133,24 +129,10 @@ export const Anytime = () => {
           <OrdersMap orders={filteredOrders} showDateFilter={false} />
         </TabsItem>
         <TabsItem for={2}>
-          <EmptyState
-            title="Nothing here yet"
-            text="Calenar will be displayed here. If you think this is an error - contact the administrator."
-            action={
-              <Button>Contact the administrator</Button>
-            }
-          />
-        </TabsItem>
-        <TabsItem for={3}>
-          <EmptyState
-            title="Nothing here yet"
-            text="Timeline will be displayed here. If you think this is an error - contact the administrator."
-            action={
-              <Button>Contact the administrator</Button>
-            }
-          />
+          <EmployeeTimeline />
         </TabsItem>
       </TabsItems>
+      <CreateOrderButton />
     </Container>
   );
 };

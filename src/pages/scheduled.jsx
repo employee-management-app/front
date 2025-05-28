@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchEmployeeOrders } from '../services/fetchEmployeeOrders';
 import { setOrders, getOrders } from '../store';
 import { Container } from '../components/Container';
-import { EmptyState } from '../components/EmptyState';
-import { Button } from '../components/Button';
 import { Tabs, Tab, TabsItems, TabsItem } from '../components/Tabs';
 import { Input } from '../components/Input';
 import { Grid, GridEl, SPACES } from '../components/Grid';
@@ -22,21 +20,19 @@ import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
 import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg';
-import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
+import { EmployeeTimeline } from '../components/EmployeeTimeline/EmployeeTimeline';
 
 const URL_TABS = {
   '/scheduled/list': 0,
   '/scheduled': 1,
   '/scheduled/timeline': 2,
-  '/scheduled/calendar': 3,
 };
 
 const TAB_URLS = {
   0: '/scheduled/list',
   1: '/scheduled',
   2: '/scheduled/timeline',
-  3: '/scheduled/calendar',
 };
 
 export const Scheduled = () => {
@@ -112,7 +108,6 @@ export const Scheduled = () => {
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
                   <Tab id={2} icon={TimelineIcon}>Timeline</Tab>
-                  <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
               {activeTab < 2 && (
@@ -133,22 +128,7 @@ export const Scheduled = () => {
           <OrdersMap orders={filteredOrders} />
         </TabsItem>
         <TabsItem for={2}>
-          <EmptyState
-            title="Nothing here yet"
-            text="Calenar will be displayed here. If you think this is an error - contact the administrator."
-            action={
-              <Button>Contact the administrator</Button>
-            }
-          />
-        </TabsItem>
-        <TabsItem for={3}>
-          <EmptyState
-            title="Nothing here yet"
-            text="Timeline will be displayed here. If you think this is an error - contact the administrator."
-            action={
-              <Button>Contact the administrator</Button>
-            }
-          />
+          <EmployeeTimeline />
         </TabsItem>
       </TabsItems>
     </Container>

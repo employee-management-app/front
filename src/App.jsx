@@ -89,14 +89,6 @@ const AppRoutes = () => {
           )}
         />
         <Route
-          path="/calendar"
-          element={(
-            <ProtectedRoute>
-              <Inbox />
-            </ProtectedRoute>
-          )}
-        />
-        <Route
           path="/orders/:id"
           element={(
             <ProtectedRoute>
@@ -166,14 +158,6 @@ const AppRoutes = () => {
           )}
         />
         <Route
-          path="/anytime/calendar"
-          element={(
-            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
-              <Anytime />
-            </ProtectedRoute>
-          )}
-        />
-        <Route
           path="/scheduled"
           element={(
             <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
@@ -191,14 +175,6 @@ const AppRoutes = () => {
         />
         <Route
           path="/scheduled/timeline"
-          element={(
-            <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
-              <Scheduled />
-            </ProtectedRoute>
-          )}
-        />
-        <Route
-          path="/scheduled/calendar"
           element={(
             <ProtectedRoute roles={[USER_TYPES.EMPLOYEE]}>
               <Scheduled />

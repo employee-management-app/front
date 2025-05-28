@@ -28,14 +28,18 @@ export const OrderForm = (props) => {
 
   const dispatch = useDispatch();
   const employees = useSelector(getEmployees);
-  const { user: { companyId } } = useAuth();
+  const {
+    user: { companyId },
+    isEmployee,
+  } = useAuth();
 
-  const employeesOptions = React.useMemo(() => (
-    employees.map(({ _id, name, surname }) => ({
+  const employeesOptions = React.useMemo(
+    () => employees.map(({ _id, name, surname }) => ({
       label: `${name} ${surname}`,
       value: _id,
-    }))
-  ), [employees]);
+    })),
+    [employees]
+  );
 
   const { ref } = usePlacesWidget({
     options: {
@@ -45,10 +49,15 @@ export const OrderForm = (props) => {
       const values = Object.values(place.address_components);
 
       // eslint-disable-next-line max-len
-      const city = values.find(({ types }) => types.includes('administrative_area_level_2') || types.includes('locality'))?.long_name;
+      const city = values.find(
+        ({ types }) => types.includes('administrative_area_level_2')
+          || types.includes('locality')
+      )?.long_name;
       const street = values.find(({ types }) => types.includes('route'))?.long_name;
       const code = values.find(({ types }) => types.includes('postal_code'))?.long_name;
-      const house = values.find(({ types }) => types.includes('street_number') || types.includes('premise'))?.long_name;
+      const house = values.find(
+        ({ types }) => types.includes('street_number') || types.includes('premise')
+      )?.long_name;
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();
 
@@ -63,26 +72,30 @@ export const OrderForm = (props) => {
   });
 
   React.useEffect(() => {
-    fetchEmployees()
-      .then((data) => {
-        dispatch(setEmployees(data));
-      });
-  }, []);
+    if (isEmployee) {
+      return;
+    }
 
-  const handleScheduleTimeChange = React.useCallback(([startDate, endDate]) => {
-    onValueChange(startDate, 'startDate');
-    onValueChange(endDate, 'endDate');
-  }, [onValueChange]);
+    fetchEmployees().then((data) => {
+      dispatch(setEmployees(data));
+    });
+  }, [isEmployee]);
 
-  const dateTimePickerValue = React.useMemo(() => (
-    [fields.startDate, fields.endDate]
-  ), [fields.endDate, fields.startDate]);
+  const handleScheduleTimeChange = React.useCallback(
+    ([startDate, endDate]) => {
+      onValueChange(startDate, 'startDate');
+      onValueChange(endDate, 'endDate');
+    },
+    [onValueChange]
+  );
+
+  const dateTimePickerValue = React.useMemo(
+    () => [fields.startDate, fields.endDate],
+    [fields.endDate, fields.startDate]
+  );
 
   return (
-    <form
-      noValidate
-      onSubmit={onSubmit}
-    >
+    <form noValidate onSubmit={onSubmit}>
       <Grid>
         <GridEl size="12">
           <Grid>
@@ -183,20 +196,28 @@ export const OrderForm = (props) => {
                 />
               </Field>
             </GridEl>
-            <GridEl size={{ xs: 12, sm: 6 }}>
-              <Field label={editMode && 'Assignee'} error={errors.assignedEmployee}>
-                <Select
-                  value={fields.assignedEmployee}
-                  options={employeesOptions}
-                  placeholder="Select employee"
-                  size="medium"
-                  onClear={(val) => onValueChange(val, 'assignedEmployee')}
-                  onChange={(e) => onFieldChange(e, 'assignedEmployee')}
-                />
-              </Field>
-            </GridEl>
-            <GridEl size={{ xs: 12, sm: 6 }}>
-              <Field label={editMode && 'Schedule time'} error={errors.startDate || errors.endDate}>
+            {!isEmployee && (
+              <GridEl size={{ xs: 12, sm: 6 }}>
+                <Field
+                  label={editMode && 'Assignee'}
+                  error={errors.assignedEmployee}
+                >
+                  <Select
+                    value={fields.assignedEmployee}
+                    options={employeesOptions}
+                    placeholder="Select employee"
+                    size="medium"
+                    onClear={(val) => onValueChange(val, 'assignedEmployee')}
+                    onChange={(e) => onFieldChange(e, 'assignedEmployee')}
+                  />
+                </Field>
+              </GridEl>
+            )}
+            <GridEl size={{ xs: 12, sm: isEmployee ? 12 : 6 }}>
+              <Field
+                label={editMode && 'Schedule time'}
+                error={errors.startDate || errors.endDate}
+              >
                 <DateTimePicker
                   value={dateTimePickerValue}
                   placeholder="Schedule time"
@@ -208,26 +229,50 @@ export const OrderForm = (props) => {
             </GridEl>
           </Grid>
         </GridEl>
-        <GridEl size="12">
-          <Field label={editMode && 'Description for employees'} error={errors.employeeMessage}>
-            <Textarea
-              value={fields.employeeMessage}
-              placeholder="Message for employees"
-              size="medium"
-              onChange={(e) => onFieldChange(e, 'employeeMessage')}
-            />
-          </Field>
-        </GridEl>
-        <GridEl size="12">
-          <Field label={editMode && 'Description for managers'} error={errors.employeeMessage}>
-            <Textarea
-              value={fields.managerMessage}
-              placeholder="Message for managers"
-              size="medium"
-              onChange={(e) => onFieldChange(e, 'managerMessage')}
-            />
-          </Field>
-        </GridEl>
+        {isEmployee ? (
+          <GridEl size="12">
+            <Field
+              label={editMode && 'Notes'}
+              error={errors.employeeNotes}
+            >
+              <Textarea
+                value={fields.employeeNotes}
+                placeholder="Notes"
+                size="medium"
+                onChange={(e) => onFieldChange(e, 'employeeNotes')}
+              />
+            </Field>
+          </GridEl>
+        ) : (
+          <>
+            <GridEl size="12">
+              <Field
+                label={editMode && 'Description for employees'}
+                error={errors.employeeMessage}
+              >
+                <Textarea
+                  value={fields.employeeMessage}
+                  placeholder="Message for employees"
+                  size="medium"
+                  onChange={(e) => onFieldChange(e, 'employeeMessage')}
+                />
+              </Field>
+            </GridEl>
+            <GridEl size="12">
+              <Field
+                label={editMode && 'Description for managers'}
+                error={errors.employeeMessage}
+              >
+                <Textarea
+                  value={fields.managerMessage}
+                  placeholder="Message for managers"
+                  size="medium"
+                  onChange={(e) => onFieldChange(e, 'managerMessage')}
+                />
+              </Field>
+            </GridEl>
+          </>
+        )}
         <GridEl size="12">
           <Button type="submit" loading={isLoading}>
             {submitLabel}

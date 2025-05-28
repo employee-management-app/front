@@ -14,9 +14,9 @@ import { UserWidget } from '../UserWidget';
 import styles from './Header.module.scss';
 
 const NAV_ITEMS = {
-  '/': ['/list', '/', '/timeline', '/calendar'],
-  '/anytime': ['/anytime/list', '/anytime', '/anytime/timeline', '/anytime/calendar'],
-  '/scheduled': ['/scheduled/list', '/scheduled', '/scheduled/timeline', '/scheduled/calendar'],
+  '/': ['/list', '/', '/timeline'],
+  '/anytime': ['/anytime/list', '/anytime', '/anytime/timeline'],
+  '/scheduled': ['/scheduled/list', '/scheduled', '/scheduled/timeline'],
 };
 
 export const Header = () => {

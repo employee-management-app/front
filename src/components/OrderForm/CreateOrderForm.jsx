@@ -16,7 +16,7 @@ import { getOrderFormConfig } from './getOrderFormConfig';
 export const CreateOrderForm = ({ onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { user: { companyId } } = useAuth();
+  const { user: { _id, companyId }, isEmployee } = useAuth();
   const stageOptions = getStageOptions(companyId);
   const defaultValues = stageOptions.length === 1 ? { stage: stageOptions[0].value } : {};
   const {
@@ -44,6 +44,7 @@ export const CreateOrderForm = ({ onSuccess }) => {
 
     const payload = {
       ...fields,
+      ...(isEmployee && { assignedEmployee: _id }),
       address: {
         fullAddress: fields.fullAddress,
         code: fields.code,

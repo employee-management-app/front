@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ReactComponent as SearchIcon } from '../assets/icons/search.svg';
 import { ReactComponent as ListIcon } from '../assets/icons/list.svg';
 import { ReactComponent as MapMarkerIcon } from '../assets/icons/map-marker.svg';
-import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
 import { ReactComponent as TimelineIcon } from '../assets/icons/timeline.svg';
 
 import { setOrders, getOrders, setEmployees } from '../store';
@@ -16,8 +15,6 @@ import { filterOrdersByQuery } from '../utils/filterOrdersByQuery';
 import { fetchOrders } from '../services/fetchOrders';
 import { fetchEmployees } from '../services/fetchEmployees';
 import { Container } from '../components/Container';
-import { EmptyState } from '../components/EmptyState';
-import { Button } from '../components/Button';
 import { Grid, GridEl, SPACES } from '../components/Grid';
 import { Tabs, Tab, TabsItems, TabsItem } from '../components/Tabs';
 import { OrdersMap } from '../components/OrdersMap';
@@ -31,14 +28,12 @@ const URL_TABS = {
   '/list': 0,
   '/': 1,
   '/timeline': 2,
-  '/calendar': 3,
 };
 
 const TAB_URLS = {
   0: '/list',
   1: '/',
   2: '/timeline',
-  3: '/calendar',
 };
 
 export const Inbox = () => {
@@ -136,7 +131,6 @@ export const Inbox = () => {
                   <Tab id={0} icon={ListIcon}>List</Tab>
                   <Tab id={1} icon={MapMarkerIcon}>Map</Tab>
                   <Tab id={2} icon={TimelineIcon}>Timeline</Tab>
-                  <Tab id={3} icon={CalendarIcon}>Calendar</Tab>
                 </Tabs>
               </GridEl>
               {activeTab < 2 && (
@@ -158,15 +152,6 @@ export const Inbox = () => {
         </TabsItem>
         <TabsItem for={2}>
           <Timeline />
-        </TabsItem>
-        <TabsItem for={3}>
-          <EmptyState
-            title="Nothing here yet"
-            text="Calendar will be displayed here. If you think this is an error - contact the administrator."
-            action={
-              <Button>Contact the administrator</Button>
-            }
-          />
         </TabsItem>
       </TabsItems>
       <CreateOrderButton />
