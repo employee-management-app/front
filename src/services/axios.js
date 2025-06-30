@@ -25,6 +25,10 @@ const patch = (url, data, config) => (
   axios.patch(url, data, { ...config, headers: { ...config?.headers, ...getAuthHeader() } })
 );
 
+const put = (url, data, config) => (
+  axios.put(url, data, { ...config, headers: { ...config?.headers, ...getAuthHeader() } })
+);
+
 const _delete = (url, config) => (
   axios.delete(url, { ...config, headers: { ...config?.headers, ...getAuthHeader() } })
 );
@@ -33,6 +37,7 @@ const methods = {
   get,
   post,
   patch,
+  put,
   delete: _delete,
 };
 

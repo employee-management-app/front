@@ -46,7 +46,7 @@ export const OrderPage = ({ order }) => {
     address: { street, city, code, house, flat, lat, lng },
   } = order;
 
-  const { isEmployee } = useAuth();
+  const { isEmployee, company } = useAuth();
   const { showDrawer: showEditDrawer } = useDrawerVisibility('EditOrder');
   const { showModal: showDeleteModal } = useModalVisibility('DeleteOrder');
   const { showDrawer: showDuplicateDrawer } = useDrawerVisibility('DuplicateOrder');
@@ -251,21 +251,23 @@ export const OrderPage = ({ order }) => {
               </GridEl>
             </Grid>
           </GridEl>
-          <GridEl size="12">
-            <Grid space={SPACES.S}>
-              <GridEl size="12">
-                <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
-                  Photos
-                </Text>
-              </GridEl>
-              <GridEl size="12">
-                <FilePicker
-                  value={files}
-                  uploadUrl={`order/${id}/file`}
-                />
-              </GridEl>
-            </Grid>
-          </GridEl>
+          {company.canAddImages && (
+            <GridEl size="12">
+              <Grid space={SPACES.S}>
+                <GridEl size="12">
+                  <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
+                    Photos
+                  </Text>
+                </GridEl>
+                <GridEl size="12">
+                  <FilePicker
+                    value={files}
+                    uploadUrl={`order/${id}/file`}
+                  />
+                </GridEl>
+              </Grid>
+            </GridEl>
+          )}
         </Grid>
       </Container>
       <div className={styles.map}>

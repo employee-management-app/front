@@ -3,14 +3,15 @@ import React from 'react';
 
 import { Grid, GridEl, SPACES } from '../Grid';
 import { Text } from '../Text';
-import styles from './CompaniesList.module.scss';
 import { Tabs, Tab, TabsItems, TabsItem } from '../Tabs';
 import { fetchCompanyManagers } from '../../services/fetchCompanyManagers';
 import { fetchCompanyEmployees } from '../../services/fetchCompanyEmployees';
 import { Spinner } from '../Spinner';
 import { ManagersList } from '../ManagersList';
 import { EmployeesList } from '../EmployeesList';
-import { getEmployees, getManagers, setCompany, setEmployees, setManagers } from '../../store';
+import { getEmployees, getManagers, setCompany, setCompanies, setEmployees, setManagers } from '../../store';
+import { GeneralInformation } from './GeneralInformation';
+import { fetchCompanies } from '../../services/fetchCompanies';
 
 export const CompaniesList = ({ companies }) => {
   const dispatch = useDispatch();
@@ -37,6 +38,13 @@ export const CompaniesList = ({ companies }) => {
     fetchData();
   }, [activeCompanyIndex, companies, dispatch]);
 
+  const handleSuccess = () => {
+    fetchCompanies({})
+      .then((data) => {
+        dispatch(setCompanies(data));
+      });
+  };
+
   return (
     <Grid space={SPACES.L}>
       <GridEl size="12">
@@ -52,26 +60,7 @@ export const CompaniesList = ({ companies }) => {
         <TabsItems active={activeCompanyIndex}>
           {companies.map((company, index) => (
             <TabsItem for={index} key={company._id}>
-              <Grid space={SPACES.S}>
-                <GridEl size="12">
-                  <Text>
-                    <Text fontWeight="600" inline>Company name:</Text>
-                    {' '}{company.name}
-                  </Text>
-                </GridEl>
-                <GridEl size="12">
-                  <Grid alignItems="center" space={SPACES.S}>
-                    <GridEl>
-                      <Text fontWeight="600" inline>Logo:</Text>
-                    </GridEl>
-                    <GridEl>
-                      {company.logo
-                        ? <img src={company.logo} width={100} height={50} className={styles.logo} alt="" />
-                        : <div className={styles.placeholder}> -</div>}
-                    </GridEl>
-                  </Grid>
-                </GridEl>
-              </Grid>
+              <GeneralInformation company={company} onSuccess={handleSuccess} />
             </TabsItem>
           ))}
         </TabsItems>
@@ -79,7 +68,7 @@ export const CompaniesList = ({ companies }) => {
       <GridEl size="12">
         <Grid space={SPACES.S}>
           <GridEl size="12">
-            <Text fontWeight="600" inline>Managers</Text>
+            <Text fontWeight="600" size="medium" inline>Managers</Text>
           </GridEl>
           <GridEl size="12">
             {isLoading ? <Spinner /> : <ManagersList managers={managers} />}
@@ -89,7 +78,7 @@ export const CompaniesList = ({ companies }) => {
       <GridEl size="12">
         <Grid space={SPACES.S}>
           <GridEl size="12">
-            <Text fontWeight="600" inline>Employees</Text>
+            <Text fontWeight="600" size="medium" inline>Employees</Text>
           </GridEl>
           <GridEl size="12">
             {isLoading ? <Spinner /> : <EmployeesList employees={employees} />}

@@ -44,6 +44,7 @@ export const Button = ({ type = 'button', loading = false, disabled = false, ...
       type={type}
       disabled={loading || disabled}
       className={classNames}
+      form={props.form}
       onClick={props.onClick}
     >
       {content()}
