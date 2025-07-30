@@ -5,6 +5,7 @@ import { Container } from '../components/Container';
 import { Grid, GridEl, SPACES } from '../components/Grid';
 import { Text } from '../components/Text';
 import { Input } from '../components/Input';
+import { Checkbox } from '../components/Checkbox';
 import { Button } from '../components/Button';
 import { useForm } from '../hooks/useForm';
 import { useAuth } from '../hooks/useAuth';
@@ -26,6 +27,7 @@ export const Invitation = () => {
     isLoading,
     setIsLoading,
     onFieldChange,
+    onValueChange,
     onSubmit,
   } = useForm((yup) => ({
     password: {
@@ -35,6 +37,10 @@ export const Invitation = () => {
     repeatPassword: {
       value: '',
       validation: yup.string().oneOf([yup.ref('password')], 'Passwords do not match').required(),
+    },
+    acceptPolicy: {
+      value: false,
+      validation: yup.boolean().equals([true]),
     },
   }));
 
@@ -106,6 +112,20 @@ export const Invitation = () => {
                     </Field>
                   </GridEl>
                 </Grid>
+              </GridEl>
+              <GridEl size="12">
+                <Checkbox
+                  checked={fields.acceptPolicy}
+                  invalid={errors.acceptPolicy}
+                  onChange={(e) => onValueChange(e.target.checked, 'acceptPolicy')}
+                >
+                  <span>
+                    I accept {' '}
+                    <a href="https://technik-w-terenie.pl/terms" target="_blank" rel="noreferrer">
+                      regulations and privacy policy
+                    </a>
+                  </span>
+                </Checkbox>
               </GridEl>
               <GridEl size="12">
                 <Button type="submit" loading={isLoading}>
