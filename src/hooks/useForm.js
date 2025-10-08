@@ -9,6 +9,8 @@ yup.setLocale({
   string: {
     // eslint-disable-next-line no-template-curly-in-string
     min: 'This field should contain minimum ${min} characters',
+    // eslint-disable-next-line no-template-curly-in-string
+    max: 'This field should contain maximum ${max} characters',
     email: 'Email must be a valid email',
   },
 });

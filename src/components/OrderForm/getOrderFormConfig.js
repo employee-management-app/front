@@ -74,11 +74,15 @@ export const getOrderFormConfig = (yup, values = {}, requiredFields = []) => ({
   },
   employeeMessage: {
     value: values.employeeMessage || '',
-    validation: yup?.string(),
+    validation: yup?.string().max(5000),
   },
   managerMessage: {
     value: values.managerMessage || '',
-    validation: yup?.string(),
+    validation: yup?.string().max(5000),
+  },
+  employeeNotes: {
+    value: values.employeeNotes || '',
+    validation: yup?.string().max(5000),
   },
   files: {
     value: values.files || [],

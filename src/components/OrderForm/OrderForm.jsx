@@ -262,7 +262,7 @@ export const OrderForm = (props) => {
             <GridEl size="12">
               <Field
                 label={editMode && 'Description for managers'}
-                error={errors.employeeMessage}
+                error={errors.managerMessage}
               >
                 <Textarea
                   value={fields.managerMessage}
