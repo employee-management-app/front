@@ -10,10 +10,12 @@ import { addOrder, setOverlapOrders } from '../../store';
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
+import { useAuth } from '../../hooks/useAuth';
 
 export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
+  const { company: { requiredFields = [] } } = useAuth();
   const { showModal: showOverlapModal } = useModalVisibility('OverlapOrdersModal');
   const {
     fields,
@@ -26,7 +28,7 @@ export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, 
     onValueChange,
     onFieldChange,
     onSubmit,
-  } = useForm((yup) => getOrderFormConfig(yup, values));
+  } = useForm((yup) => getOrderFormConfig(yup, values, requiredFields));
 
   React.useEffect(() => {
     const config = getOrderFormConfig(null, values);

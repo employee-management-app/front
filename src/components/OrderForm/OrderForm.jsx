@@ -31,6 +31,7 @@ export const OrderForm = (props) => {
   const {
     user: { companyId },
     isEmployee,
+    company: { requiredFields = [] },
   } = useAuth();
 
   const employeesOptions = React.useMemo(
@@ -134,7 +135,7 @@ export const OrderForm = (props) => {
               <Field label={editMode && 'Name'} error={errors.name}>
                 <Input
                   value={fields.name}
-                  placeholder="Name"
+                  placeholder={`Name${requiredFields.includes('name') ? '*' : ''}`}
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'name')}
                 />
@@ -144,7 +145,7 @@ export const OrderForm = (props) => {
               <Field label={editMode && 'Surname'} error={errors.surname}>
                 <Input
                   value={fields.surname}
-                  placeholder="Surname"
+                  placeholder={`Surname${requiredFields.includes('surname') ? '*' : ''}`}
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'surname')}
                 />
@@ -154,7 +155,7 @@ export const OrderForm = (props) => {
               <Field label={editMode && 'Email'} error={errors.email}>
                 <Input
                   value={fields.email}
-                  placeholder="Email"
+                  placeholder={`Email${requiredFields.includes('email') ? '*' : ''}`}
                   type="email"
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'email')}
@@ -166,7 +167,7 @@ export const OrderForm = (props) => {
                 <Input
                   value={fields.phone}
                   type="phone"
-                  placeholder="Phone*"
+                  placeholder={`Phone${requiredFields.includes('phone') ? '*' : ''}`}
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'phone')}
                 />

@@ -130,6 +130,21 @@ const MAGAS_PRODUCT_TYPE_OPTIONS = [
   },
 ];
 
+const HUZZAR_PRODUCT_TYPE_OPTIONS = [
+  {
+    label: 'Opto',
+    value: 'Opto',
+  },
+  {
+    label: 'HFC',
+    value: 'HFC',
+  },
+  {
+    label: 'LAN',
+    value: 'LAN',
+  },
+];
+
 export const getProductTypeOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_PRODUCT_TYPE_OPTIONS;
@@ -145,6 +160,10 @@ export const getProductTypeOptions = (companyId) => {
 
   if (companyId === '682d7d9a26d1da92821a9860') {
     return MAGAS_PRODUCT_TYPE_OPTIONS;
+  }
+
+  if (companyId === '68e4fc920ce18e2e26f604a5') {
+    return HUZZAR_PRODUCT_TYPE_OPTIONS;
   }
 
   return DEFAULT_PRODUCT_TYPE_OPTIONS;
@@ -195,6 +214,21 @@ const SECURITY_SYSTEM_STAGE_OPTIONS = [
   },
 ];
 
+const HUZZAR_STAGE_OPTIONS = [
+  {
+    label: 'Awaria',
+    value: 'Awaria',
+  },
+  {
+    label: 'Serwis',
+    value: 'Serwis',
+  },
+  {
+    label: 'Wywiad techniczny',
+    value: 'Wywiad techniczny',
+  },
+];
+
 export const getStageOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_STAGE_OPTIONS;
@@ -202,6 +236,10 @@ export const getStageOptions = (companyId) => {
 
   if (companyId === '65a173aa95adb83fb2b32098') {
     return SECURITY_SYSTEM_STAGE_OPTIONS;
+  }
+
+  if (companyId === '68e4fc920ce18e2e26f604a5') {
+    return HUZZAR_STAGE_OPTIONS;
   }
 
   return DEFAULT_STAGE_OPTIONS;

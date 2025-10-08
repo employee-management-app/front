@@ -144,10 +144,10 @@ export const OrderPage = ({ order }) => {
                 <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{stage}: {name} {surname}</Text>
               </GridEl>
               <GridEl size={{ xs: 'fluid', sm: 'auto' }}>
-                <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
+                <Button href={`tel:${phone}`} disabled={!phone} icon={PhoneIcon} width="full">{phone}</Button>
               </GridEl>
               <GridEl size="auto">
-                <Button href={`sms:${phone}`} icon={CommentIcon} width="full" />
+                <Button href={`sms:${phone}`} disabled={!phone} icon={CommentIcon} width="full" />
               </GridEl>
               <GridEl size="auto">
                 <Button href={`mailto:${email}`} disabled={!email} icon={MailIcon} width="full" />

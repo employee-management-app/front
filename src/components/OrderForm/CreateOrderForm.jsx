@@ -16,7 +16,7 @@ import { getOrderFormConfig } from './getOrderFormConfig';
 export const CreateOrderForm = ({ onSuccess }) => {
   const dispatch = useDispatch();
   const { pushNotification } = useNotification();
-  const { user: { _id, companyId }, isEmployee } = useAuth();
+  const { user: { _id, companyId }, isEmployee, company: { requiredFields = [] } } = useAuth();
   const stageOptions = getStageOptions(companyId);
   const defaultValues = stageOptions.length === 1 ? { stage: stageOptions[0].value } : {};
   const {
@@ -28,7 +28,7 @@ export const CreateOrderForm = ({ onSuccess }) => {
     onValueChange,
     onFieldChange,
     onSubmit,
-  } = useForm((yup) => getOrderFormConfig(yup, defaultValues));
+  } = useForm((yup) => getOrderFormConfig(yup, defaultValues, requiredFields));
   const { showModal: showOverlapModal } = useModalVisibility('OverlapOrdersModal');
 
   const handleSubmit = (e) => {

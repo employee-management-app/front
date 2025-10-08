@@ -75,10 +75,10 @@ export const OrderCard = (props) => {
           {isEmployee && (
             <>
               <GridEl size={{ xs: 'auto', md: 0 }}>
-                <RouteLink href={`sms:${phone}`} label="Message" icon={CommentIcon} />
+                <RouteLink href={`sms:${phone}`} disabled={!phone} label="Message" icon={CommentIcon} />
               </GridEl>
               <GridEl size={{ xs: 'auto', md: 0 }}>
-                <RouteLink href={`tel:${phone}`} label="Phone" icon={PhoneIcon} />
+                <RouteLink href={`tel:${phone}`} disabled={!phone} label="Phone" icon={PhoneIcon} />
               </GridEl>
             </>
           )}
@@ -89,10 +89,10 @@ export const OrderCard = (props) => {
             <Text>{stage}: {name} {surname}</Text>
           </GridEl>
           <GridEl size={{ md: 12, xl: 8 }}>
-            <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
+            <Button href={`tel:${phone}`} disabled={!phone} icon={PhoneIcon} width="full">{phone}</Button>
           </GridEl>
           <GridEl size={{ md: 6, xl: 2 }}>
-            <Button href={`sms:${phone}`} icon={CommentIcon} width="full" />
+            <Button href={`sms:${phone}`} disabled={!phone} icon={CommentIcon} width="full" />
           </GridEl>
           <GridEl size={{ md: 6, xl: 2 }}>
             <Button href={`mailto:${email}`} disabled={!email} icon={MailIcon} width="full" />

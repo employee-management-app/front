@@ -8,6 +8,7 @@ import styles from './GeneralInformation.module.scss';
 import { Button } from '../Button';
 import { GeneralInformationForm } from './GeneralInformationForm';
 import { updateCompany } from '../../services/updateCompany';
+import { FIELD_LABELS } from '../../consts/company';
 
 export const GeneralInformation = ({ company, onSuccess }) => {
   const [isEditMode, setIsEditMode] = React.useState(false);
@@ -80,6 +81,13 @@ export const GeneralInformation = ({ company, onSuccess }) => {
                   : <div className={styles.placeholder}> -</div>}
               </GridEl>
             </Grid>
+          </GridEl>
+          <GridEl size="12">
+            <Text>
+              <Text fontWeight="600" inline>Required fields:</Text>
+              {' '}
+              {company.requiredFields.map((field) => FIELD_LABELS[field]).join(', ')}
+            </Text>
           </GridEl>
           <GridEl size="12">
             <Text>

@@ -6,6 +6,43 @@ import { Field } from '../Field';
 import { Input } from '../Input';
 import { Checkbox } from '../Checkbox';
 
+import styles from './GeneralInformation.module.scss';
+import { FIELD_LABELS } from '../../consts/company';
+
+const REQUIRED_FIELD_OPTIONS = [
+  {
+    name: 'address',
+    label: FIELD_LABELS.address,
+    disabled: true,
+  },
+  {
+    name: 'type',
+    label: FIELD_LABELS.type,
+    disabled: true,
+  },
+  {
+    name: 'stage',
+    label: FIELD_LABELS.stage,
+    disabled: true,
+  },
+  {
+    name: 'phone',
+    label: FIELD_LABELS.phone,
+  },
+  {
+    name: 'email',
+    label: FIELD_LABELS.email,
+  },
+  {
+    name: 'name',
+    label: FIELD_LABELS.name,
+  },
+  {
+    name: 'surname',
+    label: FIELD_LABELS.surname,
+  },
+];
+
 export const GeneralInformationForm = ({ company, ...props }) => {
   const {
     fields,
@@ -22,6 +59,10 @@ export const GeneralInformationForm = ({ company, ...props }) => {
     canAddImages: {
       value: company.canAddImages,
       validation: yup.boolean(),
+    },
+    requiredFields: {
+      value: company.requiredFields,
+      validation: yup.array().of(yup.string()).required(),
     },
   }));
 
@@ -45,6 +86,32 @@ export const GeneralInformationForm = ({ company, ...props }) => {
               placeholder="Name"
               onChange={(e) => onFieldChange(e, 'name')}
             />
+          </Field>
+        </GridEl>
+        <GridEl size="12">
+          <Field label="Required fields" error={errors.requiredFields}>
+            <select
+              multiple
+              value={fields.requiredFields}
+              className={styles.multiselect}
+              onChange={(e) => {
+                const options = [...e.target.selectedOptions];
+                const values = options.map((option) => option.value);
+                onValueChange(values.includes('address')
+                  ? values
+                  : [...values, 'address', 'type', 'stage'], 'requiredFields');
+              }}
+            >
+              {REQUIRED_FIELD_OPTIONS.map((option) => (
+                <option
+                  key={option.name}
+                  value={option.name}
+                  disabled={option.disabled}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </Field>
         </GridEl>
         <GridEl size="12">

@@ -1,23 +1,31 @@
-export const getOrderFormConfig = (yup, values = {}) => ({
+export const getOrderFormConfig = (yup, values = {}, requiredFields = []) => ({
   fullAddress: {
     value: values.address?.fullAddress || '',
     validation: yup?.string().max(300).required(),
   },
   email: {
     value: values.email || '',
-    validation: yup?.string().email().max(100),
+    validation: requiredFields.includes('email')
+      ? yup?.string().email().max(100).required()
+      : yup?.string().email().max(100),
   },
   name: {
     value: values.name || '',
-    validation: yup?.string().max(100),
+    validation: requiredFields.includes('name')
+      ? yup?.string().max(100).required()
+      : yup?.string().max(100),
   },
   surname: {
     value: values.surname || '',
-    validation: yup?.string().max(100),
+    validation: requiredFields.includes('surname')
+      ? yup?.string().max(100).required()
+      : yup?.string().max(100),
   },
   phone: {
     value: values.phone || '',
-    validation: yup?.string().min(6).max(100).required(),
+    validation: requiredFields.includes('phone')
+      ? yup?.string().max(100).required()
+      : yup?.string().max(100),
   },
   type: {
     value: values.type || null,

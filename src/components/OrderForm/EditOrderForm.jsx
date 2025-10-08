@@ -10,9 +10,11 @@ import { setOrder, setOverlapOrders, updateOrder as updateOrderInStore } from '.
 import { OrderForm } from './OrderForm';
 import { getOrderFormConfig } from './getOrderFormConfig';
 import { useModalVisibility } from '../../hooks/useModalVisibility';
+import { useAuth } from '../../hooks/useAuth';
 
 export const EditOrderForm = ({ values, onSuccess }) => {
   const dispatch = useDispatch();
+  const { company: { requiredFields = [] } } = useAuth();
   const { pushNotification } = useNotification();
   const { showModal: showOverlapModal } = useModalVisibility('OverlapOrdersModal');
   const {
@@ -27,7 +29,7 @@ export const EditOrderForm = ({ values, onSuccess }) => {
     onValueChange,
     onFieldChange,
     onSubmit,
-  } = useForm((yup) => getOrderFormConfig(yup, values));
+  } = useForm((yup) => getOrderFormConfig(yup, values, requiredFields));
 
   React.useEffect(() => {
     const config = getOrderFormConfig(null, values);
