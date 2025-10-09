@@ -69,6 +69,7 @@
   border: 1px solid transparent;
   transform: translateY(-50%);
   z-index: 1;
+  backdrop-filter: blur(2px);
   cursor: pointer;
 
   &:disabled {

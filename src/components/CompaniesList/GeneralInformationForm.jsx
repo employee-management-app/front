@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useForm } from '../../hooks/useForm';
-import { Grid, GridEl } from '../Grid';
+import { Grid, GridEl, SPACES } from '../Grid';
 import { Field } from '../Field';
 import { Input } from '../Input';
 import { Checkbox } from '../Checkbox';
@@ -64,6 +64,10 @@ export const GeneralInformationForm = ({ company, ...props }) => {
       value: company.requiredFields,
       validation: yup.array().of(yup.string()).required(),
     },
+    allowOverlappingOrders: {
+      value: company.allowOverlappingOrders,
+      validation: yup.boolean(),
+    },
   }));
 
   const handleSubmit = (e) => {
@@ -115,9 +119,21 @@ export const GeneralInformationForm = ({ company, ...props }) => {
           </Field>
         </GridEl>
         <GridEl size="12">
-          <Checkbox checked={fields.canAddImages} onChange={(e) => onValueChange(e.target.checked, 'canAddImages')}>
-            Can add images
-          </Checkbox>
+          <Grid space={SPACES.S}>
+            <GridEl size="12">
+              <Checkbox checked={fields.canAddImages} onChange={(e) => onValueChange(e.target.checked, 'canAddImages')}>
+                Can add images
+              </Checkbox>
+            </GridEl>
+            <GridEl size="12">
+              <Checkbox
+                checked={fields.allowOverlappingOrders}
+                onChange={(e) => onValueChange(e.target.checked, 'allowOverlappingOrders')}
+              >
+                Allow overlapping orders
+              </Checkbox>
+            </GridEl>
+          </Grid>
         </GridEl>
       </Grid>
     </form>

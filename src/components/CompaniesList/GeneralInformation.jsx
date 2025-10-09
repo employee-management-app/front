@@ -95,6 +95,12 @@ export const GeneralInformation = ({ company, onSuccess }) => {
               {' '}{company.canAddImages ? 'Yes' : 'No'}
             </Text>
           </GridEl>
+          <GridEl size="12">
+            <Text>
+              <Text fontWeight="600" inline>Allow overlapping orders:</Text>
+              {' '}{company.allowOverlappingOrders ? 'Yes' : 'No'}
+            </Text>
+          </GridEl>
         </>
       )}
     </Grid>
