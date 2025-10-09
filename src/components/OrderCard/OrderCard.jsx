@@ -61,9 +61,11 @@ export const OrderCard = (props) => {
       </div>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/interactive-supports-focus */}
       <div className={styles.body} role="link" onClick={handleClick}>
-        <Link to={`/orders/${_id}`} className={styles.type}>
-          {type}
+        <Link to={`/orders/${_id}`} className={styles.stage}>
+          {stage}
         </Link>
+        <Text>{type}</Text>
+        <hr className={cx(styles.hr, styles.small)} />
         <Text className={styles.address}>
           {street || <Text italic inline>No street</Text>} {house}{flat ? `, lokal ${flat}` : ''}<br />
           {code} {city}
@@ -72,38 +74,44 @@ export const OrderCard = (props) => {
           <GridEl size="fluid">
             <RouteLink href={`https://maps.google.com/?q=${lat},${lng}`} />
           </GridEl>
-          {isEmployee && (
+          {isEmployee && phone && (
             <>
               <GridEl size={{ xs: 'auto', md: 0 }}>
-                <RouteLink href={`sms:${phone}`} disabled={!phone} label="Message" icon={CommentIcon} />
+                <RouteLink href={`sms:${phone}`} label="Message" icon={CommentIcon} />
               </GridEl>
               <GridEl size={{ xs: 'auto', md: 0 }}>
-                <RouteLink href={`tel:${phone}`} disabled={!phone} label="Phone" icon={PhoneIcon} />
+                <RouteLink href={`tel:${phone}`} label="Phone" icon={PhoneIcon} />
               </GridEl>
             </>
           )}
         </Grid>
         <hr className={styles.hr} />
-        <Grid space={SPACES.S}>
-          <GridEl size="12">
-            <Text>{stage}: {name} {surname}</Text>
-          </GridEl>
-          <GridEl size={{ md: 12, xl: 8 }}>
-            <Button href={`tel:${phone}`} disabled={!phone} icon={PhoneIcon} width="full">{phone}</Button>
-          </GridEl>
-          <GridEl size={{ md: 6, xl: 2 }}>
-            <Button href={`sms:${phone}`} disabled={!phone} icon={CommentIcon} width="full" />
-          </GridEl>
-          <GridEl size={{ md: 6, xl: 2 }}>
-            <Button href={`mailto:${email}`} disabled={!email} icon={MailIcon} width="full" />
-          </GridEl>
-          {shortDescription && (
-            <GridEl size="12">
-              <Text nowrap>{shortDescription}</Text>
-            </GridEl>
-          )}
-        </Grid>
         <div className={styles.footer}>
+          {(name || surname || phone || email || shortDescription) && (
+            <Grid space={SPACES.S}>
+              {(name || surname || shortDescription) && (
+                <GridEl size="12">
+                  {(name || surname) && <Text>{name} {surname}</Text>}
+                  {shortDescription && <Text nowrap>{shortDescription}</Text>}
+                </GridEl>
+              )}
+              {phone && (
+                <>
+                  <GridEl size={{ md: 12, xl: email ? 8 : 10 }}>
+                    <Button href={`tel:${phone}`} icon={PhoneIcon} width="full">{phone}</Button>
+                  </GridEl>
+                  <GridEl size={{ md: email ? 6 : 12, xl: 2 }}>
+                    <Button href={`sms:${phone}`} icon={CommentIcon} width="full" />
+                  </GridEl>
+                </>
+              )}
+              {email && (
+                <GridEl size={{ md: phone ? 6 : 12, xl: phone ? 2 : 12 }}>
+                  <Button href={`mailto:${email}`} icon={MailIcon} width="full" />
+                </GridEl>
+              )}
+            </Grid>
+          )}
           <OrderButtons order={props} />
         </div>
       </div>

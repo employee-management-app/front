@@ -81,7 +81,7 @@ export const OrderPage = ({ order }) => {
             </Grid>
             <Grid space={SPACES.S} alignItems="center">
               <GridEl size={{ xs: 12, lg: 'fluid' }}>
-                <Text size={{ xs: 'large', md: 'h1' }} fontWeight="700">{type}</Text>
+                <Text size={{ xs: 'large', md: 'h1' }} fontWeight="700">{stage}</Text>
               </GridEl>
               <GridEl size={{ xs: 0, lg: 'auto' }}>
                 <Grid space={SPACES.S} justifyContent="flex-end" alignItems="center">
@@ -130,6 +130,9 @@ export const OrderPage = ({ order }) => {
                 </Grid>
               </GridEl>
               <GridEl size="12">
+                <Text size={{ xs: 'base', md: 'medium' }}>{type}</Text>
+              </GridEl>
+              <GridEl size="12">
                 <Text size={{ xs: 'base', md: 'medium' }}>
                   {street || <Text italic inline>No street</Text>} {house}{flat && `, lokal ${flat}`}<br />
                   {code} {city}
@@ -141,7 +144,9 @@ export const OrderPage = ({ order }) => {
           <GridEl size="12">
             <Grid space={SPACES.S}>
               <GridEl size="12">
-                <Text size={{ xs: 'medium', md: 'large' }} fontWeight="600">{stage}: {name} {surname}</Text>
+                <Text size={{ xs: 'base', md: 'medium' }} fontWeight="600">
+                  {(name || surname) ? `${name} ${surname}` : 'Client'}
+                </Text>
               </GridEl>
               <GridEl size={{ xs: 'fluid', sm: 'auto' }}>
                 <Button href={`tel:${phone}`} disabled={!phone} icon={PhoneIcon} width="full">{phone}</Button>

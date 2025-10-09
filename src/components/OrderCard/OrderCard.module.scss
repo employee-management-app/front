@@ -37,7 +37,7 @@
   transition: 0.2s all ease-in-out;
 }
 
-.type {
+.stage {
   @include text-large;
 
   width: fit-content;
@@ -50,13 +50,22 @@
   height: 1px;
   background-color: $color-gray-lighten-2;
   margin: 10px 0;
+
+  &.small {
+    margin: 5px 0;
+
+    @include breakpoint-down("md") {
+      display: none;
+    }
+  }
 }
 
 .footer {
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: flex-end;
   flex: 1;
-  margin-top: 10px;
 }
 
 @include breakpoint-up("md") {
