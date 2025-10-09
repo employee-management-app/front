@@ -9,7 +9,7 @@ import { Text } from '../../Text';
 
 import styles from './Timeline.module.scss';
 
-export const Slot = ({ color, order, selected, variant, onClick }) => {
+export const Slot = ({ color, order, selected, disabled, variant, onClick }) => {
   const { address, priority, startDate, status, endDate } = order;
 
   const time = React.useMemo(() => (
@@ -63,6 +63,7 @@ export const Slot = ({ color, order, selected, variant, onClick }) => {
         type="button"
         className={cx(styles.slot, { [styles.ghost]: variant === 'ghost' })}
         style={style}
+        disabled={disabled}
         onClick={status === 'completed' ? () => null : onClick}
       >
         <span className={cx(styles.slotPriority, styles[`priority-${priority}`])}>

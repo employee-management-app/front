@@ -103,6 +103,8 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
     lng: order.address.lng,
   })), [orders]);
 
+  const availableOrderIds = React.useMemo(() => orders.map((order) => order._id), [orders]);
+
   return (
     <div className={styles.wrapper} ref={wrapperRef} style={height ? { height } : undefined}>
       {showDateFilter && <DateFilter />}
@@ -134,6 +136,7 @@ export const OrdersMap = ({ orders, showDateFilter = true }) => {
           <Timeline
             order={selectedOrder}
             color={getEmployeeColor(selectedOrder)}
+            availableOrderIds={availableOrderIds}
             onSelect={selectOrder}
             onClose={hideTimeline}
           />

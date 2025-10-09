@@ -10,7 +10,7 @@ import { getIntervals } from './consts';
 import { Slot } from './Slot';
 import styles from './Timeline.module.scss';
 
-export const Timeline = ({ color, order, onSelect, onClose }) => {
+export const Timeline = ({ availableOrderIds, color, order, onSelect, onClose }) => {
   const [slots, setSlots] = React.useState([]);
 
   const intervals = getIntervals(order.startDate);
@@ -50,6 +50,7 @@ export const Timeline = ({ color, order, onSelect, onClose }) => {
               key={slot._id}
               order={slot}
               color={color}
+              disabled={!availableOrderIds.includes(slot._id)}
               selected={order._id === slot._id}
               onClick={handleClick(slot._id)}
             />

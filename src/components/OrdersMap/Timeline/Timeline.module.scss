@@ -71,6 +71,11 @@
   z-index: 1;
   cursor: pointer;
 
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
   &.ghost {
     border-style: dashed;
   }
