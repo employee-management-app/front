@@ -145,6 +145,10 @@ const HUZZAR_PRODUCT_TYPE_OPTIONS = [
   },
 ];
 
+const MBIZ_PRODUCT_TYPE_OPTIONS = [
+  { label: 'Koncentrator tlenu', value: 'Koncentrator tlenu' },
+];
+
 export const getProductTypeOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_PRODUCT_TYPE_OPTIONS;
@@ -164,6 +168,10 @@ export const getProductTypeOptions = (companyId) => {
 
   if (companyId === '68e4fc920ce18e2e26f604a5') {
     return HUZZAR_PRODUCT_TYPE_OPTIONS;
+  }
+
+  if (companyId === '6902072b6cd86d66b818d012') {
+    return MBIZ_PRODUCT_TYPE_OPTIONS;
   }
 
   return DEFAULT_PRODUCT_TYPE_OPTIONS;
@@ -229,6 +237,17 @@ const HUZZAR_STAGE_OPTIONS = [
   },
 ];
 
+const MBIZ_STAGE_OPTIONS = [
+  {
+    label: 'Awaria',
+    value: 'Awaria',
+  },
+  {
+    label: 'Przegląd',
+    value: 'Przegląd',
+  },
+];
+
 export const getStageOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_STAGE_OPTIONS;
@@ -240,6 +259,10 @@ export const getStageOptions = (companyId) => {
 
   if (companyId === '68e4fc920ce18e2e26f604a5') {
     return HUZZAR_STAGE_OPTIONS;
+  }
+
+  if (companyId === '6902072b6cd86d66b818d012') {
+    return MBIZ_STAGE_OPTIONS;
   }
 
   return DEFAULT_STAGE_OPTIONS;
