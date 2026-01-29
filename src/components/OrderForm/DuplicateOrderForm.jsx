@@ -50,6 +50,7 @@ export const DuplicateOrderForm = ({ values: { startDate, endDate, ...values }, 
 
     const payload = {
       ...fields,
+      files: [],
       address: {
         fullAddress: fields.fullAddress,
         code: fields.code,
