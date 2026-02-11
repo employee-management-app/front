@@ -149,6 +149,13 @@ const MBIZ_PRODUCT_TYPE_OPTIONS = [
   { label: 'Koncentrator tlenu', value: 'Koncentrator tlenu' },
 ];
 
+const LINDE_TERMO_PRODUCT_TYPE_OPTIONS = [
+  { label: 'Piana otwartokomówkowa', value: 'Piana otwartokomówkowa' },
+  { label: 'Piana zamkniętokomórkowa', value: 'Piana zamkniętokomórkowa' },
+  { label: 'Piana otwartokomórkowa/zamkniętokomórkowa', value: 'Piana otwartokomórkowa/zamkniętokomórkowa' },
+  { label: 'Piana zalewowa', value: 'Piana zalewowa' },
+];
+
 export const getProductTypeOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_PRODUCT_TYPE_OPTIONS;
@@ -172,6 +179,10 @@ export const getProductTypeOptions = (companyId) => {
 
   if (companyId === '6902072b6cd86d66b818d012') {
     return MBIZ_PRODUCT_TYPE_OPTIONS;
+  }
+
+  if (companyId === '698c780124270ec2d7a9cddc') {
+    return LINDE_TERMO_PRODUCT_TYPE_OPTIONS;
   }
 
   return DEFAULT_PRODUCT_TYPE_OPTIONS;
@@ -248,6 +259,11 @@ const MBIZ_STAGE_OPTIONS = [
   },
 ];
 
+const LINDE_TERMO_STAGE_OPTIONS = [
+  { label: 'Ocieplanie pianą PUR', value: 'Ocieplanie pianą PUR' },
+  { label: 'Reklamacja', value: 'Reklamacja' },
+];
+
 export const getStageOptions = (companyId) => {
   if (companyId === '651ebd32365d2688cb5e63cd') {
     return REAL_ESTATE_STAGE_OPTIONS;
@@ -263,6 +279,10 @@ export const getStageOptions = (companyId) => {
 
   if (companyId === '6902072b6cd86d66b818d012') {
     return MBIZ_STAGE_OPTIONS;
+  }
+
+  if (companyId === '698c780124270ec2d7a9cddc') {
+    return LINDE_TERMO_STAGE_OPTIONS;
   }
 
   return DEFAULT_STAGE_OPTIONS;
