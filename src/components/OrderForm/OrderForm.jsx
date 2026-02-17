@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { usePlacesWidget } from 'react-google-autocomplete';
 
+import { ReactComponent as GpsIcon } from '../../assets/icons/gps.svg';
 import { fetchEmployees } from '../../services/fetchEmployees';
 import { getEmployees, setEmployees } from '../../store';
 import { getStageOptions, getProductTypeOptions } from '../../consts/order';
@@ -13,6 +14,9 @@ import { Input } from '../Input';
 import { Select } from '../Select';
 import { Button } from '../Button';
 import { DateTimePicker } from '../DateTimePicker';
+import { parseLatLng } from '../../utils/parseLatLng';
+import { Tooltip } from '../Tooltip';
+import styles from './OrderForm.module.scss';
 
 export const OrderForm = (props) => {
   const {
@@ -49,7 +53,6 @@ export const OrderForm = (props) => {
     onPlaceSelected: (place) => {
       const values = Object.values(place.address_components);
 
-      // eslint-disable-next-line max-len
       const city = values.find(
         ({ types }) => types.includes('administrative_area_level_2')
           || types.includes('locality')
@@ -95,12 +98,54 @@ export const OrderForm = (props) => {
     [fields.endDate, fields.startDate]
   );
 
+  const latLng = parseLatLng(fields.fullAddress);
+
+  const handleGpsClick = () => {
+    if (!latLng) return;
+
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({
+      location: {
+        lat: latLng.lat,
+        lng: latLng.lng,
+      },
+    }, (results, status) => {
+      if (status === 'OK') {
+        const place = results[0];
+
+        if (!place) return;
+
+        const values = Object.values(place.address_components);
+
+        const city = values.find(
+          ({ types }) => types.includes('administrative_area_level_2')
+            || types.includes('locality')
+        )?.long_name;
+        const street = values.find(({ types }) => types.includes('route'))?.long_name;
+        const code = values.find(({ types }) => types.includes('postal_code'))?.long_name;
+        const house = values.find(
+          ({ types }) => types.includes('street_number') || types.includes('premise')
+        )?.long_name;
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+
+        onValueChange(city, 'city');
+        onValueChange(street, 'street');
+        onValueChange(code, 'code');
+        onValueChange(house, 'house');
+        onValueChange(lat, 'lat');
+        onValueChange(lng, 'lng');
+        onValueChange(place.formatted_address, 'fullAddress');
+      }
+    });
+  };
+
   return (
     <form noValidate onSubmit={onSubmit}>
       <Grid>
         <GridEl size="12">
           <Grid>
-            <GridEl size="12">
+            <GridEl size="12" className={styles.addressWrapper}>
               <Field label={editMode && 'Address'} error={errors.fullAddress}>
                 <Input
                   ref={ref}
@@ -110,12 +155,24 @@ export const OrderForm = (props) => {
                   onChange={(e) => onFieldChange(e, 'fullAddress')}
                 />
               </Field>
+              {latLng && (
+                <Tooltip content="Get address from coordinates">
+                  <button
+                    type="button"
+                    className={styles.gpsButton}
+                    aria-label="Get address from coordinates"
+                    onClick={handleGpsClick}
+                  >
+                    <GpsIcon />
+                  </button>
+                </Tooltip>
+              )}
             </GridEl>
             <GridEl size="6">
               <Field label={editMode && 'House number'} error={errors.house}>
                 <Input
                   value={fields.house}
-                  placeholder="House number*"
+                  placeholder="House number"
                   size="medium"
                   onChange={(e) => onFieldChange(e, 'house')}
                 />

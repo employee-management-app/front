@@ -37,7 +37,7 @@ export const getOrderFormConfig = (yup, values = {}, requiredFields = []) => ({
   },
   code: {
     value: values.address?.code ?? '',
-    validation: yup?.string().matches('^[0-9]{2}-[0-9]{3}', 'Invalid post code (xx-xxx)').required(),
+    validation: yup?.string(),
   },
   city: {
     value: values.address?.city ?? '',
@@ -57,7 +57,7 @@ export const getOrderFormConfig = (yup, values = {}, requiredFields = []) => ({
   },
   house: {
     value: values.address?.house ?? '',
-    validation: yup?.string().required(),
+    validation: yup?.string(),
   },
   flat: {
     value: values.address?.flat ?? '',
