@@ -1,14 +1,27 @@
 import cx from 'classnames';
 import React from 'react';
+import { useNotification } from '../../hooks/useNotification';
 
 import styles from './UploadInput.module.scss';
 
 export const UploadInput = ({ accept = 'image/*', placeholder = 'Upload file', invalid = false, onChange }) => {
   const [file, setFile] = React.useState(null);
+  const { pushNotification } = useNotification();
 
   const handleChange = (e) => {
-    setFile(e.target.files[0]);
-    onChange(e.target.files[0]);
+    const uploadFile = e.target.files[0];
+
+    if (uploadFile.size >= 10485760) {
+      pushNotification({
+        theme: 'warning',
+        content: 'File size is too large. Please upload a file smaller than 10MB.',
+      });
+
+      return;
+    }
+
+    setFile(uploadFile);
+    onChange(uploadFile);
   };
 
   const handleClear = (e) => {

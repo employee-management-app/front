@@ -8,15 +8,29 @@ import { ReactComponent as UploadIcon } from '../../assets/icons/upload.svg';
 
 import styles from './FilePicker.module.scss';
 import { ImageSlider } from '../ImageSlider';
+import { useNotification } from '../../hooks/useNotification';
 
 export const FilePicker = ({ value = [], uploadUrl }) => {
   const [files, setFiles] = React.useState(value);
   const [previewIndex, setPreviewIndex] = React.useState(null);
 
+  const { pushNotification } = useNotification();
+
   const handleChange = React.useCallback((e) => {
     const uploadedFiles = JSON.parse(JSON.stringify(files));
 
-    [...e.target.files].forEach((file) => {
+    const eventFiles = [...e.target.files];
+    const filteredFiles = eventFiles.filter((file) => file.size < 10485760);
+    const tooLargeFiles = eventFiles.filter((file) => file.size >= 10485760);
+
+    tooLargeFiles.forEach((file) => {
+      pushNotification({
+        theme: 'warning',
+        content: `File ${file.name} is too large. Please upload a file smaller than 10MB.`,
+      });
+    });
+
+    filteredFiles.forEach((file) => {
       const url = URL.createObjectURL(file);
 
       uploadedFiles.push({
