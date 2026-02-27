@@ -10,6 +10,22 @@ import styles from './FilePicker.module.scss';
 import { ImageSlider } from '../ImageSlider';
 import { useNotification } from '../../hooks/useNotification';
 
+const uploadToCloudinary = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', 'ml_default');
+
+  const response = await fetch(
+    'https://api.cloudinary.com/v1_1/da0teanjx/image/upload',
+    {
+      method: 'POST',
+      body: formData,
+    }
+  );
+
+  return response.json();
+};
+
 export const FilePicker = ({ value = [], uploadUrl }) => {
   const [files, setFiles] = React.useState(value);
   const [previewIndex, setPreviewIndex] = React.useState(null);
@@ -41,35 +57,48 @@ export const FilePicker = ({ value = [], uploadUrl }) => {
 
       setFiles(uploadedFiles);
 
-      const formData = new FormData();
-      formData.append('file', file);
+      uploadToCloudinary(file).then((uploadedFile) => {
+        const fileData = {
+          id: uploadedFile.public_id,
+          format: uploadedFile.format,
+          width: uploadedFile.width,
+          height: uploadedFile.height,
+          url: uploadedFile.secure_url,
+          creationDate: uploadedFile.created_at,
+        };
 
-      axios.post(`${process.env.REACT_APP_API_URL}/${uploadUrl}`, formData)
-        .then(({ data }) => {
-          const index = uploadedFiles.findIndex((uploaded) => uploaded.id === url);
+        axios.post(`${process.env.REACT_APP_API_URL}/${uploadUrl}`, fileData)
+          .then(({ data }) => {
+            const index = uploadedFiles.findIndex((uploaded) => uploaded.id === url);
 
-          setFiles(
-            Object.assign([], uploadedFiles, {
-              [index]: {
-                ...data,
-                isLoading: false,
-              },
-            })
-          );
+            setFiles(
+              Object.assign([], uploadedFiles, {
+                [index]: {
+                  ...data,
+                  isLoading: false,
+                },
+              })
+            );
 
-          uploadedFiles[index] = {
-            ...data,
-            isLoading: false,
-          };
-        })
-        .catch(() => {
-          const index = uploadedFiles.findIndex((uploaded) => uploaded.id === url);
-          setFiles(uploadedFiles.filter((uploaded) => uploaded.id !== url));
-          uploadedFiles.splice(index, 1);
-          // todo: push notification
-        });
+            uploadedFiles[index] = {
+              ...data,
+              isLoading: false,
+            };
+          })
+          .catch(() => {
+            const index = uploadedFiles.findIndex((uploaded) => uploaded.id === url);
+            setFiles(uploadedFiles.filter((uploaded) => uploaded.id !== url));
+            uploadedFiles.splice(index, 1);
+            // todo: push notification
+          });
+      }).catch(() => {
+        const index = uploadedFiles.findIndex((uploaded) => uploaded.id === url);
+        setFiles(uploadedFiles.filter((uploaded) => uploaded.id !== url));
+        uploadedFiles.splice(index, 1);
+        // todo: push notification
+      });
     });
-  }, [files, uploadUrl]);
+  }, [files, uploadUrl, pushNotification]);
 
   const removeFile = React.useCallback((id) => () => {
     const index = files.findIndex((uploaded) => uploaded.id === id);
